@@ -15,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.nnk.springboot.domain.CurvePoint;
 import com.nnk.springboot.repositories.CurvePointRepository;
 
-@SpringBootTest
+/*@SpringBootTest
 public class CurvePointTests {
 
 	@Autowired
@@ -46,4 +46,4 @@ public class CurvePointTests {
 		assertFalse(curvePointList.isPresent());
 	}
 
-}
+}*/

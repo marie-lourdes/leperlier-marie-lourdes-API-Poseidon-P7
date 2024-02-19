@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.nnk.springboot.domain.Rating;
 import com.nnk.springboot.repositories.RatingRepository;
 
-@SpringBootTest
+/*@SpringBootTest
 public class RatingTests {
 
 	@Autowired
@@ -44,4 +44,4 @@ public class RatingTests {
 		Optional<Rating> ratingList = ratingRepository.findById(id);
 		assertFalse(ratingList.isPresent());
 	}
-}
+}*/

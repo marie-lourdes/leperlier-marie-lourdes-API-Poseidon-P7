@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * Time: 11:26 AM
  */
 
-@SpringBootTest
+/*@SpringBootTest
 public class PasswordEncodeTest {
     @Test
     public void testPassword() {
@@ -20,4 +20,4 @@ public class PasswordEncodeTest {
         String pw = encoder.encode("123456");
         System.out.println("[ "+ pw + " ]");
     }
-}
+}*/

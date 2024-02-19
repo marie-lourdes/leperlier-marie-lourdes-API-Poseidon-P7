@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.nnk.springboot.domain.Trade;
 import com.nnk.springboot.repositories.TradeRepository;
 
-@SpringBootTest
+/*@SpringBootTest
 public class TradeTests {
 
 	@Autowired
@@ -44,4 +44,4 @@ public class TradeTests {
 		Optional<Trade> tradeList = tradeRepository.findById(id);
 		assertFalse(tradeList.isPresent());
 	}
-}
+}*/

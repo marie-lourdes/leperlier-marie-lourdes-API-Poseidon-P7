@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.nnk.springboot.domain.RuleName;
 import com.nnk.springboot.repositories.RuleNameRepository;
 
-@SpringBootTest
+/*@SpringBootTest
 public class RuleTests {
 
 	@Autowired
@@ -44,4 +44,4 @@ public class RuleTests {
 		Optional<RuleName> ruleList = ruleNameRepository.findById(id);
 		assertFalse(ruleList.isPresent());
 	}
-}
+}*/

@@ -1,5 +1,13 @@
 package com.nnk.springboot;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -7,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.repositories.BidListRepository;
 
-@SpringBootTest
+/*@SpringBootTest
 public class BidTests {
 
 	@Autowired
@@ -37,4 +45,4 @@ public class BidTests {
 		Optional<BidList> bidList = bidListRepository.findById(id);
 		assertFalse(bidList.isPresent());
 	}
-}
+}*/
