@@ -56,7 +56,7 @@ CREATE TABLE curve_point (
   curve_id int,
   as_of_date TIMESTAMP,
   term float ,
-  value float ,
+  
   creation_date TIMESTAMP ,
   PRIMARY KEY (id)
 );
@@ -66,7 +66,7 @@ CREATE TABLE rating (
   moodys_rating VARCHAR(125),
   sand_rating VARCHAR(125),
   fitch_rating VARCHAR(125),
-   order_number int,
+  order_number int,
   PRIMARY KEY (id)
 );
 
@@ -83,9 +83,9 @@ CREATE TABLE rule_name (
 
 CREATE TABLE users (
   id int NOT NULL AUTO_INCREMENT,
+  fullname VARCHAR(125),
   username VARCHAR(125),
   password VARCHAR(125),
-  fullname VARCHAR(125),
   role VARCHAR(125),
   PRIMARY KEY (id)
 );
