@@ -6,7 +6,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.nnk.springboot.domain.Trade;
 
@@ -16,7 +15,7 @@ import jakarta.validation.Valid;
 public class TradeController {
     // TODO: Inject Trade service
 
-    @RequestMapping("/trade/list")
+    @GetMapping("/trade/list")
     public String home(Model model)
     {
         // TODO: find all Trade, add to model

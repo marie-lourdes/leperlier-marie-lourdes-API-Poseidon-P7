@@ -1,100 +1,94 @@
-use demo;
+/*use demo;*/
 
-CREATE TABLE BidList (
-  BidListId int NOT NULL AUTO_INCREMENT,
+CREATE TABLE bid_list (
+  bidlist_id int NOT NULL AUTO_INCREMENT,
   account VARCHAR(30) NOT NULL,
   type VARCHAR(30) NOT NULL,
-  bidQuantity DOUBLE,
-  askQuantity DOUBLE,
-  bid DOUBLE ,
-  ask DOUBLE,
+  bid_quantity float,
+  ask_quantity float,
+  bid float ,
+  ask float,
   benchmark VARCHAR(125),
-  bidListDate TIMESTAMP,
+  bidlist_date TIMESTAMP,
   commentary VARCHAR(125),
   security VARCHAR(125),
   status VARCHAR(10),
   trader VARCHAR(125),
   book VARCHAR(125),
-  creationName VARCHAR(125),
-  creationDate TIMESTAMP ,
-  revisionName VARCHAR(125),
-  revisionDate TIMESTAMP ,
-  dealName VARCHAR(125),
-  dealType VARCHAR(125),
-  sourceListId VARCHAR(125),
+  creation_name VARCHAR(125),
+  creation_date TIMESTAMP ,
+  revision_name VARCHAR(125),
+  revision_date TIMESTAMP ,
+  deal_name VARCHAR(125),
+  deal_type VARCHAR(125),
+  sourceList_id VARCHAR(125),
   side VARCHAR(125),
-
-  PRIMARY KEY (BidListId)
+  PRIMARY KEY (bidlist_id)
 );
 
-CREATE TABLE Trade (
-  TradeId int NOT NULL AUTO_INCREMENT,
+CREATE TABLE trade (
+  trade_id int NOT NULL AUTO_INCREMENT,
   account VARCHAR(30) NOT NULL,
   type VARCHAR(30) NOT NULL,
-  buyQuantity DOUBLE,
-  sellQuantity DOUBLE,
-  buyPrice DOUBLE ,
-  sellPrice DOUBLE,
-  tradeDate TIMESTAMP,
+  buy_quantity float,
+  sell_quantity float,
+  buy_price float ,
+  sell_price float,
+  trade_date TIMESTAMP,
   security VARCHAR(125),
   status VARCHAR(10),
   trader VARCHAR(125),
   benchmark VARCHAR(125),
   book VARCHAR(125),
-  creationName VARCHAR(125),
-  creationDate TIMESTAMP ,
-  revisionName VARCHAR(125),
-  revisionDate TIMESTAMP ,
-  dealName VARCHAR(125),
-  dealType VARCHAR(125),
-  sourceListId VARCHAR(125),
+  creation_name VARCHAR(125),
+  creation_date TIMESTAMP ,
+  revision_name VARCHAR(125),
+  revision_date TIMESTAMP ,
+  deal_name VARCHAR(125),
+  deal_type VARCHAR(125),
+  sourcelist_id VARCHAR(125),
   side VARCHAR(125),
-
-  PRIMARY KEY (TradeId)
+  PRIMARY KEY (trade_id)
 );
 
-CREATE TABLE CurvePoint (
-  Id int NOT NULL AUTO_INCREMENT,
-  CurveId tinyint,
-  asOfDate TIMESTAMP,
-  term DOUBLE ,
-  value DOUBLE ,
-  creationDate TIMESTAMP ,
-
-  PRIMARY KEY (Id)
+CREATE TABLE curve_point (
+  id int NOT NULL AUTO_INCREMENT,
+  curve_id int,
+  as_of_date TIMESTAMP,
+  term float ,
+  value float ,
+  creation_date TIMESTAMP ,
+  PRIMARY KEY (id)
 );
 
-CREATE TABLE Rating (
-  Id int NOT NULL AUTO_INCREMENT,
-  moodysRating VARCHAR(125),
-  sandPRating VARCHAR(125),
-  fitchRating VARCHAR(125),
-  orderNumber tinyint,
-
-  PRIMARY KEY (Id)
+CREATE TABLE rating (
+  id int NOT NULL AUTO_INCREMENT,
+  moodys_rating VARCHAR(125),
+  sand_rating VARCHAR(125),
+  fitch_rating VARCHAR(125),
+   order_number int,
+  PRIMARY KEY (id)
 );
 
-CREATE TABLE RuleName (
-  Id int NOT NULL AUTO_INCREMENT,
+CREATE TABLE rule_name (
+  id int NOT NULL AUTO_INCREMENT,
   name VARCHAR(125),
   description VARCHAR(125),
   json VARCHAR(125),
   template VARCHAR(512),
-  sqlStr VARCHAR(125),
-  sqlPart VARCHAR(125),
-
-  PRIMARY KEY (Id)
+  sql_str VARCHAR(125),
+  sql_part VARCHAR(125),
+  PRIMARY KEY (id)
 );
 
-CREATE TABLE Users (
-  Id int NOT NULL AUTO_INCREMENT,
+CREATE TABLE users (
+  id int NOT NULL AUTO_INCREMENT,
   username VARCHAR(125),
   password VARCHAR(125),
   fullname VARCHAR(125),
   role VARCHAR(125),
-
-  PRIMARY KEY (Id)
+  PRIMARY KEY (id)
 );
 
-insert into Users(fullname, username, password, role) values("Administrator", "admin", "$2a$10$pBV8ILO/s/nao4wVnGLrh.sa/rnr5pDpbeC4E.KNzQWoy8obFZdaa", "ADMIN");
-insert into Users(fullname, username, password, role) values("User", "user", "$2a$10$pBV8ILO/s/nao4wVnGLrh.sa/rnr5pDpbeC4E.KNzQWoy8obFZdaa", "USER");
+insert into users(fullname, username, password, role) values("Administrator", "admin", "$2a$10$pBV8ILO/s/nao4wVnGLrh.sa/rnr5pDpbeC4E.KNzQWoy8obFZdaa", "ADMIN");
+insert into users(fullname, username, password, role) values("User", "user", "$2a$10$pBV8ILO/s/nao4wVnGLrh.sa/rnr5pDpbeC4E.KNzQWoy8obFZdaa", "USER");
