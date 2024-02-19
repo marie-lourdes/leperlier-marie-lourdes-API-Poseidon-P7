@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import com.nnk.springboot.domain.User;
 
 
-public interface UserRepository extends JpaRepository<User, Integer>, JpaSpecificationExecutor<User> {
+public interface UserRepository extends JpaRepository<User, Integer> {
 
 }

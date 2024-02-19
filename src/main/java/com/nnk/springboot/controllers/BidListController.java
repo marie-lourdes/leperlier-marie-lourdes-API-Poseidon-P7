@@ -16,7 +16,7 @@ import jakarta.validation.Valid;
 public class BidListController {
     // TODO: Inject Bid service
 
-    @RequestMapping("/bidList/list")
+    @GetMapping("/bidList/list")
     public String home(Model model)
     {
         // TODO: call service find all bids to show to the view
