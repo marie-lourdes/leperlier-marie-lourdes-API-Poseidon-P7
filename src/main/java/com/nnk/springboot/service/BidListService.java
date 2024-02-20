@@ -48,7 +48,8 @@ public class BidListService {
 		return 	bidListToUpdate;
 	}
 	
-	public List<BidList> getAllbids() {
+	public Optional<BidList> getBidbYId() {return null;}
+	public List<BidList> getAllBids() {
 		return bidListRepository.findAll();
 	}
 }

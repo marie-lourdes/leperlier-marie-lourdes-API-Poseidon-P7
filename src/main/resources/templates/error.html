@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-      <title> Bad Request</title>
+      <title> Error</title>
 </head>
 <body>
-   <h3>Error 400</h3>
+   <h3>Error </h3>
    <div>
 	    <form th:action="@{/app-logout}" method="POST">
 	         <input type="submit" value="Logout"/>
 	    </form>
    </div> 	 
-    <p class="error" th:text="${errorMsg}">Error</p>
+    <p class="error" th:text="${errorMsg}">Error has occured...</p>
 </body>
 </html>   

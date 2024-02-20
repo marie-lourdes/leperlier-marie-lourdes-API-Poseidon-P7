@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.nnk.springboot.domain.BidList;
@@ -22,6 +23,7 @@ import com.nnk.springboot.service.BidListService;
 import jakarta.validation.Valid;
 
 @Controller
+@RequestMapping("/bidList")
 public class BidListController {
 
 	private static final Logger log = LogManager.getLogger(BidListController.class);
@@ -29,7 +31,7 @@ public class BidListController {
 	@Autowired
 	BidListService bidListService;
 
-	@PostMapping("/bidList/validate")
+	@PostMapping("/validate")
 	public ModelAndView validateBidList(@Valid @ModelAttribute BidList bid, Model model, Principal principal) {
 		// TODO: check data valid and save to db, after saving return bid list
 		try {
@@ -41,7 +43,7 @@ public class BidListController {
 		}
 	}
 
-	@PostMapping("/bidList/update/{id}")
+	@PostMapping("/update/{id}")
 	public ModelAndView updateBid(@PathVariable("id") Integer id, @Valid @ModelAttribute BidList bidList, Model model) {
 		// TODO: check required fields, if valid call service to update Bid and return
 		// list Bid
@@ -52,15 +54,15 @@ public class BidListController {
 			return new ModelAndView("redirect:/error");
 		}
 		
-		return "redirect:/bidList/list";
+	//	return "redirect:/bidList/list";
 	}
 
-	@GetMapping("/bidList/list")
+	@GetMapping("/list")
 	public String getBidListPage(Model model) {
 		// TODO: call service find all bids to show to the view
 		List<BidList> bidLists = new ArrayList<>();
 		try {
-			bidLists = bidListService.getAllbids();
+			bidLists = bidListService.getAllBids();
 
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
@@ -70,7 +72,7 @@ public class BidListController {
 		return "bidList/list";
 	}
 
-	@GetMapping("/bidList/add")
+	@GetMapping("/add")
 	public String getBidFormPage(Model model) {
 		BidList bidListCreated = new BidList();
 		try {
@@ -84,13 +86,14 @@ public class BidListController {
 		return "bidList/add";
 	}
 
-	@GetMapping("/bidList/update/{id}")
+	@GetMapping("/update/{id}")
 	public String getUpdateFormBidListPage(@PathVariable("id") Integer id, Model model) {
 		// TODO: get Bid by Id and to model then show to the form
+		//BidList bidListUpdated= new BidList();
 		return "bidList/update";
 	}
 
-	@GetMapping("/bidList/delete/{id}")
+	@GetMapping("/delete/{id}")
 	public String deleteBid(@PathVariable("id") Integer id, Model model) {
 		// TODO: Find Bid by Id and delete the bid, return to Bid list
 		return "redirect:/bidList/list";
