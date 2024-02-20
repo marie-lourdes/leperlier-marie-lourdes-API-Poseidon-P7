@@ -57,4 +57,10 @@ public class BidListService {
 		bidListToUpdate = bidListRepository.save(bidListToUpdate);
 		return bidListToUpdate;
 	}
+
+	public void deleteBidById(Integer id)
+			throws NullPointerException {
+		bidListRepository.findById(id).orElseThrow(() -> new NullPointerException("Bid " + id + " not found for deleting"));
+		bidListRepository.deleteById(id);
+	}
 }

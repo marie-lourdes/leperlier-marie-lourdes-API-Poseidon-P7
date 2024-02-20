@@ -38,7 +38,7 @@ public class BidListController {
 			return new ModelAndView("redirect:/bidList/list");
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return new ModelAndView("redirect:/error");
+			return new ModelAndView("redirect:/error-404");
 		}
 	}
 
@@ -64,8 +64,7 @@ public class BidListController {
 			bidLists = bidListService.getAllBids();
 
 		} catch (NullPointerException e) {
-			log.error(e.getMessage());
-			// return new ModelAndVie:/w("redirecterror");
+			log.error(e.getMessage());		
 		}
 		model.addAttribute("bidLists", bidLists);
 		return "bidList/list";
@@ -80,14 +79,14 @@ public class BidListController {
 			bidListService.updateBidById(id, bidList);
 			return new ModelAndView("redirect:/bidList/list");
 		} catch (NullPointerException e) {
-			return new ModelAndView("redirect:/error");
+			return new ModelAndView("redirect:/error-404");
 		}
 
 		// return "redirect:/bidList/list";
 	}
 
 	@GetMapping("/update/{id}")
-	public String getUpdateFormBidListPage(@PathVariable("id") Integer id, Model model) {
+	public ModelAndView getUpdateFormBidListPage(@PathVariable("id") Integer id, Model model) {
 		// TODO: get Bid by Id and to model then show to the form
 		BidList bidListToUpdate = new BidList();
 		try {
@@ -95,15 +94,23 @@ public class BidListController {
 			if (bidListToUpdate != null) {
 				model.addAttribute("bidList", bidListToUpdate);
 			}
-			return "bidList/update";
+			return new ModelAndView("/bidList/update");
+			//return "bidList/update";
 		} catch (NullPointerException e) {
-			return "error";
+			return new ModelAndView("redirect:/error-404");
 		}
 	}
 
 	@GetMapping("/delete/{id}")
-	public String deleteBid(@PathVariable("id") Integer id, Model model) {
+	public ModelAndView deleteBid(@PathVariable("id") Integer id, Model model) {
 		// TODO: Find Bid by Id and delete the bid, return to Bid list
-		return "redirect:/bidList/list";
+		try {
+			 bidListService.deleteBidById(id);
+				return new ModelAndView("redirect:/bidList/list");
+			//return "bidList/list";
+		} catch (NullPointerException e) {
+			return new ModelAndView("redirect:/error-404");
+		}
+	
 	}
 }
