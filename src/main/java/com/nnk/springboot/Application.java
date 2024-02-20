@@ -22,10 +22,6 @@ BidListService bidListService;
 
 @Override
 public void run(String... args) throws Exception {
-	BidList bidCreated = new BidList("Account Test", "Type Test", 10d);
-	bidListService.addbid(bidCreated,"admin");
 	
-	List<BidList> bids =bidListService.getAllBids();
-	bids.forEach(bid -> System.out.println(bid));
 }
 }
