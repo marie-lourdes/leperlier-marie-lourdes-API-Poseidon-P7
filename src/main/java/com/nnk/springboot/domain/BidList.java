@@ -58,4 +58,13 @@ public class BidList {
 	
 	@Column(name = "deal_name ")
 	private String dealName ;
+	
+	@Column(name = " deal_type")
+	private String  dealType;
+	
+	@Column(name = " sourcelist_id ")
+	private String  sourcelistId ;
+	
+	@Column(name = "side ")
+	private String side ;
 }
