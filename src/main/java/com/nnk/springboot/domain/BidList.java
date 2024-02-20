@@ -18,7 +18,7 @@ public class BidList {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "bidlist_id")
-	private Integer id;
+	private Integer bidListId;
 	
 	@Column(name = "account")
 	private String account;
@@ -67,4 +67,12 @@ public class BidList {
 	
 	@Column(name = "side ")
 	private String side ;
+	
+	public BidList() {}
+	
+	public BidList(String account, String type, Double bidQuantity) {
+		this.account=account;
+		this.type=type;
+		this.bidQuantity=bidQuantity;
+	}
 }

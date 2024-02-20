@@ -15,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.repositories.BidListRepository;
 
-/*@SpringBootTest
+@SpringBootTest
 public class BidTests {
 
 	@Autowired
@@ -45,4 +45,4 @@ public class BidTests {
 		Optional<BidList> bidList = bidListRepository.findById(id);
 		assertFalse(bidList.isPresent());
 	}
-}*/
+}
