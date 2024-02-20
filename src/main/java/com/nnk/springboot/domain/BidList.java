@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -20,9 +21,11 @@ public class BidList {
 	@Column(name = "bidlist_id")
 	private Integer bidListId;
 	
+	@NotNull
 	@Column(name = "account")
 	private String account;
 	
+	@NotNull
 	@Column(name = "type")
 	private String type;
 
