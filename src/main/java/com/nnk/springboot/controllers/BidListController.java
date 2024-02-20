@@ -22,57 +22,57 @@ import jakarta.validation.Valid;
 
 @Controller
 public class BidListController {
-	
+
 	private static final Logger log = LogManager.getLogger(BidListController.class);
-	
+
 	@Autowired
 	BidListService bidListService;
-	
+
+	@PostMapping("/bidList/validate")
+	public ModelAndView validateBidList(@Valid @ModelAttribute BidList bid, Model model, Principal principal) {
+		// TODO: check data valid and save to db, after saving return bid list
+		try {
+			bidListService.addbid(bid, principal.getName());
+			return new ModelAndView("redirect:/bidList/list");
+		} catch (NullPointerException e) {
+			log.error(e.getMessage());
+			return new ModelAndView("redirect:/bidList/add");
+		}
+	}
+
 	@PostMapping("/bidList/update/{id}")
-	public String updateBid(@PathVariable("id") Integer id, @Valid @ModelAttribute BidList bidList,  Model model) {
+	public String updateBid(@PathVariable("id") Integer id, @Valid @ModelAttribute BidList bidList, Model model) {
 		// TODO: check required fields, if valid call service to update Bid and return
 		// list Bid
 		return "redirect:/bidList/list";
 	}
 
-	@PostMapping("/bidList/validate")
-	public ModelAndView validate(@Valid @ModelAttribute BidList bid, Model model, Principal principal) {
-		// TODO: check data valid and save to db, after saving return bid list
-		try {
-			bidListService.addbid(bid,principal.getName());
-			return new ModelAndView("redirect:/bidList/list");
-		} catch (NullPointerException e) {
-			log.error(e.getMessage());
-			return new ModelAndView("redirect:bidList/add");
-		}	
-	}
-
 	@GetMapping("/bidList/list")
-	public String home(Model model) {
+	public String getBidListPage(Model model) {
 		// TODO: call service find all bids to show to the view
-		List<BidList> bidLists= new ArrayList<>();
+		List<BidList> bidLists = new ArrayList<>();
 		try {
-			 bidLists=bidListService.getAllbids();
-		
+			bidLists = bidListService.getAllbids();
+
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			
+
 		}
-		model.addAttribute("bidLists",bidLists);
+		model.addAttribute("bidLists", bidLists);
 		return "bidList/list";
 	}
 
 	@GetMapping("/bidList/add")
-	public String addBidForm(Model model) {
+	public String getBidFormPage(Model model) {
 		BidList bidListCreated = new BidList();
-		try {		
-		model.addAttribute("bidList", bidListCreated );
+		try {
+			model.addAttribute("bidList", bidListCreated);
 		} catch (Exception e) {
 			log.error("Failed to retrieve sign up page " + e.getMessage());
-			//return Constants.ERROR_PAGE;
+			// return Constants.ERROR_PAGE;
 		}
 		log.info(" Bid Form page successfully retrieved");
-	
+
 		return "bidList/add";
 	}
 

@@ -58,8 +58,7 @@ public class BidList {
 	
 	@Column(name = "status")
 	private  String status;
-	
-	@NotNull
+		
 	@Column(name = "trader")
 	 private  String trader;
 	 
