@@ -37,14 +37,21 @@ public class BidListController {
 			return new ModelAndView("redirect:/bidList/list");
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return new ModelAndView("redirect:/bidList/add");
+			return new ModelAndView("redirect:/error");
 		}
 	}
 
 	@PostMapping("/bidList/update/{id}")
-	public String updateBid(@PathVariable("id") Integer id, @Valid @ModelAttribute BidList bidList, Model model) {
+	public ModelAndView updateBid(@PathVariable("id") Integer id, @Valid @ModelAttribute BidList bidList, Model model) {
 		// TODO: check required fields, if valid call service to update Bid and return
 		// list Bid
+		try {
+		bidListService.updateBidById(id, bidList);
+		return new ModelAndView("redirect:/bidList/list");
+		}catch (NullPointerException e) {
+			return new ModelAndView("redirect:/error");
+		}
+		
 		return "redirect:/bidList/list";
 	}
 
@@ -57,7 +64,7 @@ public class BidListController {
 
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-
+			//return new ModelAndVie:/w("redirecterror");
 		}
 		model.addAttribute("bidLists", bidLists);
 		return "bidList/list";
