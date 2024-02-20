@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,7 +22,7 @@ import com.nnk.springboot.service.BidListService;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/bidList")
+@RequestMapping("bidList")
 public class BidListController {
 
 	private static final Logger log = LogManager.getLogger(BidListController.class);
@@ -43,35 +42,6 @@ public class BidListController {
 		}
 	}
 
-	@PostMapping("/update/{id}")
-	public ModelAndView updateBid(@PathVariable("id") Integer id, @Valid @ModelAttribute BidList bidList, Model model) {
-		// TODO: check required fields, if valid call service to update Bid and return
-		// list Bid
-		try {
-		bidListService.updateBidById(id, bidList);
-		return new ModelAndView("redirect:/bidList/list");
-		}catch (NullPointerException e) {
-			return new ModelAndView("redirect:/error");
-		}
-		
-	//	return "redirect:/bidList/list";
-	}
-
-	@GetMapping("/list")
-	public String getBidListPage(Model model) {
-		// TODO: call service find all bids to show to the view
-		List<BidList> bidLists = new ArrayList<>();
-		try {
-			bidLists = bidListService.getAllBids();
-
-		} catch (NullPointerException e) {
-			log.error(e.getMessage());
-			//return new ModelAndVie:/w("redirecterror");
-		}
-		model.addAttribute("bidLists", bidLists);
-		return "bidList/list";
-	}
-
 	@GetMapping("/add")
 	public String getBidFormPage(Model model) {
 		BidList bidListCreated = new BidList();
@@ -86,11 +56,49 @@ public class BidListController {
 		return "bidList/add";
 	}
 
+	@GetMapping("/list")
+	public String getBidListPage(Model model) {
+		// TODO: call service find all bids to show to the view
+		List<BidList> bidLists = new ArrayList<>();
+		try {
+			bidLists = bidListService.getAllBids();
+
+		} catch (NullPointerException e) {
+			log.error(e.getMessage());
+			// return new ModelAndVie:/w("redirecterror");
+		}
+		model.addAttribute("bidLists", bidLists);
+		return "bidList/list";
+	}
+
+	@PostMapping("/update/{id}")
+	public ModelAndView updateBid(@PathVariable("id") Integer id, @Valid @ModelAttribute BidList bidList, Model model) {
+		// TODO: check required fields, if valid call service to update Bid and return
+		// list Bid
+		try {
+
+			bidListService.updateBidById(id, bidList);
+			return new ModelAndView("redirect:/bidList/list");
+		} catch (NullPointerException e) {
+			return new ModelAndView("redirect:/error");
+		}
+
+		// return "redirect:/bidList/list";
+	}
+
 	@GetMapping("/update/{id}")
 	public String getUpdateFormBidListPage(@PathVariable("id") Integer id, Model model) {
 		// TODO: get Bid by Id and to model then show to the form
-		//BidList bidListUpdated= new BidList();
-		return "bidList/update";
+		BidList bidListToUpdate = new BidList();
+		try {
+			bidListToUpdate  = bidListService.getBidById(id);
+			if (bidListToUpdate != null) {
+				model.addAttribute("bidList", bidListToUpdate);
+			}
+			return "bidList/update";
+		} catch (NullPointerException e) {
+			return "error";
+		}
 	}
 
 	@GetMapping("/delete/{id}")

@@ -31,25 +31,30 @@ public class BidListService {
 			bidListRegistered.setTrader(username);
 		}
 
-		bidListRegistered=bidListRepository.save(bidListRegistered);
+		bidListRegistered = bidListRepository.save(bidListRegistered);
 		return bidListRegistered;
 	}
 
-	public BidList updateBidById(Integer id,BidList bidListUpdated) throws NullPointerException,IllegalArgumentException{
+	public BidList getBidById(Integer id) throws NullPointerException {
+		return bidListRepository.findById(id).orElseThrow(() -> new NullPointerException("Bid " + id + " not found"));
+	}
+
+	public List<BidList> getAllBids() throws NullPointerException {
+		return bidListRepository.findAll();
+	}
+
+	public BidList updateBidById(Integer id, BidList bidListUpdated)
+			throws NullPointerException, IllegalArgumentException {
 		BidList bidListToUpdate = new BidList();
-		bidListToUpdate=bidListRepository.findById(id).orElseThrow(()-> new NullPointerException("Bid " +id +" not found for updating"));
-		if(bidListUpdated.getAccount()==null && bidListUpdated.getType()==null) {
-			throw new IllegalArgumentException("Emty data of Bid "+ id +" provided and updated");
+		bidListToUpdate = bidListRepository.findById(id)
+				.orElseThrow(() -> new NullPointerException("Bid " + id + " not found for updating"));
+		if (bidListUpdated.getAccount() == null && bidListUpdated.getType() == null) {
+			throw new IllegalArgumentException("Empty data of Bid " + id + " provided and updated");
 		}
 		bidListToUpdate.setAccount(bidListUpdated.getAccount());
 		bidListToUpdate.setType(bidListUpdated.getType());
 		bidListToUpdate.setBidQuantity(bidListUpdated.getBidQuantity());
-		bidListToUpdate=bidListRepository.save(bidListToUpdate);
-		return 	bidListToUpdate;
-	}
-	
-	public Optional<BidList> getBidbYId() {return null;}
-	public List<BidList> getAllBids() {
-		return bidListRepository.findAll();
+		bidListToUpdate = bidListRepository.save(bidListToUpdate);
+		return bidListToUpdate;
 	}
 }
