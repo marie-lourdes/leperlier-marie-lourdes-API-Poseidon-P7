@@ -3,6 +3,7 @@ package com.nnk.springboot.service;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,19 @@ public class BidListService {
 		return bidListRegistered;
 	}
 
+	public BidList updateBidById(Integer id,BidList bidListUpdated) throws NullPointerException,IllegalArgumentException{
+		BidList bidListToUpdate = new BidList();
+		bidListToUpdate=bidListRepository.findById(id).orElseThrow(()-> new NullPointerException("Bid " +id +" not found for updating"));
+		if(bidListUpdated.getAccount()==null && bidListUpdated.getType()==null) {
+			throw new IllegalArgumentException("Emty data of Bid "+ id +" provided and updated");
+		}
+		bidListToUpdate.setAccount(bidListUpdated.getAccount());
+		bidListToUpdate.setType(bidListUpdated.getType());
+		bidListToUpdate.setBidQuantity(bidListUpdated.getBidQuantity());
+		bidListToUpdate=bidListRepository.save(bidListToUpdate);
+		return 	bidListToUpdate;
+	}
+	
 	public List<BidList> getAllbids() {
 		return bidListRepository.findAll();
 	}
