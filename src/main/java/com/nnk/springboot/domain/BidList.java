@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 @Data
@@ -35,6 +36,7 @@ public class BidList {
 	@Column(name = "ask_quantity ")
 	private Double askQuantity;
 	
+	@Positive
 	@Column(name = "bid")
 	private Double bid;
 	
