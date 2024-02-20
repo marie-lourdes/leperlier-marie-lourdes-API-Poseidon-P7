@@ -1,20 +1,6 @@
 package com.nnk.springboot.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-
-import com.nnk.springboot.domain.User;
-import com.nnk.springboot.repositories.UserRepository;
-
-import jakarta.validation.Valid;
-
-@Controller
+/*@Controller
 public class UserController {
     @Autowired
     private UserRepository userRepository;
@@ -73,4 +59,4 @@ public class UserController {
         model.addAttribute("users", userRepository.findAll());
         return "redirect:/user/list";
     }
-}
+}*/

@@ -1,8 +1,8 @@
 package com.nnk.springboot.service;
 
-import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ public class BidListService {
 	@Autowired
 	private BidListRepository bidListRepository;
 
-	public BidList addbid(BidList bidListCreated,String username)
+	public BidList addbid(BidList bidListCreated, String username)
 			throws IllegalArgumentException, NullPointerException {
 		BidList bidListRegistered = new BidList();
 		Date date = new Date();
@@ -27,9 +27,14 @@ public class BidListService {
 			bidListRegistered.setBidQuantity(bidListCreated.getBidQuantity());
 			bidListRegistered.setCreationName("bid");
 			bidListRegistered.setCreationDate(timestamp);
+			bidListRegistered.setTrader(username);
 		}
-		
-		bidListRepository.save(bidListRegistered);
+
+		bidListRegistered=bidListRepository.save(bidListRegistered);
 		return bidListRegistered;
+	}
+
+	public List<BidList> getAllbids() {
+		return bidListRepository.findAll();
 	}
 }

@@ -46,7 +46,23 @@ public class BidList {
 	
 	@Column(name = "book")
 	private String book;
+
+	@Column(name = "bidlist_date")
+	private  Timestamp bidListDate;
 	
+	@Column(name = "commentary")
+	private String commentary;
+	
+	@Column(name = "security")
+	private String security;
+	
+	@Column(name = "status")
+	private  String status;
+	
+	@NotNull
+	@Column(name = "trader")
+	 private  String trader;
+	 
 	@Column(name = "creation_name")
 	private String creationName;
 	

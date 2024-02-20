@@ -1,5 +1,7 @@
 package com.nnk.springboot;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -20,7 +22,10 @@ BidListService bidListService;
 
 @Override
 public void run(String... args) throws Exception {
-	BidList bid = new BidList("Account Test", "Type Test", 10d);
-	bidListService.addbid(bid,"admin");
+	BidList bidCreated = new BidList("Account Test", "Type Test", 10d);
+	bidListService.addbid(bidCreated,"admin");
+	
+	List<BidList> bids =bidListService.getAllbids();
+	bids.forEach(bid -> System.out.println(bid));
 }
 }
