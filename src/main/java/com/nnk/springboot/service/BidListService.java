@@ -21,13 +21,16 @@ public class BidListService {
 	@Autowired
 	private BidListMapperImpl mapper;
 
-	public BidList addbid(BidList bidListCreated, String username)
+	public BidList addBid(BidList bidListCreated, String username)
 			throws IllegalArgumentException, NullPointerException {
 		BidList bidListRegistered = new BidList();
 		Date date = new Date();
 		Timestamp timestamp = new Timestamp(date.getTime());
 
-		if (bidListRegistered != null) {
+		if (bidListCreated != null) {
+			if (bidListCreated.getAccount() == null && bidListCreated.getType() == null) {
+				throw new IllegalArgumentException("Empty data of Bid " + bidListCreated + " provided and updated");
+			}
 			bidListRegistered.setAccount(bidListCreated.getAccount());
 			bidListRegistered.setType(bidListCreated.getType());
 			bidListRegistered.setBidQuantity(bidListCreated.getBidQuantity());
@@ -64,9 +67,7 @@ public class BidListService {
 		BidList bidListToUpdate = new BidList();
 		bidListToUpdate = bidListRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("Bid " + id + " not found for updating"));
-		if (bidListUpdated.getAccount() == null && bidListUpdated.getType() == null) {
-			throw new IllegalArgumentException("Empty data of Bid " + id + " provided and updated");
-		}
+
 		bidListToUpdate.setAccount(bidListUpdated.getAccount());
 		bidListToUpdate.setType(bidListUpdated.getType());
 		bidListToUpdate.setBidQuantity(bidListUpdated.getBidQuantity());

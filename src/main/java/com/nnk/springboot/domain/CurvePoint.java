@@ -35,7 +35,16 @@ public class CurvePoint {
 	private Double value;
 
 	@NotNull
-	@Column(name = "  creation_date")
+	@Column(name = "creation_date")
 	private Timestamp creationDate;
 
+	public CurvePoint() {
+
+	}
+
+	public CurvePoint(Integer curveId, Double term, Double value) {
+		this.curveId = curveId;
+		this.term = term;
+		this.value = value;
+	};
 }
