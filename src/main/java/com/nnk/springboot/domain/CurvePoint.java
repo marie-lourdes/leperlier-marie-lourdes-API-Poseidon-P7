@@ -23,7 +23,7 @@ public class CurvePoint {
 	@Column(name = "id")
 	private Integer id;
 
-	@NotNull
+	@NotNull(message="must be not null")
 	@Column(name = "curve_id")
 	private Integer curveId;
 
@@ -33,7 +33,7 @@ public class CurvePoint {
 	@Column(name = "term")
 	private Double term;
 	
-	@DecimalMin("0.0")
+	//@DecimalMin("0.0")
 	@Positive
 	@Column(name = "value")
 	private Double value;

@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
@@ -23,11 +24,11 @@ public class BidList {
 	@Column(name = "bidlist_id")
 	private Integer bidListId;
 
-	@NotNull
+	@NotBlank(message="Account is mandatory")
 	@Column(name = "account")
 	private String account;
 
-	@NotNull
+	@NotBlank(message="Type is mandatory")
 	@Column(name = "type")
 	private String type;
 
@@ -37,7 +38,7 @@ public class BidList {
 	@Column(name = "ask_quantity ")
 	private Double askQuantity;
 	
-	@DecimalMin("0.0")
+	//@DecimalMin("0.0")
 	@Positive
 	@Column(name = "bid")
 	private Double bid;
