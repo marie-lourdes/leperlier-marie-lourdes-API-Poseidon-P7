@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.nnk.springboot.domain.CurvePoint;
-import com.nnk.springboot.domain.dto.BidListDTO;
 import com.nnk.springboot.domain.dto.CurvePointDTO;
 import com.nnk.springboot.service.CurvePointService;
 
@@ -81,7 +79,6 @@ public class CurveController {
        // TODO: check required fields, if valid call service to update Curve and return Curve list
 		try {
 			 curvePointService.updateCurvePointById(id, curvePoint);
-			
 			return new ModelAndView("redirect:/curvePoint/list");
 		} catch (NullPointerException e) {
 			return new ModelAndView("redirect:/error-404");
@@ -96,9 +93,9 @@ public class CurveController {
 		try {
 			curvePointToUpdate = curvePointService.getCurvePointById(id);
 			if (curvePointToUpdate != null) {
-				model.addAttribute("bidList", curvePointToUpdate);
+				model.addAttribute("curvePoint", curvePointToUpdate);
 			}
-			log.info(" Bid  form update page successfully retrieved");
+			 log.info(" Curve Point  form update page successfully retrieved");
 			return new ModelAndView("/curvePoint/update");
 			//return "bidList/update";
 		} catch (NullPointerException e) {

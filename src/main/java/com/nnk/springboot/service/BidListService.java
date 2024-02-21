@@ -25,7 +25,7 @@ public class BidListService {
 	@Autowired
 	private BidListMapperImpl mapper;
 
-	public BidList addBid(BidList bidListCreated, String username)
+	public BidList addBid(BidList bidListCreated /*String username*/)
 			throws NullPointerException {
 		BidList bidListRegistered = new BidList();
 		Date date = new Date();
@@ -40,7 +40,7 @@ public class BidListService {
 				bidListRegistered.setBidQuantity(bidListCreated.getBidQuantity());
 				bidListRegistered.setCreationName("bid");
 				bidListRegistered.setCreationDate(timestamp);
-				bidListRegistered.setTrader(username);
+			//	bidListRegistered.setTrader(username);
 			}
 		} catch (IllegalArgumentException e) {
 			log.error(e.getMessage());

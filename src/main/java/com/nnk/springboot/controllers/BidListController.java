@@ -36,7 +36,8 @@ public class BidListController {
 	public ModelAndView validateBidList(@Valid @ModelAttribute BidList bidCreated, Model model, Principal principal) {
 		// TODO: check data valid and save to db, after saving return bid list
 		try {
-			bidListService.addBid(bidCreated, principal.getName());
+			//bidListService.addBid(bidCreated, principal.getName());
+			bidListService.addBid(bidCreated);
 			return new ModelAndView("redirect:/bidList/list");
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());

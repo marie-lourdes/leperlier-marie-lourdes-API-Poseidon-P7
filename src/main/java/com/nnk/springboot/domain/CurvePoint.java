@@ -34,7 +34,6 @@ public class CurvePoint {
 	@Column(name = "term")
 	private Double term;
 	
-	//@DecimalMin("0.0")
 	@Positive
 	@Column(name = "value")
 	private Double value;
@@ -42,9 +41,7 @@ public class CurvePoint {
 	@Column(name = "creation_date")
 	private Timestamp creationDate;
 
-	public CurvePoint() {
-
-	}
+	public CurvePoint() {	}
 
 	public CurvePoint(Integer curveId, Double term, Double value) {
 		this.curveId = curveId;

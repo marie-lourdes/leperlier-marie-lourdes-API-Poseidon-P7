@@ -29,14 +29,14 @@ public class BidList {
 	@NotBlank(message="Type is mandatory")
 	@Column(name = "type")
 	private String type;
-
+	
+	@Positive
 	@Column(name = "bid_quantity")
 	private Double bidQuantity;
 
 	@Column(name = "ask_quantity ")
 	private Double askQuantity;
 	
-	//@DecimalMin("0.0")
 	@Positive
 	@Column(name = "bid")
 	private Double bid;
@@ -89,8 +89,7 @@ public class BidList {
 	@Column(name = "side ")
 	private String side;
 
-	public BidList() {
-	}
+	public BidList() {}
 
 	public BidList(String account, String type, Double bidQuantity) {
 		this.account = account;
