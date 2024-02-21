@@ -15,25 +15,27 @@ import lombok.Data;
 @Entity
 @Table(name = "curve_point")
 public class CurvePoint {
-    // TODO: Map columns in data table CURVEPOINT with corresponding java fields
+	// TODO: Map columns in data table CURVEPOINT with corresponding java fields
 	@Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="id")
-    private Integer id;
-	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Integer id;
+
 	@NotNull
 	@Column(name = "curve_id")
 	private Integer curveId;
-	
+
 	@Column(name = "as_of_date ")
-	private Timestamp asOfDate ;
-	
-	@NotNull
+	private Timestamp asOfDate;
+
 	@Column(name = "term")
-	private Double  term;
-	
+	private Double term;
+
+	@Column(name = "value")
+	private Double value;
+
 	@NotNull
 	@Column(name = "  creation_date")
-	private Timestamp   creationDate;
-	
+	private Timestamp creationDate;
+
 }

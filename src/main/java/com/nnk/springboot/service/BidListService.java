@@ -17,7 +17,7 @@ import com.nnk.springboot.repositories.BidListRepository;
 public class BidListService {
 	@Autowired
 	private BidListRepository bidListRepository;
-	
+
 	@Autowired
 	private BidListMapperImpl mapper;
 
@@ -41,20 +41,21 @@ public class BidListService {
 	}
 
 	public BidListDTO getBidById(Integer id) throws NullPointerException {
-		BidList bidlistFoundById =bidListRepository.findById(id).orElseThrow(() -> new NullPointerException("Bid " + id + " not found"));
+		BidList bidlistFoundById = bidListRepository.findById(id)
+				.orElseThrow(() -> new NullPointerException("Bid " + id + " not found"));
 		BidListDTO bidListDTO = mapper.bidListToBidListDTO(bidlistFoundById);
-		return bidListDTO ;
+		return bidListDTO;
 	}
 
 	public List<BidListDTO> getAllBids() throws NullPointerException {
-		List<BidList> AllBidLists=bidListRepository.findAll();
-		List<BidListDTO> allBidListDto= new ArrayList<BidListDTO>();
-		if(AllBidLists!=null) {
-			AllBidLists.forEach(bid-> {		
+		List<BidList> AllBidLists = bidListRepository.findAll();
+		List<BidListDTO> allBidListDto = new ArrayList<BidListDTO>();
+		if (AllBidLists != null) {
+			AllBidLists.forEach(bid -> {
 				allBidListDto.add(mapper.bidListToBidListDTO(bid));
 			});
 		}
-			
+
 		return allBidListDto;
 	}
 
@@ -73,9 +74,9 @@ public class BidListService {
 		return bidListToUpdate;
 	}
 
-	public void deleteBidById(Integer id)
-			throws NullPointerException {
-		bidListRepository.findById(id).orElseThrow(() -> new NullPointerException("Bid " + id + " not found for deleting"));
+	public void deleteBidById(Integer id) throws NullPointerException {
+		bidListRepository.findById(id)
+				.orElseThrow(() -> new NullPointerException("Bid " + id + " not found for deleting"));
 		bidListRepository.deleteById(id);
 	}
 }
