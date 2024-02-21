@@ -55,8 +55,7 @@ CREATE TABLE curve_point (
   id int NOT NULL AUTO_INCREMENT,
   curve_id int,
   as_of_date TIMESTAMP,
-  term DOUBLE ,
-  
+  term DOUBLE , 
   creation_date TIMESTAMP ,
   PRIMARY KEY (id)
 );

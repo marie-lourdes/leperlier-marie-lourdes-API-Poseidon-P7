@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.nnk.springboot.domain.BidList;
+import com.nnk.springboot.domain.dto.BidListDTO;
 import com.nnk.springboot.service.BidListService;
 
 import jakarta.validation.Valid;
@@ -59,7 +60,7 @@ public class BidListController {
 	@GetMapping("/list")
 	public String getBidListPage(Model model) {
 		// TODO: call service find all bids to show to the view
-		List<BidList> bidLists = new ArrayList<>();
+		List<BidListDTO> bidLists = new ArrayList<>();
 		try {
 			bidLists = bidListService.getAllBids();
 
@@ -88,7 +89,7 @@ public class BidListController {
 	@GetMapping("/update/{id}")
 	public ModelAndView getUpdateFormBidListPage(@PathVariable("id") Integer id, Model model) {
 		// TODO: get Bid by Id and to model then show to the form
-		BidList bidListToUpdate = new BidList();
+		BidListDTO bidListToUpdate = new BidListDTO();
 		try {
 			bidListToUpdate  = bidListService.getBidById(id);
 			if (bidListToUpdate != null) {

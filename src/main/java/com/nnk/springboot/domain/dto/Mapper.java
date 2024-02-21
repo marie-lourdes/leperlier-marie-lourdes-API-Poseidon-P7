@@ -6,7 +6,7 @@ import com.nnk.springboot.domain.BidList;
 
 @Component
 public class Mapper {
-	public BidListDTO BidListDTOToBidListDTO(BidList bidList) {
+	public BidListDTO BidListToBidListDTO(BidList bidList) {
 		Integer id =bidList.getId(); 	
 		String account =bidList.getAccount();	
 		String type = bidList.getType(); 
