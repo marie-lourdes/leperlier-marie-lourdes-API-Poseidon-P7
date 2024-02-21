@@ -1,52 +1,94 @@
 package com.nnk.springboot.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.nnk.springboot.domain.CurvePoint;
+import com.nnk.springboot.domain.dto.CurvePointDTO;
+import com.nnk.springboot.service.CurvePointService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @Controller
+@RequestMapping("curvePoint")
 public class CurveController {
+
+	private static final Logger log = LogManager.getLogger(CurveController.class);
+
+	@Autowired
+	CurvePointService curvePointService;
     // TODO: Inject Curve Point service
 
-   @GetMapping("/curvePoint/list")
-    public String home(Model model)
+    @PostMapping("/validate")
+    public  ModelAndView validateCurvePoint (@Valid @ModelAttribute  CurvePoint curvePointCreated, Model model) {
+        // TODO: check data valid and save to db, after saving return Curve list
+    	try {
+    		curvePointService.addCurvePoint(curvePointCreated);
+			return new ModelAndView("redirect:/curvePoint/list");
+		} catch (NullPointerException e) {
+			log.error(e.getMessage());
+			return new ModelAndView("redirect:/error-404");
+		}  
+    }
+    
+    @GetMapping("/add")
+    public String addCurvePointForm(Model model) {
+    	CurvePoint curvePointToCreate= new CurvePoint();
+		try {
+			model.addAttribute("curvePoint",curvePointToCreate);
+		} catch (Exception e) {
+			log.error("Failed to retrieve sign up page " + e.getMessage());
+			// return Constants.ERROR_PAGE;
+		}
+		
+		log.info(" CurvePoint form creation  page successfully retrieved");		
+        return "curvePoint/add";
+    }
+    
+   @GetMapping("/list")
+    public String getCurvePointPage(HttpServletRequest httpServletRequest,Model model)
     {
         // TODO: find all Curve Point, add to model
+	   List<CurvePointDTO> curvePoints = new ArrayList<>();
+		try {
+			curvePoints = curvePointService.getAllCurvePoints();
+
+		} catch (NullPointerException e) {
+			log.error(e.getMessage());		
+		}
+		model.addAttribute("curvePoints", curvePoints);
+		model.addAttribute("remoteUser", httpServletRequest.getRemoteUser());
         return "curvePoint/list";
     }
 
-    @GetMapping("/curvePoint/add")
-    public String addBidForm(CurvePoint bid) {
-        return "curvePoint/add";
-    }
-
-    @PostMapping("/curvePoint/validate")
-    public String validate(@Valid CurvePoint curvePoint, BindingResult result, Model model) {
-        // TODO: check data valid and save to db, after saving return Curve list
-        return "curvePoint/add";
-    }
-
-    @GetMapping("/curvePoint/update/{id}")
-    public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
+   @PostMapping("update/{id}")
+   public String updateCurvePoint(@PathVariable("id") Integer id, @Valid CurvePoint curvePoint,
+                            BindingResult result, Model model) {
+       // TODO: check required fields, if valid call service to update Curve and return Curve list
+       return "redirect:/curvePoint/list";
+   }
+   
+    @GetMapping("update/{id}")
+    public String getUpdateFormCurvePointListPage(@PathVariable("id") Integer id, Model model) {
         // TODO: get CurvePoint by Id and to model then show to the form
         return "curvePoint/update";
     }
 
-    @PostMapping("/curvePoint/update/{id}")
-    public String updateBid(@PathVariable("id") Integer id, @Valid CurvePoint curvePoint,
-                             BindingResult result, Model model) {
-        // TODO: check required fields, if valid call service to update Curve and return Curve list
-        return "redirect:/curvePoint/list";
-    }
-
-    @GetMapping("/curvePoint/delete/{id}")
+    @GetMapping("delete/{id}")
     public String deleteBid(@PathVariable("id") Integer id, Model model) {
         // TODO: Find Curve by Id and delete the Curve, return to Curve list
         return "redirect:/curvePoint/list";

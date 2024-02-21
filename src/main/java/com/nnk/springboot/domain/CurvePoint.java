@@ -8,7 +8,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 @Data
@@ -30,7 +32,9 @@ public class CurvePoint {
 
 	@Column(name = "term")
 	private Double term;
-
+	
+	@DecimalMin("0.0")
+	@Positive
 	@Column(name = "value")
 	private Double value;
 

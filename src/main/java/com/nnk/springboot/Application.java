@@ -12,23 +12,23 @@ import com.nnk.springboot.service.CurvePointService;
 
 @SpringBootApplication
 public class Application implements CommandLineRunner {
-	
-@Autowired
-BidListService bidListService;
 
-@Autowired
-CurvePointService curvePointService;	
+	@Autowired
+	BidListService bidListService;
+
+	@Autowired
+	CurvePointService curvePointService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
 
-@Override
-public void run(String... args) throws Exception {
-	BidList bid= new BidList("account test", "type", 10.0);
-	bidListService.addBid(bid,"user");
-	
-	CurvePoint curvePoint= new CurvePoint(12, 14.0, 10.0);
-	curvePointService.addCurvePoint(curvePoint);
-}
+	@Override
+	public void run(String... args) throws Exception {
+		BidList bid = new BidList("account test", "type", 10.2);
+		bidListService.addBid(bid, "user");
+
+		CurvePoint curvePoint = new CurvePoint(12, 14.0, 10.0);
+		curvePointService.addCurvePoint(curvePoint);
+	}
 }

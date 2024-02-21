@@ -20,6 +20,7 @@ import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.domain.dto.BidListDTO;
 import com.nnk.springboot.service.BidListService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @Controller
@@ -32,10 +33,10 @@ public class BidListController {
 	BidListService bidListService;
 
 	@PostMapping("/validate")
-	public ModelAndView validateBidList(@Valid @ModelAttribute BidList bid, Model model, Principal principal) {
+	public ModelAndView validateBidList(@Valid @ModelAttribute BidList bidCreated, Model model, Principal principal) {
 		// TODO: check data valid and save to db, after saving return bid list
 		try {
-			bidListService.addBid(bid, principal.getName());
+			bidListService.addBid(bidCreated, principal.getName());
 			return new ModelAndView("redirect:/bidList/list");
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
@@ -45,20 +46,20 @@ public class BidListController {
 
 	@GetMapping("/add")
 	public String getBidFormPage(Model model) {
-		BidList bidListCreated = new BidList();
+		BidList bidListToCreate = new BidList();
 		try {
-			model.addAttribute("bidList", bidListCreated);
+			model.addAttribute("bidList", bidListToCreate);
 		} catch (Exception e) {
 			log.error("Failed to retrieve sign up page " + e.getMessage());
 			// return Constants.ERROR_PAGE;
 		}
-		log.info(" Bid Form page successfully retrieved");
-
+		
+		log.info(" Bid  form creation page successfully retrieved");
 		return "bidList/add";
 	}
 
 	@GetMapping("/list")
-	public String getBidListPage(Model model) {
+	public String getBidListPage(HttpServletRequest httpServletRequest,Model model) {
 		// TODO: call service find all bids to show to the view
 		List<BidListDTO> bidLists = new ArrayList<>();
 		try {
@@ -67,7 +68,9 @@ public class BidListController {
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());		
 		}
+	
 		model.addAttribute("bidLists", bidLists);
+		model.addAttribute("remoteUser", httpServletRequest.getRemoteUser());
 		return "bidList/list";
 	}
 
@@ -82,8 +85,6 @@ public class BidListController {
 		} catch (NullPointerException e) {
 			return new ModelAndView("redirect:/error-404");
 		}
-
-		// return "redirect:/bidList/list";
 	}
 
 	@GetMapping("/update/{id}")
@@ -95,6 +96,7 @@ public class BidListController {
 			if (bidListToUpdate != null) {
 				model.addAttribute("bidList", bidListToUpdate);
 			}
+			log.info(" Bid  form update page successfully retrieved");
 			return new ModelAndView("/bidList/update");
 			//return "bidList/update";
 		} catch (NullPointerException e) {

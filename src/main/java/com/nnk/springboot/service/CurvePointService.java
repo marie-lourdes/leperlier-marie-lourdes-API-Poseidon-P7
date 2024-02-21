@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,29 +17,33 @@ import com.nnk.springboot.repositories.CurvePointRepository;
 
 @Service
 public class CurvePointService {
+	private static final Logger log = LogManager.getLogger(CurvePointService.class);
+
 	@Autowired
 	private CurvePointRepository curvePointRepository;
 
 	@Autowired
 	private CurvePointMapperImpl mapper;
 
-	public CurvePoint addCurvePoint(CurvePoint curvePointCreated)
-			throws IllegalArgumentException, NullPointerException {
+	public CurvePoint addCurvePoint(CurvePoint curvePointCreated) throws NullPointerException {
 		CurvePoint curvePointRegistered = new CurvePoint();
 		Date date = new Date();
 		Timestamp timestamp = new Timestamp(date.getTime());
-
-		if (curvePointCreated != null) {
-			if (curvePointCreated.getCurveId() == null) {
-				throw new IllegalArgumentException(
-						"Empty data getCurveId of CurvePoint" + curvePointCreated + " provided and updated");
+		try {
+			if (curvePointCreated != null) {
+				if (curvePointCreated.getCurveId() == null) {
+					throw new IllegalArgumentException(
+							"Empty data getCurveId of CurvePoint" + curvePointCreated + " provided and updated");
+				}
+				curvePointRegistered.setCurveId(curvePointCreated.getCurveId());
+				curvePointRegistered.setTerm(curvePointCreated.getTerm());
+				curvePointRegistered.setValue(curvePointCreated.getValue());
+				curvePointRegistered.setCreationDate(timestamp);
 			}
-			curvePointRegistered.setCurveId(curvePointCreated.getCurveId());
-			curvePointRegistered.setTerm(curvePointCreated.getTerm());
-			curvePointRegistered.setValue(curvePointCreated.getValue());
-			curvePointRegistered.setCreationDate(timestamp);
+		} catch (IllegalArgumentException e) {
+			log.error(e.getMessage());
 		}
-
+		
 		curvePointRegistered = curvePointRepository.save(curvePointRegistered);
 		return curvePointRegistered;
 	}

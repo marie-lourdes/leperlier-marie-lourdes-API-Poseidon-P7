@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,8 @@ import com.nnk.springboot.repositories.BidListRepository;
 
 @Service
 public class BidListService {
+	private static final Logger log = LogManager.getLogger(BidListService.class);
+
 	@Autowired
 	private BidListRepository bidListRepository;
 
@@ -22,23 +26,26 @@ public class BidListService {
 	private BidListMapperImpl mapper;
 
 	public BidList addBid(BidList bidListCreated, String username)
-			throws IllegalArgumentException, NullPointerException {
+			throws NullPointerException {
 		BidList bidListRegistered = new BidList();
 		Date date = new Date();
 		Timestamp timestamp = new Timestamp(date.getTime());
-
-		if (bidListCreated != null) {
-			if (bidListCreated.getAccount() == null && bidListCreated.getType() == null) {
-				throw new IllegalArgumentException("Empty data of Bid " + bidListCreated + " provided and updated");
+		try {
+			if (bidListCreated != null) {
+				if (bidListCreated.getAccount() == null && bidListCreated.getType() == null) {
+					throw new IllegalArgumentException("Empty data of Bid " + bidListCreated + " provided and updated");
+				}
+				bidListRegistered.setAccount(bidListCreated.getAccount());
+				bidListRegistered.setType(bidListCreated.getType());
+				bidListRegistered.setBidQuantity(bidListCreated.getBidQuantity());
+				bidListRegistered.setCreationName("bid");
+				bidListRegistered.setCreationDate(timestamp);
+				bidListRegistered.setTrader(username);
 			}
-			bidListRegistered.setAccount(bidListCreated.getAccount());
-			bidListRegistered.setType(bidListCreated.getType());
-			bidListRegistered.setBidQuantity(bidListCreated.getBidQuantity());
-			bidListRegistered.setCreationName("bid");
-			bidListRegistered.setCreationDate(timestamp);
-			bidListRegistered.setTrader(username);
+		} catch (IllegalArgumentException e) {
+			log.error(e.getMessage());
 		}
-
+		
 		bidListRegistered = bidListRepository.save(bidListRegistered);
 		return bidListRegistered;
 	}
