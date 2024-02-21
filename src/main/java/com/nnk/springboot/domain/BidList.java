@@ -8,9 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
@@ -32,7 +30,7 @@ public class BidList {
 	@Column(name = "type")
 	private String type;
 
-	@Column(name = "bid_quantity ")
+	@Column(name = "bid_quantity")
 	private Double bidQuantity;
 
 	@Column(name = "ask_quantity ")

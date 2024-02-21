@@ -37,7 +37,7 @@ public class CurvePoint {
 	@Column(name = "value")
 	private Double value;
 
-	@NotNull
+	
 	@Column(name = "creation_date")
 	private Timestamp creationDate;
 
@@ -50,4 +50,5 @@ public class CurvePoint {
 		this.term = term;
 		this.value = value;
 	};
+
 }

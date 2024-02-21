@@ -12,11 +12,11 @@ public class CurvePointMapperImpl implements IMapper< CurvePointDTO,  CurvePoint
 	}
 	
 	@Override
-	public CurvePointDTO entityToObjectDTO( CurvePoint bidList) {
-		Integer id = bidList.getId();
-		Integer curveId= bidList.getCurveId();
-		Double term = bidList.getTerm();
-		Double value = bidList.getValue();
+	public CurvePointDTO entityToObjectDTO( CurvePoint curvePoint) {
+		Integer id = curvePoint.getId();
+		Integer curveId= curvePoint.getCurveId();
+		Double term =curvePoint.getTerm();
+		Double value = curvePoint.getValue();
 
 		return new CurvePointDTO(id,curveId, term, value);
 	}
