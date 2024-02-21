@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.domain.dto.BidListDTO;
-import com.nnk.springboot.domain.dto.Mapper;
+import com.nnk.springboot.domain.dto.BidListMapperImpl;
 import com.nnk.springboot.repositories.BidListRepository;
 
 @Service
@@ -19,7 +19,7 @@ public class BidListService {
 	private BidListRepository bidListRepository;
 	
 	@Autowired
-	private Mapper mapper;
+	private BidListMapperImpl mapper;
 
 	public BidList addbid(BidList bidListCreated, String username)
 			throws IllegalArgumentException, NullPointerException {
@@ -42,7 +42,7 @@ public class BidListService {
 
 	public BidListDTO getBidById(Integer id) throws NullPointerException {
 		BidList bidlistFoundById =bidListRepository.findById(id).orElseThrow(() -> new NullPointerException("Bid " + id + " not found"));
-		BidListDTO bidListDTO = mapper.BidListToBidListDTO(bidlistFoundById);
+		BidListDTO bidListDTO = mapper.bidListToBidListDTO(bidlistFoundById);
 		return bidListDTO ;
 	}
 
@@ -50,9 +50,8 @@ public class BidListService {
 		List<BidList> AllBidLists=bidListRepository.findAll();
 		List<BidListDTO> allBidListDto= new ArrayList<BidListDTO>();
 		if(AllBidLists!=null) {
-			AllBidLists.forEach(bid-> {
-				mapper.BidListToBidListDTO(bid);
-				allBidListDto.add(mapper.BidListToBidListDTO(bid));
+			AllBidLists.forEach(bid-> {		
+				allBidListDto.add(mapper.bidListToBidListDTO(bid));
 			});
 		}
 			

@@ -5,8 +5,9 @@ import org.springframework.stereotype.Component;
 import com.nnk.springboot.domain.BidList;
 
 @Component
-public class Mapper {
-	public BidListDTO BidListToBidListDTO(BidList bidList) {
+public class BidListMapperImpl implements IMapper<BidListDTO,BidList> {
+	@Override
+	public BidListDTO bidListToBidListDTO(BidList bidList) {
 		Integer id =bidList.getId(); 	
 		String account =bidList.getAccount();	
 		String type = bidList.getType(); 
