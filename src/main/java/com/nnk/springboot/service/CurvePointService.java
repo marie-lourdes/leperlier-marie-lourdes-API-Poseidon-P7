@@ -56,15 +56,15 @@ public class CurvePointService {
 	}
 
 	public List<CurvePointDTO> getAllCurvePoints() throws NullPointerException {
-		List<CurvePoint> AllcurvePoints = curvePointRepository.findAll();
-		List<CurvePointDTO> allcurvePointDto = new ArrayList<CurvePointDTO>();
-		if (AllcurvePoints != null) {
-			AllcurvePoints.forEach(curvePoint -> {
-				allcurvePointDto.add(mapper.curvePointToCurvePointDTO(curvePoint));
+		List<CurvePoint> allCurvePoints = curvePointRepository.findAll();
+		List<CurvePointDTO> allCurvePointsDTO = new ArrayList<CurvePointDTO>();
+		if (allCurvePoints != null) {
+			allCurvePoints.forEach(curvePoint -> {
+				allCurvePointsDTO.add(mapper.curvePointToCurvePointDTO(curvePoint));
 			});
 		}
 
-		return allcurvePointDto;
+		return allCurvePointsDTO;
 	}
 
 	public CurvePoint updateCurvePointById(Integer id, CurvePoint curvePointUpdated)
