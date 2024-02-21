@@ -21,14 +21,16 @@ public class CurvePoint {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
-
+	
+	@Positive
 	@NotNull(message="must be not null")
 	@Column(name = "curve_id")
 	private Integer curveId;
 
 	@Column(name = "as_of_date ")
 	private Timestamp asOfDate;
-
+	
+	@Positive
 	@Column(name = "term")
 	private Double term;
 	
@@ -37,7 +39,6 @@ public class CurvePoint {
 	@Column(name = "value")
 	private Double value;
 
-	
 	@Column(name = "creation_date")
 	private Timestamp creationDate;
 

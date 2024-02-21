@@ -6,47 +6,49 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.nnk.springboot.domain.Trade;
 
 import jakarta.validation.Valid;
 
 @Controller
+@RequestMapping("trade")
 public class TradeController {
     // TODO: Inject Trade service
 
-    @GetMapping("/trade/list")
+    @GetMapping("/list")
     public String home(Model model)
     {
         // TODO: find all Trade, add to model
         return "trade/list";
     }
 
-    @GetMapping("/trade/add")
+    @GetMapping("/add")
     public String addUser(Trade bid) {
         return "trade/add";
     }
 
-    @PostMapping("/trade/validate")
+    @PostMapping("/validate")
     public String validate(@Valid Trade trade, BindingResult result, Model model) {
         // TODO: check data valid and save to db, after saving return Trade list
         return "trade/add";
     }
 
-    @GetMapping("/trade/update/{id}")
+    @GetMapping("/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         // TODO: get Trade by Id and to model then show to the form
         return "trade/update";
     }
 
-    @PostMapping("/trade/update/{id}")
+    @PostMapping("/update/{id}")
     public String updateTrade(@PathVariable("id") Integer id, @Valid Trade trade,
                              BindingResult result, Model model) {
         // TODO: check required fields, if valid call service to update Trade and return Trade list
         return "redirect:/trade/list";
     }
 
-    @GetMapping("/trade/delete/{id}")
+    @GetMapping("/delete/{id}")
     public String deleteTrade(@PathVariable("id") Integer id, Model model) {
         // TODO: Find Trade by Id and delete the Trade, return to Trade list
         return "redirect:/trade/list";

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.nnk.springboot.domain.CurvePoint;
+import com.nnk.springboot.domain.dto.BidListDTO;
 import com.nnk.springboot.domain.dto.CurvePointDTO;
 import com.nnk.springboot.service.CurvePointService;
 
@@ -75,22 +76,47 @@ public class CurveController {
         return "curvePoint/list";
     }
 
-   @PostMapping("update/{id}")
-   public String updateCurvePoint(@PathVariable("id") Integer id, @Valid CurvePoint curvePoint,
-                            BindingResult result, Model model) {
+   @PostMapping("/update/{id}")
+   public ModelAndView updateCurvePoint(@PathVariable("id") Integer id, @Valid @ModelAttribute CurvePoint curvePoint, Model model) {
        // TODO: check required fields, if valid call service to update Curve and return Curve list
-       return "redirect:/curvePoint/list";
+		try {
+			 curvePointService.updateCurvePointById(id, curvePoint);
+			
+			return new ModelAndView("redirect:/curvePoint/list");
+		} catch (NullPointerException e) {
+			return new ModelAndView("redirect:/error-404");
+		}
+  
    }
    
-    @GetMapping("update/{id}")
-    public String getUpdateFormCurvePointListPage(@PathVariable("id") Integer id, Model model) {
+    @GetMapping("/update/{id}")
+    public ModelAndView getUpdateFormCurvePointListPage(@PathVariable("id") Integer id, Model model) {
         // TODO: get CurvePoint by Id and to model then show to the form
-        return "curvePoint/update";
+    	CurvePointDTO curvePointToUpdate = new CurvePointDTO();
+		try {
+			curvePointToUpdate = curvePointService.getCurvePointById(id);
+			if (curvePointToUpdate != null) {
+				model.addAttribute("bidList", curvePointToUpdate);
+			}
+			log.info(" Bid  form update page successfully retrieved");
+			return new ModelAndView("/curvePoint/update");
+			//return "bidList/update";
+		} catch (NullPointerException e) {
+			return new ModelAndView("redirect:/error-404");
+		}
+        //return "curvePoint/update";
     }
 
-    @GetMapping("delete/{id}")
-    public String deleteBid(@PathVariable("id") Integer id, Model model) {
+    @GetMapping("/delete/{id}")
+    public ModelAndView deleteBid(@PathVariable("id") Integer id, Model model) {
         // TODO: Find Curve by Id and delete the Curve, return to Curve list
-        return "redirect:/curvePoint/list";
+    	try {
+    		curvePointService.deleteCurvePointById(id);
+				return new ModelAndView("redirect:/curvePoint/list");
+			//return "bidList/list";
+		} catch (NullPointerException e) {
+			return new ModelAndView("redirect:/error-404");
+		}
+      //  return "redirect:/curvePoint/list";
     }
 }
