@@ -13,7 +13,7 @@ public class BidListMapperImpl implements IMapper<BidListDTO, BidList> {
 
 	@Override
 	public BidListDTO entityToObjectDTO(BidList bidList) {
-		Integer id = bidList.getId();
+		Integer id = bidList.getBidListId();
 		String account = bidList.getAccount();
 		String type = bidList.getType();
 		Double bidQuantity = bidList.getBidQuantity();

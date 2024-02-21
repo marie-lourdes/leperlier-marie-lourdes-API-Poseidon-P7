@@ -4,15 +4,15 @@ import lombok.Data;
 
 @Data
 public class BidListDTO {
-	private Integer id;
+	private Integer bidListId;
 	private String account;
 	private String type;
 	private Double bidQuantity;
 	
 	public BidListDTO(){} 
 	
-	public BidListDTO(Integer id,String account,String type,Double bidQuantity){
-		this.id=id;
+	public BidListDTO(Integer bidListId,String account,String type,Double bidQuantity){
+		this.bidListId=bidListId;
 		this.account=account;
 		this.type=type;
 		this.bidQuantity=bidQuantity;
@@ -20,6 +20,6 @@ public class BidListDTO {
 
 	@Override
 	public String toString() {
-		return "BidListDTO{" + "id:" + id + ", account :" + account  + ", type:" + type+", bidQuantity:" + bidQuantity +"}";
+		return "BidListDTO{" + "bidListId:" + bidListId+ ", account :" + account  + ", type:" + type+", bidQuantity:" + bidQuantity +"}";
 	}
 }
