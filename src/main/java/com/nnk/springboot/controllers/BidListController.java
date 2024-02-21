@@ -3,12 +3,14 @@ package com.nnk.springboot.controllers;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +23,8 @@ import com.nnk.springboot.domain.dto.BidListDTO;
 import com.nnk.springboot.service.BidListService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 
 @Controller
@@ -28,18 +32,36 @@ import jakarta.validation.Valid;
 public class BidListController {
 
 	private static final Logger log = LogManager.getLogger(BidListController.class);
-
+	 private String  message;
 	@Autowired
 	BidListService bidListService;
 
 	@PostMapping("/validate")
-	public ModelAndView validateBidList(@Valid @ModelAttribute BidList bidCreated, Model model, Principal principal) {
+	public ModelAndView validateBidList(@Valid @ModelAttribute BidList bidCreated, BindingResult result,Model model, Principal principal) {
 		// TODO: check data valid and save to db, after saving return bid list
+		if(result.hasErrors()) {
+			return new ModelAndView("redirect:/bidList/add");
+		}
 		try {
+		
 			//bidListService.addBid(bidCreated, principal.getName());
 			bidListService.addBid(bidCreated);
 			return new ModelAndView("redirect:/bidList/list");
-		} catch (NullPointerException e) {
+		}catch (ConstraintViolationException e) {
+				log.error(e.getConstraintViolations());
+			Set<ConstraintViolation<?>> violationsException=e.getConstraintViolations();
+				 for(ConstraintViolation<?> constraint:violationsException) {
+					 log.error("errors fields of Bid "+constraint.getMessageTemplate());
+					/* if(constraint.getMessageTemplate().equals("Type is mandatory")) {
+						 model.addAttribute("errorType", constraint.getMessageTemplate());
+					 }else {
+						 model.addAttribute("errorAccount", constraint.getMessageTemplate());
+					 }*/
+					
+				 }
+				 return new ModelAndView("redirect:/bidList/add");
+				//model.addAttribute("error", e.getConstraintViolations().forEach(err-> {return err.getMessageTemplate();}));*/
+		}catch (NullPointerException e) {
 			log.error(e.getMessage());
 			return new ModelAndView("redirect:/error-404");
 		}
@@ -50,7 +72,8 @@ public class BidListController {
 		BidList bidListToCreate = new BidList();
 		try {
 			model.addAttribute("bidList", bidListToCreate);
-		} catch (Exception e) {
+		
+	}catch (Exception e) {
 			log.error("Failed to retrieve sign up page " + e.getMessage());
 			// return Constants.ERROR_PAGE;
 		}
