@@ -28,26 +28,27 @@ public class RatingController {
 	// TODO: Inject Rating service
 	@Autowired
 	RatingService ratingService;
-	
+
 	@PostMapping("/validate")
 	public String validateRating(@Valid @ModelAttribute Rating ratingCreated, BindingResult result) {
 		// TODO: check data valid and save to db, after saving return Rating list
 		try {
 			ratingService.addRating(ratingCreated);
 			return "redirect:/rating/list";
-		
-	}catch (ConstraintViolationException e) {	
-		Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
-		for (ConstraintViolation<?> constraint : violationsException) {
-			log.error("Errors fields of rating created " + constraint.getMessageTemplate());
-		}
 
-		return "rating/add";
-	} catch (NullPointerException e) {
-		log.error(e.getMessage());
-		return "redirect:/error-404";
+		} catch (ConstraintViolationException e) {
+			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
+			for (ConstraintViolation<?> constraint : violationsException) {
+				log.error("Errors fields of rating created " + constraint.getMessageTemplate());
+			}
+
+			return "rating/add";
+		} catch (NullPointerException e) {
+			log.error(e.getMessage());
+			return "redirect:/error-404";
+		}
 	}
-	}
+
 	@GetMapping("/add")
 	public String addRatingForm(Rating rating) {
 		return "rating/add";
