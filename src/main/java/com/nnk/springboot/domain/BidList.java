@@ -23,24 +23,23 @@ public class BidList {
 	@Column(name = "bidlist_id")
 	private Integer bidListId;
 
-    @Size(min=1, max=30)
-	@NotBlank(message="Account is mandatory")
+	@Size(min = 1, max = 30)
+	@NotBlank(message = "Account is mandatory")
 	@Column(name = "account")
 	private String account;
-	
-    @Size(min=1, max=30)
-	@NotBlank(message="Type is mandatory")
+
+	@Size(min = 1, max = 30)
+	@NotBlank(message = "Type is mandatory")
 	@Column(name = "type")
 	private String type;
-	
+
 	@Positive
 	@Column(name = "bid_quantity")
 	private Double bidQuantity;
 
-	@Column(name = "ask_quantity ")
-	private Double askQuantity;
-	
-	@Positive
+	@Column(name = "sell_quantity")
+	private Double sellQuantity;
+
 	@Column(name = "bid")
 	private Double bid;
 
@@ -61,8 +60,8 @@ public class BidList {
 
 	@Column(name = "security")
 	private String security;
-	
-	@Size(min=0, max=10)
+
+	@Size(min = 0, max = 10)
 	@Column(name = "status")
 	private String status;
 
@@ -93,7 +92,8 @@ public class BidList {
 	@Column(name = "side ")
 	private String side;
 
-	public BidList() {}
+	public BidList() {
+	}
 
 	public BidList(String account, String type, Double bidQuantity) {
 		this.account = account;
