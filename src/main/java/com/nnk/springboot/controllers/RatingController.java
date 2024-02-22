@@ -15,42 +15,41 @@ import jakarta.validation.Valid;
 @Controller
 @RequestMapping("rating")
 public class RatingController {
-    // TODO: Inject Rating service
+	// TODO: Inject Rating service
+	@PostMapping("/validate")
+	public String validate(@Valid Rating rating, BindingResult result, Model model) {
+		// TODO: check data valid and save to db, after saving return Rating list
+		return "rating/add";
+	}
 
-    @GetMapping("/list")
-    public String home(Model model)
-    {
-        // TODO: find all Rating, add to model
-        return "rating/list";
-    }
+	@GetMapping("/add")
+	public String addRatingForm(Rating rating) {
+		return "rating/add";
+	}
 
-    @GetMapping("/add")
-    public String addRatingForm(Rating rating) {
-        return "rating/add";
-    }
+	@GetMapping("/list")
+	public String home(Model model) {
+		// TODO: find all Rating, add to model
+		return "rating/list";
+	}
 
-    @PostMapping("/validate")
-    public String validate(@Valid Rating rating, BindingResult result, Model model) {
-        // TODO: check data valid and save to db, after saving return Rating list
-        return "rating/add";
-    }
+	@PostMapping("/update/{id}")
+	public String updateRating(@PathVariable("id") Integer id, @Valid Rating rating, BindingResult result,
+			Model model) {
+		// TODO: check required fields, if valid call service to update Rating and
+		// return Rating list
+		return "redirect:/rating/list";
+	}
 
-    @GetMapping("/update/{id}")
-    public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        // TODO: get Rating by Id and to model then show to the form
-        return "rating/update";
-    }
+	@GetMapping("/update/{id}")
+	public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
+		// TODO: get Rating by Id and to model then show to the form
+		return "rating/update";
+	}
 
-    @PostMapping("/update/{id}")
-    public String updateRating(@PathVariable("id") Integer id, @Valid Rating rating,
-                             BindingResult result, Model model) {
-        // TODO: check required fields, if valid call service to update Rating and return Rating list
-        return "redirect:/rating/list";
-    }
-
-    @GetMapping("/delete/{id}")
-    public String deleteRating(@PathVariable("id") Integer id, Model model) {
-        // TODO: Find Rating by Id and delete the Rating, return to Rating list
-        return "redirect:/rating/list";
-    }
+	@GetMapping("/delete/{id}")
+	public String deleteRating(@PathVariable("id") Integer id, Model model) {
+		// TODO: Find Rating by Id and delete the Rating, return to Rating list
+		return "redirect:/rating/list";
+	}
 }
