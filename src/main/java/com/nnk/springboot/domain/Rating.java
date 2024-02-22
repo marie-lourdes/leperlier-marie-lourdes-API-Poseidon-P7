@@ -7,6 +7,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 @Data
@@ -31,7 +33,8 @@ public class Rating {
 	@Column(name = "fitch_rating") 
 	private String fitchRating;
 	
-	@NotBlank(message="Order number is mandatory")
+	@NotNull(message="must be not null")
+	@Positive(message="Order number must be > 0")
 	@Column(name = "order_number")
 	private Integer orderNumber;
 
