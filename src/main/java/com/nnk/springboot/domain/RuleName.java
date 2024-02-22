@@ -36,11 +36,11 @@ public class RuleName {
 	@Column(name = "template")
 	private String template;
 
-	@NotBlank(message = "sqlStr is  is mandatory")
+	@NotBlank(message = "SQL Str is  is mandatory")
 	@Column(name = "sql_str ")
 	private String sqlStr;
 
-	@NotBlank(message = "sqlPart  is  is mandatory")
+	@NotBlank(message = "SQL Part  is  is mandatory")
 	@Column(name = "sql_part ")
 	private String sqlPart;
 

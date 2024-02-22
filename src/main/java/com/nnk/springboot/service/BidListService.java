@@ -33,7 +33,7 @@ public class BidListService {
 		try {
 			if (bidListCreated != null) {
 				if (bidListCreated.getAccount() == null && bidListCreated.getType() == null) {
-					throw new IllegalArgumentException("Empty data of Bid " + bidListCreated + " provided and updated");
+					throw new IllegalArgumentException("Empty data of Bid " + bidListCreated + " provided and created");
 				}
 				bidListRegistered.setAccount(bidListCreated.getAccount());
 				bidListRegistered.setType(bidListCreated.getType());

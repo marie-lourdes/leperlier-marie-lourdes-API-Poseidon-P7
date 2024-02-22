@@ -33,7 +33,7 @@ public class CurvePointService {
 			if (curvePointCreated != null) {
 				if (curvePointCreated.getCurveId() == null) {
 					throw new IllegalArgumentException(
-							"Empty data getCurveId of CurvePoint" + curvePointCreated + " provided and updated");
+							"Empty data getCurveId of CurvePoint" + curvePointCreated + " provided and created");
 				}
 				curvePointRegistered.setCurveId(curvePointCreated.getCurveId());
 				curvePointRegistered.setTerm(curvePointCreated.getTerm());
@@ -85,5 +85,4 @@ public class CurvePointService {
 				.orElseThrow(() -> new NullPointerException("CurvePoint" + id + " not found for deleting"));
 		curvePointRepository.deleteById(id);
 	}
-
 }
