@@ -29,6 +29,7 @@ public class Application implements CommandLineRunner {
 		bidListService.addBid(bid);
 
 		CurvePoint curvePoint = new CurvePoint(12, 14.0, 10.0);
+		curvePoint.setId(1);
 		curvePointService.addCurvePoint(curvePoint);
 	}
 }
