@@ -43,7 +43,7 @@ public class CurvePointService {
 		} catch (IllegalArgumentException e) {
 			log.error(e.getMessage());
 		}
-		
+
 		curvePointRegistered = curvePointRepository.save(curvePointRegistered);
 		return curvePointRegistered;
 	}
@@ -58,12 +58,12 @@ public class CurvePointService {
 	public List<CurvePointDTO> getAllCurvePoints() throws NullPointerException {
 		List<CurvePoint> allCurvePoints = curvePointRepository.findAll();
 		List<CurvePointDTO> allCurvePointsDTO = new ArrayList<CurvePointDTO>();
-		if (allCurvePoints != null) {
-			allCurvePoints.forEach(curvePoint -> {
-				allCurvePointsDTO.add(mapper.curvePointToCurvePointDTO(curvePoint));
-			});
+		if (allCurvePoints.isEmpty()) {
+			return new ArrayList<>();
 		}
-
+		allCurvePoints.forEach(curvePoint -> {
+			allCurvePointsDTO.add(mapper.curvePointToCurvePointDTO(curvePoint));
+		});
 		return allCurvePointsDTO;
 	}
 

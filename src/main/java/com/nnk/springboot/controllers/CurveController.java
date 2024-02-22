@@ -76,7 +76,9 @@ public class CurveController {
 	   List<CurvePointDTO> curvePoints = new ArrayList<>();
 		try {
 			curvePoints = curvePointService.getAllCurvePoints();
-
+			if (curvePoints.isEmpty()) {
+				throw new NullPointerException("List of curve points not found");
+			}
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());		
 		}
@@ -92,6 +94,7 @@ public class CurveController {
 			 curvePointService.updateCurvePointById(id, curvePoint);
 			return new ModelAndView("redirect:/curvePoint/list");
 		} catch (NullPointerException e) {
+			log.error(e.getMessage());
 			return new ModelAndView("redirect:/error-404");
 		}
   
@@ -106,13 +109,13 @@ public class CurveController {
 			if (curvePointToUpdate != null) {
 				model.addAttribute("curvePoint", curvePointToUpdate);
 			}
+			
 			 log.info(" Curve Point  form update page successfully retrieved");
-			return new ModelAndView("/curvePoint/update");
-			//return "bidList/update";
+			return new ModelAndView("/curvePoint/update");		
 		} catch (NullPointerException e) {
+			log.error(e.getMessage());
 			return new ModelAndView("redirect:/error-404");
-		}
-        //return "curvePoint/update";
+		} 
     }
 
     @GetMapping("/delete/{id}")
@@ -121,10 +124,9 @@ public class CurveController {
     	try {
     		curvePointService.deleteCurvePointById(id);
 				return new ModelAndView("redirect:/curvePoint/list");
-			//return "bidList/list";
 		} catch (NullPointerException e) {
+			log.error(e.getMessage());
 			return new ModelAndView("redirect:/error-404");
 		}
-      //  return "redirect:/curvePoint/list";
     }
 }

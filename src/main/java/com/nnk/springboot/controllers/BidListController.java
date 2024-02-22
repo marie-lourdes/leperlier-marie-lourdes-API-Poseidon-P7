@@ -38,7 +38,7 @@ public class BidListController {
 	@PostMapping("/validate")
 	public String validate(@Valid @ModelAttribute BidList bidCreated, BindingResult result, Principal principal) {
 		// TODO: check data valid and save to db, after saving return bid list
-		
+
 		/*
 		 * if(result.hasErrors()) { return new ModelAndView("redirect:/bidList/add"); }
 		 */
@@ -46,12 +46,12 @@ public class BidListController {
 			// bidListService.addBid(bidCreated, principal.getName());
 			bidListService.addBid(bidCreated);
 			return "redirect:/bidList/list";
-		} catch (ConstraintViolationException e) {
+		} catch (ConstraintViolationException e) {	
 			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
 			for (ConstraintViolation<?> constraint : violationsException) {
 				log.error("Errors fields of Bid created " + constraint.getMessageTemplate());
 			}
-			
+
 			return "bidList/add";
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
@@ -80,7 +80,9 @@ public class BidListController {
 		List<BidListDTO> bidLists = new ArrayList<BidListDTO>();
 		try {
 			bidLists = bidListService.getAllBids();
-
+			if (bidLists.isEmpty()) {
+				throw new NullPointerException("List of bids not found");
+			}
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
 		}
@@ -91,14 +93,15 @@ public class BidListController {
 	}
 
 	@PostMapping("/update/{id}")
-	public ModelAndView updateBid(@PathVariable("id") Integer id, @Valid @ModelAttribute BidList bidList, Model model) {
+	public ModelAndView updateBid(@PathVariable("id") Integer id, @Valid @ModelAttribute BidList bidListUpdated,
+			Model model) {
 		// TODO: check required fields, if valid call service to update Bid and return
 		// list Bid
 		try {
-
-			bidListService.updateBidById(id, bidList);
+			bidListService.updateBidById(id, bidListUpdated);
 			return new ModelAndView("redirect:/bidList/list");
 		} catch (NullPointerException e) {
+			log.error(e.getMessage());
 			return new ModelAndView("redirect:/error-404");
 		}
 	}
@@ -112,10 +115,11 @@ public class BidListController {
 			if (bidListToUpdate != null) {
 				model.addAttribute("bidList", bidListToUpdate);
 			}
+			
 			log.info(" Bid  form update page successfully retrieved");
 			return new ModelAndView("/bidList/update");
-			// return "bidList/update";
 		} catch (NullPointerException e) {
+			log.error(e.getMessage());
 			return new ModelAndView("redirect:/error-404");
 		}
 	}
@@ -126,8 +130,8 @@ public class BidListController {
 		try {
 			bidListService.deleteBidById(id);
 			return new ModelAndView("redirect:/bidList/list");
-			// return "bidList/list";
 		} catch (NullPointerException e) {
+			log.error(e.getMessage());
 			return new ModelAndView("redirect:/error-404");
 		}
 
