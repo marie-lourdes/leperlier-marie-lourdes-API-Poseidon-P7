@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
@@ -22,10 +23,12 @@ public class BidList {
 	@Column(name = "bidlist_id")
 	private Integer bidListId;
 
+    @Size(min=1, max=30)
 	@NotBlank(message="Account is mandatory")
 	@Column(name = "account")
 	private String account;
-
+	
+    @Size(min=1, max=30)
 	@NotBlank(message="Type is mandatory")
 	@Column(name = "type")
 	private String type;
@@ -58,7 +61,8 @@ public class BidList {
 
 	@Column(name = "security")
 	private String security;
-
+	
+	@Size(min=0, max=10)
 	@Column(name = "status")
 	private String status;
 
