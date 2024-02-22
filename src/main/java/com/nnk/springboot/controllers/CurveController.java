@@ -2,12 +2,14 @@ package com.nnk.springboot.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +22,8 @@ import com.nnk.springboot.domain.dto.CurvePointDTO;
 import com.nnk.springboot.service.CurvePointService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 
 @Controller
@@ -33,14 +37,21 @@ public class CurveController {
     // TODO: Inject Curve Point service
 
     @PostMapping("/validate")
-    public  ModelAndView validateCurvePoint (@Valid @ModelAttribute  CurvePoint curvePointCreated, Model model) {
+    public  String validateCurvePoint (@Valid @ModelAttribute  CurvePoint curvePointCreated,BindingResult result) {
         // TODO: check data valid and save to db, after saving return Curve list
     	try {
     		curvePointService.addCurvePoint(curvePointCreated);
-			return new ModelAndView("redirect:/curvePoint/list");
-		} catch (NullPointerException e) {
+			return "redirect:/curvePoint/list";
+		}catch (ConstraintViolationException e) {
+			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
+			for (ConstraintViolation<?> constraint : violationsException) {
+				log.error("Errors fields of Curve Point created" + constraint.getMessageTemplate());
+			}
+			
+			return "curvePoint/add";
+		}catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return new ModelAndView("redirect:/error-404");
+			return "redirect:/error-404";
 		}  
     }
     

@@ -30,40 +30,32 @@ import jakarta.validation.Valid;
 @Controller
 @RequestMapping("bidList")
 public class BidListController {
-
 	private static final Logger log = LogManager.getLogger(BidListController.class);
-	 private String  message;
+
 	@Autowired
 	BidListService bidListService;
 
 	@PostMapping("/validate")
-	public ModelAndView validateBidList(@Valid @ModelAttribute BidList bidCreated, BindingResult result,Model model, Principal principal) {
+	public String validate(@Valid @ModelAttribute BidList bidCreated, BindingResult result, Principal principal) {
 		// TODO: check data valid and save to db, after saving return bid list
-		if(result.hasErrors()) {
-			return new ModelAndView("redirect:/bidList/add");
-		}
-		try {
 		
-			//bidListService.addBid(bidCreated, principal.getName());
+		/*
+		 * if(result.hasErrors()) { return new ModelAndView("redirect:/bidList/add"); }
+		 */
+		try {
+			// bidListService.addBid(bidCreated, principal.getName());
 			bidListService.addBid(bidCreated);
-			return new ModelAndView("redirect:/bidList/list");
-		}catch (ConstraintViolationException e) {
-				log.error(e.getConstraintViolations());
-			Set<ConstraintViolation<?>> violationsException=e.getConstraintViolations();
-				 for(ConstraintViolation<?> constraint:violationsException) {
-					 log.error("errors fields of Bid "+constraint.getMessageTemplate());
-					/* if(constraint.getMessageTemplate().equals("Type is mandatory")) {
-						 model.addAttribute("errorType", constraint.getMessageTemplate());
-					 }else {
-						 model.addAttribute("errorAccount", constraint.getMessageTemplate());
-					 }*/
-					
-				 }
-				 return new ModelAndView("redirect:/bidList/add");
-				//model.addAttribute("error", e.getConstraintViolations().forEach(err-> {return err.getMessageTemplate();}));*/
-		}catch (NullPointerException e) {
+			return "redirect:/bidList/list";
+		} catch (ConstraintViolationException e) {
+			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
+			for (ConstraintViolation<?> constraint : violationsException) {
+				log.error("Errors fields of Bid created " + constraint.getMessageTemplate());
+			}
+			
+			return "bidList/add";
+		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return new ModelAndView("redirect:/error-404");
+			return "redirect:/error-404";
 		}
 	}
 
@@ -72,27 +64,27 @@ public class BidListController {
 		BidList bidListToCreate = new BidList();
 		try {
 			model.addAttribute("bidList", bidListToCreate);
-		
-	}catch (Exception e) {
+
+		} catch (Exception e) {
 			log.error("Failed to retrieve sign up page " + e.getMessage());
 			// return Constants.ERROR_PAGE;
 		}
-		
+
 		log.info(" Bid  form creation page successfully retrieved");
 		return "bidList/add";
 	}
 
 	@GetMapping("/list")
-	public String getBidListPage(HttpServletRequest httpServletRequest,Model model) {
+	public String getBidListPage(HttpServletRequest httpServletRequest, Model model) {
 		// TODO: call service find all bids to show to the view
-		List<BidListDTO> bidLists = new ArrayList<>();
+		List<BidListDTO> bidLists = new ArrayList<BidListDTO>();
 		try {
 			bidLists = bidListService.getAllBids();
 
 		} catch (NullPointerException e) {
-			log.error(e.getMessage());		
+			log.error(e.getMessage());
 		}
-	
+
 		model.addAttribute("bidLists", bidLists);
 		model.addAttribute("remoteUser", httpServletRequest.getRemoteUser());
 		return "bidList/list";
@@ -116,13 +108,13 @@ public class BidListController {
 		// TODO: get Bid by Id and to model then show to the form
 		BidListDTO bidListToUpdate = new BidListDTO();
 		try {
-			bidListToUpdate  = bidListService.getBidById(id);
+			bidListToUpdate = bidListService.getBidById(id);
 			if (bidListToUpdate != null) {
 				model.addAttribute("bidList", bidListToUpdate);
 			}
 			log.info(" Bid  form update page successfully retrieved");
 			return new ModelAndView("/bidList/update");
-			//return "bidList/update";
+			// return "bidList/update";
 		} catch (NullPointerException e) {
 			return new ModelAndView("redirect:/error-404");
 		}
@@ -132,12 +124,12 @@ public class BidListController {
 	public ModelAndView deleteBid(@PathVariable("id") Integer id, Model model) {
 		// TODO: Find Bid by Id and delete the bid, return to Bid list
 		try {
-			 bidListService.deleteBidById(id);
-				return new ModelAndView("redirect:/bidList/list");
-			//return "bidList/list";
+			bidListService.deleteBidById(id);
+			return new ModelAndView("redirect:/bidList/list");
+			// return "bidList/list";
 		} catch (NullPointerException e) {
 			return new ModelAndView("redirect:/error-404");
 		}
-	
+
 	}
 }

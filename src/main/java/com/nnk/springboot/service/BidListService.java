@@ -58,10 +58,10 @@ public class BidListService {
 	}
 
 	public List<BidListDTO> getAllBids() throws NullPointerException {
-		List<BidList> AllBidLists = bidListRepository.findAll();
+		List<BidList> allBidLists = bidListRepository.findAll();
 		List<BidListDTO> allBidListDto = new ArrayList<BidListDTO>();
-		if (AllBidLists != null) {
-			AllBidLists.forEach(bid -> {
+		if (allBidLists != null) {
+			allBidLists.forEach(bid -> {
 				allBidListDto.add(mapper.bidListToBidListDTO(bid));
 			});
 		}
