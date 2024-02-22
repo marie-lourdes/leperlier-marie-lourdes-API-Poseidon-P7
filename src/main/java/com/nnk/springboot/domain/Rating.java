@@ -28,9 +28,16 @@ public class Rating {
 	private String fitchRating;
 
 	@Column(name = "order_number")
-	private String orderNumber;
+	private Integer orderNumber;
 
 	public Rating() {
+	}
+
+	public Rating(String moodysRating, String sandRating, String fitchRating, Integer orderNumber) {
+		this.moodysRating = moodysRating;
+		this.sandRating = sandRating;
+		this.fitchRating = fitchRating;
+		this.orderNumber = orderNumber;
 	}
 
 	@Override

@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.nnk.springboot.domain.Rating;
 import com.nnk.springboot.repositories.RatingRepository;
 
-/*@SpringBootTest
+@SpringBootTest
 public class RatingTests {
 
 	@Autowired
@@ -22,7 +22,7 @@ public class RatingTests {
 
 	@Test
 	public void ratingTest() {
-		Rating rating = new Rating("Moodys Rating", "Sand PRating", "Fitch Rating", 10);
+		Rating rating = new Rating("Moodys Rating", "Sand Rating", "Fitch Rating", 10);
 
 		// Save
 		rating = ratingRepository.save(rating);
@@ -44,4 +44,4 @@ public class RatingTests {
 		Optional<Rating> ratingList = ratingRepository.findById(id);
 		assertFalse(ratingList.isPresent());
 	}
-}*/
+}
