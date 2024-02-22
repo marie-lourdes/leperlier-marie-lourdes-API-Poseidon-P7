@@ -63,6 +63,7 @@ public class RuleNameService {
 		ruleNameToUpdate.setTemplate(ruleNameUpdated.getTemplate());
 		ruleNameToUpdate.setSqlStr(ruleNameUpdated.getSqlStr());
 		ruleNameToUpdate.setSqlPart(ruleNameUpdated.getSqlPart());
+		ruleNameToUpdate = ruleNameRepository.save(ruleNameToUpdate);
 		return ruleNameToUpdate;
 	}
 
