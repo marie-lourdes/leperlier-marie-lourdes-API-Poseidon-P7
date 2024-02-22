@@ -1,27 +1,53 @@
 package com.nnk.springboot.controllers;
 
+import java.util.Set;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.nnk.springboot.domain.Rating;
+import com.nnk.springboot.service.RatingService;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("rating")
 public class RatingController {
+	private static final Logger log = LogManager.getLogger(RatingController.class);
 	// TODO: Inject Rating service
+	@Autowired
+	RatingService ratingService;
+	
 	@PostMapping("/validate")
-	public String validate(@Valid Rating rating, BindingResult result, Model model) {
+	public String validateRating(@Valid @ModelAttribute Rating ratingCreated, BindingResult result) {
 		// TODO: check data valid and save to db, after saving return Rating list
-		return "rating/add";
-	}
+		try {
+			ratingService.addRating(ratingCreated);
+			return "redirect:/rating/list";
+		
+	}catch (ConstraintViolationException e) {	
+		Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
+		for (ConstraintViolation<?> constraint : violationsException) {
+			log.error("Errors fields of rating created " + constraint.getMessageTemplate());
+		}
 
+		return "rating/add";
+	} catch (NullPointerException e) {
+		log.error(e.getMessage());
+		return "redirect:/error-404";
+	}
+	}
 	@GetMapping("/add")
 	public String addRatingForm(Rating rating) {
 		return "rating/add";
@@ -34,7 +60,7 @@ public class RatingController {
 	}
 
 	@PostMapping("/update/{id}")
-	public String updateRating(@PathVariable("id") Integer id, @Valid Rating rating, BindingResult result,
+	public String updateRating(@PathVariable("id") Integer id, @Valid Rating ratingUpdated, BindingResult result,
 			Model model) {
 		// TODO: check required fields, if valid call service to update Rating and
 		// return Rating list
