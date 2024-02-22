@@ -60,7 +60,7 @@ public class CurveController {
 		try {
 			model.addAttribute("curvePoint", curvePointToCreate);
 		} catch (Exception e) {
-			log.error("Failed to retrieve sign up page " + e.getMessage());
+			log.error("Failed to retrieve curve point form creation  page " + e.getMessage());
 			// return Constants.ERROR_PAGE;
 		}
 

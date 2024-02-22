@@ -66,7 +66,7 @@ public class BidListController {
 			model.addAttribute("bidList", bidListToCreate);
 
 		} catch (Exception e) {
-			log.error("Failed to retrieve sign up page " + e.getMessage());
+			log.error("Failed to retrieve bid form creation  page" + e.getMessage());
 			// return Constants.ERROR_PAGE;
 		}
 
