@@ -17,9 +17,9 @@ import com.nnk.springboot.repositories.TradeRepository;
 
 @Service
 public class TradeService {
-//	private static final Logger log = LogManager.getLogger(TradeService.class);
+	private static final Logger log = LogManager.getLogger(TradeService.class);
 
-/*	@Autowired
+	@Autowired
 	private TradeRepository tradeRepository;
 
 	@Autowired
@@ -86,5 +86,5 @@ public class TradeService {
 		tradeRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("Trade" + id + " not found for deleting"));
 		tradeRepository.deleteById(id);
-	}*/
+	}
 }
