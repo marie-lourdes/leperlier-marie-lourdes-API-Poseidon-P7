@@ -46,7 +46,7 @@ public class TradeController {
 			// tradeService.addTrade(tradeCreated, principal.getName());
 			tradeService.addTrade(tradeCreated);
 			return "redirect:/trade/list";
-		} catch (ConstraintViolationException e) {	
+		} catch (ConstraintViolationException e) {
 			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
 			for (ConstraintViolation<?> constraint : violationsException) {
 				log.error("Errors fields of Trade created " + constraint.getMessageTemplate());
@@ -115,7 +115,7 @@ public class TradeController {
 			if (tradeToUpdate != null) {
 				model.addAttribute("trade", tradeToUpdate);
 			}
-			
+
 			log.info(" Trade  form update page successfully retrieved");
 			return new ModelAndView("/trade/update");
 		} catch (NullPointerException e) {

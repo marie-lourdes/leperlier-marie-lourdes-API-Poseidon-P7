@@ -8,18 +8,20 @@ public class TradeDTO {
 	private String account;
 	private String type;
 	private Double buyQuantity;
-	
-	public TradeDTO(){} 
-	
-	public TradeDTO(Integer tradeId,String account,String type,Double buyQuantity){
-		this.tradeId=tradeId;
-		this.account=account;
-		this.type=type;
-		this.buyQuantity=buyQuantity;
-	} 
+
+	public TradeDTO() {
+	}
+
+	public TradeDTO(Integer tradeId, String account, String type, Double buyQuantity) {
+		this.tradeId = tradeId;
+		this.account = account;
+		this.type = type;
+		this.buyQuantity = buyQuantity;
+	}
 
 	@Override
 	public String toString() {
-		return "TradeDTO{" + "tradeId:" + tradeId+ ", account :" + account  + ", type:" + type+", buyQuantity:" + buyQuantity +"}";
+		return "TradeDTO{" + "tradeId:" + tradeId + ", account :" + account + ", type:" + type + ", buyQuantity:"
+				+ buyQuantity + "}";
 	}
 }

@@ -46,7 +46,7 @@ public class BidListController {
 			// bidListService.addBid(bidCreated, principal.getName());
 			bidListService.addBid(bidCreated);
 			return "redirect:/bidList/list";
-		} catch (ConstraintViolationException e) {	
+		} catch (ConstraintViolationException e) {
 			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
 			for (ConstraintViolation<?> constraint : violationsException) {
 				log.error("Errors fields of Bid created " + constraint.getMessageTemplate());
@@ -115,7 +115,7 @@ public class BidListController {
 			if (bidListToUpdate != null) {
 				model.addAttribute("bidList", bidListToUpdate);
 			}
-			
+
 			log.info(" Bid  form update page successfully retrieved");
 			return new ModelAndView("/bidList/update");
 		} catch (NullPointerException e) {

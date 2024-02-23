@@ -25,8 +25,7 @@ public class TradeService {
 	@Autowired
 	private TradeMapperImpl mapper;
 
-	public Trade addTrade(Trade tradeCreated /*String username*/)
-			throws NullPointerException {
+	public Trade addTrade(Trade tradeCreated /* String username */) throws NullPointerException {
 		Trade tradeRegistered = new Trade();
 		Date date = new Date();
 		Timestamp timestamp = new Timestamp(date.getTime());
@@ -40,12 +39,12 @@ public class TradeService {
 				tradeRegistered.setBuyQuantity(tradeCreated.getBuyQuantity());
 				tradeRegistered.setCreationName("bid");
 				tradeRegistered.setCreationDate(timestamp);
-			//	tradeRegistered.setTrader(username);
+				// tradeRegistered.setTrader(username);
 			}
 		} catch (IllegalArgumentException e) {
 			log.error(e.getMessage());
 		}
-		
+
 		tradeRegistered = tradeRepository.save(tradeRegistered);
 		return tradeRegistered;
 	}
@@ -69,8 +68,7 @@ public class TradeService {
 		return allTradeDto;
 	}
 
-	public Trade updateTradeById(Integer id, Trade tradeUpdated)
-			throws NullPointerException, IllegalArgumentException {
+	public Trade updateTradeById(Integer id, Trade tradeUpdated) throws NullPointerException, IllegalArgumentException {
 		Trade tradeToUpdate = new Trade();
 		tradeToUpdate = tradeRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("Trade" + id + " not found for updating"));
