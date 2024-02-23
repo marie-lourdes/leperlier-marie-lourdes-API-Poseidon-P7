@@ -25,7 +25,7 @@ public class TradeService {
 	@Autowired
 	private TradeMapperImpl mapper;
 
-	public Trade addBid(Trade tradeCreated /*String username*/)
+	public Trade addTrade(Trade tradeCreated /*String username*/)
 			throws NullPointerException {
 		Trade tradeRegistered = new Trade();
 		Date date = new Date();

@@ -13,11 +13,11 @@ public class TradeMapperImpl implements IMapper<TradeDTO, Trade> {
 
 	@Override
 	public TradeDTO entityToObjectDTO(Trade trade) {
-		Integer id = trade.getTradeId();
+		Integer tradeId= trade.getTradeId();
 		String account = trade.getAccount();
 		String type = trade.getType();
 		Double buyQuantity = trade.getBuyQuantity();
 
-		return new TradeDTO(id, account, type, buyQuantity);
+		return new TradeDTO(tradeId, account, type, buyQuantity);
 	}
 }
