@@ -19,7 +19,7 @@ import lombok.Data;
 public class BidList {
 	// TODO: Map columns in data table BIDLIST with corresponding java fields
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "bidlist_id")
 	private Integer bidListId;
 
