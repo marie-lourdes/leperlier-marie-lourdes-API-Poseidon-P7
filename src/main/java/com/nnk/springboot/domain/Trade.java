@@ -17,44 +17,44 @@ import lombok.Data;
 @Entity
 @Table(name = "trade")
 public class Trade {
-    // TODO: Map columns in data table TRADE with corresponding java fields
+	// TODO: Map columns in data table TRADE with corresponding java fields
 	@Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="trade_id")
-    private Integer tradeId;
-	
-	@Size(min=1, max=30)
-	@NotBlank(message="Account is mandatory")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "trade_id")
+	private Integer tradeId;
+
+	@Size(min = 1, max = 30)
+	@NotBlank(message = "Account is mandatory")
 	@Column(name = "account")
 	private String account;
-	
-    @Size(min=1, max=30)
-	@NotBlank(message="Type is mandatory")
+
+	@Size(min = 1, max = 30)
+	@NotBlank(message = "Type is mandatory")
 	@Column(name = "type")
 	private String type;
-	
-    @Positive
+
+	@Positive
 	@Column(name = "buy_quantity")
 	private Double buyQuantity;
 
 	@Column(name = "sell_quantity")
 	private Double sellQuantity;
-	
+
 	@Column(name = "buy_price")
 	private Double buyPrice;
-	
-	@Column(name = " sell_price")
-	private Double  sellPrice;
-	
-	@Column(name = " trade_date ")
-	private Timestamp   tradeDate ;
-	
-	@Column(name = "security ")
-	private String  security;
 
-	@Size(min=0, max=10)
+	@Column(name = " sell_price")
+	private Double sellPrice;
+
+	@Column(name = " trade_date ")
+	private Timestamp tradeDate;
+
+	@Column(name = "security ")
+	private String security;
+
+	@Size(min = 0, max = 10)
 	@Column(name = "status ")
-	private String   status  ;
+	private String status;
 
 	@Column(name = "trader")
 	private String trader;
@@ -64,7 +64,7 @@ public class Trade {
 
 	@Column(name = "book")
 	private String book;
-	
+
 	@Column(name = "creation_name")
 	private String creationName;
 
@@ -89,7 +89,11 @@ public class Trade {
 	@Column(name = "side ")
 	private String side;
 
+	public Trade() {}
 
-
+	public Trade(String account, String type) {
+		this.account = account;
+		this.type = type;
+	}
 
 }
