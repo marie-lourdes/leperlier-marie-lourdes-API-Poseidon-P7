@@ -2,7 +2,7 @@ package com.nnk.springboot.domain;
 
 import java.sql.Timestamp;
 
-import com.nnk.springboot.utils.ConstantsErrorMessage;
+import com.nnk.springboot.utils.ConstantsValidation;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,17 +25,23 @@ public class BidList {
 	@Column(name = "bidlist_id")
 	private Integer bidListId;
 
-	@Size(min = 1, max = 30)
-	@NotBlank(message = "Account "+ConstantsErrorMessage.ERROR_BLANK_DATA)
+	@Size(
+			min = ConstantsValidation.MIN_SIZE_ACCOUNTANDTYPE_DATA,
+			max = ConstantsValidation.MAX_SIZE_ACCOUNTANDTYPE_DATA
+			)
+	@NotBlank(message = "Account "+ConstantsValidation.ERROR_BLANK_MSG )
 	@Column(name = "account")
 	private String account;
 
-	@Size(min = 1, max = 30)
-	@NotBlank(message = "Type "+ConstantsErrorMessage.ERROR_BLANK_DATA)
+	@Size(
+			min = ConstantsValidation.MIN_SIZE_ACCOUNTANDTYPE_DATA,
+			max = ConstantsValidation.MAX_SIZE_ACCOUNTANDTYPE_DATA
+			)
+	@NotBlank(message = "Type "+ConstantsValidation.ERROR_BLANK_MSG )
 	@Column(name = "type")
 	private String type;
 
-	@Positive
+	@Positive(message="bidQuantity "+ConstantsValidation.ERROR_NOT_POSITIVE_MSG)
 	@Column(name = "bid_quantity")
 	private Double bidQuantity;
 

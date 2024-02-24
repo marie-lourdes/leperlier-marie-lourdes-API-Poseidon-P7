@@ -2,6 +2,8 @@ package com.nnk.springboot.domain;
 
 import java.sql.Timestamp;
 
+import com.nnk.springboot.utils.ConstantsValidation;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +24,7 @@ public class CurvePoint {
 	@Column(name = "id")
 	private Integer id;
 	
-	@Positive
+	@Positive(message="Curve point "+ConstantsValidation.ERROR_NOT_POSITIVE_MSG)
 	@NotNull(message="must be not null")
 	@Column(name = "curve_id")
 	private Integer curveId;
@@ -30,11 +32,11 @@ public class CurvePoint {
 	@Column(name = "as_of_date ")
 	private Timestamp asOfDate;
 	
-	@Positive
+	@Positive(message=ConstantsValidation.ERROR_NOT_POSITIVE_MSG)
 	@Column(name = "term")
 	private Double term;
 	
-	@Positive
+	@Positive(message=ConstantsValidation.ERROR_NOT_POSITIVE_MSG)
 	@Column(name = "value")
 	private Double value;
 

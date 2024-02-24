@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Component;
 
-import com.nnk.springboot.utils.Constants;
+import com.nnk.springboot.utils.ConstantsValidation;
 
 @Component
 public class ValidatorPasswordImpl implements IValidatorPassword {
@@ -13,7 +13,7 @@ public class ValidatorPasswordImpl implements IValidatorPassword {
 
 	@Override
 	public boolean validPassword(String password) {
-		Pattern pattern = Pattern.compile(Constants.REGEX_PWD);
+		Pattern pattern = Pattern.compile(ConstantsValidation.REGEX_PWD);
 		Matcher matcher = pattern.matcher(password);
 		matches = matcher.matches();
 

@@ -1,6 +1,6 @@
 package com.nnk.springboot.domain;
 
-import com.nnk.springboot.utils.ConstantsErrorMessage;
+import com.nnk.springboot.utils.ConstantsValidation;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,19 +23,19 @@ public class Rating {
 	@Column(name = "id")
 	private Integer id;
 	
-	@NotBlank(message="Moodys rating "+ConstantsErrorMessage.ERROR_BLANK_DATA)
+	@NotBlank(message="Moodys rating "+ConstantsValidation.ERROR_BLANK_MSG )
 	@Column(name = " moodys_rating")
 	private String moodysRating;
 	
-	@NotBlank(message="Sand "+ConstantsErrorMessage.ERROR_BLANK_DATA)
+	@NotBlank(message="Sand "+ConstantsValidation.ERROR_BLANK_MSG )
 	@Column(name = "sand_rating")
 	private String sandRating;
 	
-	@NotBlank(message="Fitch rating "+ConstantsErrorMessage.ERROR_BLANK_DATA)
+	@NotBlank(message="Fitch rating "+ConstantsValidation.ERROR_BLANK_MSG )
 	@Column(name = "fitch_rating") 
 	private String fitchRating;
 	
-	@NotNull(message="must be not null")
+	@NotNull(message=ConstantsValidation.ERROR_NULL_MSG)
 	@Positive(message="Order number must be > 0")
 	@Column(name = "order_number")
 	private Integer orderNumber;
