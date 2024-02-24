@@ -1,5 +1,7 @@
 package com.nnk.springboot.domain;
 
+import com.nnk.springboot.utils.ConstantsErrorMessage;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,15 +23,15 @@ public class Rating {
 	@Column(name = "id")
 	private Integer id;
 	
-	@NotBlank(message="Moodys rating is mandatory")
+	@NotBlank(message="Moodys rating "+ConstantsErrorMessage.ERROR_BLANK_DATA)
 	@Column(name = " moodys_rating")
 	private String moodysRating;
 	
-	@NotBlank(message="Sand rating is mandatory")
+	@NotBlank(message="Sand "+ConstantsErrorMessage.ERROR_BLANK_DATA)
 	@Column(name = "sand_rating")
 	private String sandRating;
 	
-	@NotBlank(message="Fitch rating is mandatory")
+	@NotBlank(message="Fitch rating "+ConstantsErrorMessage.ERROR_BLANK_DATA)
 	@Column(name = "fitch_rating") 
 	private String fitchRating;
 	

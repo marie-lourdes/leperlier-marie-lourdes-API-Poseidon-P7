@@ -24,20 +24,20 @@ public class User {
     @Column(name="id")
     private Integer id;
     
-    @NotBlank(message = "Username"+ConstantsErrorMessage.ERROR_BLANK_DATA)
+    @NotBlank(message = "Username "+ConstantsErrorMessage.ERROR_BLANK_DATA)
     @Column(name=" username")
     private String username;
     
     @Pattern(regexp=Constants.REGEX_PWD,message = "must contain at least 8 characters, an uppercase letter, a symbol, a number")
-    @NotBlank(message = "Password"+ConstantsErrorMessage.ERROR_BLANK_DATA)
+    @NotBlank(message = "Password "+ConstantsErrorMessage.ERROR_BLANK_DATA)
     @Column(name=" password")
     private String password;
     
-    @NotBlank(message = "FullName"+ConstantsErrorMessage.ERROR_BLANK_DATA)
+    @NotBlank(message = "FullName "+ConstantsErrorMessage.ERROR_BLANK_DATA)
     @Column(name=" fullname")
     private String fullname;
     
-    @NotBlank(message = "Role"+ConstantsErrorMessage.ERROR_BLANK_DATA)
+    @NotBlank(message = "Role "+ConstantsErrorMessage.ERROR_BLANK_DATA)
     @Column(name=" role")
     private String role;
 }

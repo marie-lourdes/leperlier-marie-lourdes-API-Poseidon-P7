@@ -1,5 +1,7 @@
 package com.nnk.springboot.domain;
 
+import com.nnk.springboot.utils.ConstantsErrorMessage;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,27 +22,27 @@ public class RuleName {
 	@Column(name = "id")
 	private Integer id;
 
-	@NotBlank(message = "Name is mandatory")
+	@NotBlank(message = "Name "+ConstantsErrorMessage.ERROR_BLANK_DATA)
 	@Column(name = "name")
 	private String name;
 
-	@NotBlank(message = "Description is  is mandatory")
+	@NotBlank(message = "Description "+ConstantsErrorMessage.ERROR_BLANK_DATA)
 	@Column(name = "description")
 	private String description;
 
-	@NotBlank(message = "Json is  is mandatory")
+	@NotBlank(message = "Json "+ConstantsErrorMessage.ERROR_BLANK_DATA)
 	@Column(name = "json")
 	private String json;
 
-	@NotBlank(message = "Template is  is mandatory")
+	@NotBlank(message = "Template "+ConstantsErrorMessage.ERROR_BLANK_DATA)
 	@Column(name = "template")
 	private String template;
 
-	@NotBlank(message = "SQL Str is  is mandatory")
+	@NotBlank(message = "SQL Str "+ConstantsErrorMessage.ERROR_BLANK_DATA)
 	@Column(name = "sql_str ")
 	private String sqlStr;
 
-	@NotBlank(message = "SQL Part  is  is mandatory")
+	@NotBlank(message = "SQL Part "+ConstantsErrorMessage.ERROR_BLANK_DATA)
 	@Column(name = "sql_part ")
 	private String sqlPart;
 

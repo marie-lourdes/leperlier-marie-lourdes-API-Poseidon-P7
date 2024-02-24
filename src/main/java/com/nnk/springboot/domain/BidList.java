@@ -2,6 +2,8 @@ package com.nnk.springboot.domain;
 
 import java.sql.Timestamp;
 
+import com.nnk.springboot.utils.ConstantsErrorMessage;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,12 +26,12 @@ public class BidList {
 	private Integer bidListId;
 
 	@Size(min = 1, max = 30)
-	@NotBlank(message = "Account is mandatory")
+	@NotBlank(message = "Account "+ConstantsErrorMessage.ERROR_BLANK_DATA)
 	@Column(name = "account")
 	private String account;
 
 	@Size(min = 1, max = 30)
-	@NotBlank(message = "Type is mandatory")
+	@NotBlank(message = "Type "+ConstantsErrorMessage.ERROR_BLANK_DATA)
 	@Column(name = "type")
 	private String type;
 
