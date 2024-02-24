@@ -45,15 +45,15 @@ public class UserService {
 		return userRegistered;
 	}
 
-	/*public UserDTO getBidById(Integer id) throws NullPointerException {
-		User bidlistFoundById = bidListRepository.findById(id)
+	public UserDTO getUserById(Integer id) throws NullPointerException {
+		User userFoundById = userRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("Bid " + id + " not found"));
-		UserDTO bidListDTO = mapper.bidListToUserDTO(bidlistFoundById);
-		return bidListDTO;
+		UserDTO userDTO = mapper.bidListToUserDTO(userFoundById);
+		return userDTO;
 	}
 
-	public List<UserDTO> getAllBids() throws NullPointerException {
-		List<User> allUsers = bidListRepository.findAll();
+	public List<UserDTO> getAllUsers() throws NullPointerException {
+		List<User> allUsers = userRepository.findAll();
 		List<UserDTO> allUserDto = new ArrayList<UserDTO>();
 		if (allUsers.isEmpty()) {
 			return new ArrayList<>();
@@ -64,22 +64,22 @@ public class UserService {
 		return allUserDto;
 	}
 
-	public User updateBidById(Integer id, User bidListUpdated)
+	public User updateUserById(Integer id, User bidListUpdated)
 			throws NullPointerException, IllegalArgumentException {
 		User bidListToUpdate = new User();
-		bidListToUpdate = bidListRepository.findById(id)
+		bidListToUpdate = userRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("Bid " + id + " not found for updating"));
 
 		bidListToUpdate.setAccount(bidListUpdated.getAccount());
 		bidListToUpdate.setType(bidListUpdated.getType());
 		bidListToUpdate.setBidQuantity(bidListUpdated.getBidQuantity());
-		bidListToUpdate = bidListRepository.save(bidListToUpdate);
+		bidListToUpdate = userRepository.save(bidListToUpdate);
 		return bidListToUpdate;
 	}
 
-	public void deleteBidById(Integer id) throws NullPointerException {
-		bidListRepository.findById(id)
+	public void deleteUserById(Integer id) throws NullPointerException {
+		userRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("Bid " + id + " not found for deleting"));
-		bidListRepository.deleteById(id);
-	}*/
+		userRepository.deleteById(id);
+	}
 }
