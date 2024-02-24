@@ -1,5 +1,7 @@
 package com.nnk.springboot.domain;
 
+import com.nnk.springboot.utils.Constants;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +17,7 @@ import lombok.Data;
 @Table(name ="users")
 public class User {
 	private final String REGEX_PWD="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
+	
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id")
@@ -24,7 +27,7 @@ public class User {
     @Column(name=" username")
     private String username;
     
-    @Pattern(regexp=REGEX_PWD)
+    @Pattern(regexp=Constants.REGEX_PWD)
     @NotBlank(message = "Password is mandatory")
     @Column(name=" password")
     private String password;
