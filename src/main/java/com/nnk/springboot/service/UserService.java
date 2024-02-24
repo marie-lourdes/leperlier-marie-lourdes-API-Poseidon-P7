@@ -25,24 +25,24 @@ public class UserService {
 	@Autowired
 	private ValidatorPasswordImpl validatorPassword;
 	
-	public User addBid(User userCreated)
+	public User addUser(User userCreated)
 			throws NullPointerException {
 		User userRegistered = new User();
-		boolean isPasswordUserValid= validatorPassword.validPassword(userCreated.getPassword());
+		
 		try {
 			if (userCreated == null) {
-				throw new IllegalArgumentException("Empty data of User " + userCreated + " provided and created");
-			}else if(isPasswordUserValid) {
-				throw new IllegalArgumentException("Password of User " + userCreated + " provided is incorrect");
+				throw new IllegalArgumentException("Empty data of User " + userCreated + " provided and created");	
 			}
 			else {
-				
+				boolean isPasswordUserValid= validatorPassword.validPassword(userCreated.getPassword());
+					if(isPasswordUserValid) {
+						throw new IllegalArgumentException("Password of User " + userCreated + " provided is incorrect");
+					}
 				userRegistered.setUsername(userCreated.getUsername());
-				userRegistered.setpassword(userCreated.getPassword());
-				userRegistered.setBidQuantity(userCreated.getBidQuantity());
-				userRegistered.setCreationName("bid");
-				userRegistered.setCreationDate(timestamp);
-			//	userRegistered.setTrader(username);
+				userRegistered.setPassword(userCreated.getPassword());
+				userRegistered.setFullName(userCreated.getFullName());
+				userRegistered.setRole(userCreated.getRole());
+				
 			}
 		} catch (IllegalArgumentException e) {
 			log.error(e.getMessage());

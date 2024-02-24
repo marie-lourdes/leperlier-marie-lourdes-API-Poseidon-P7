@@ -35,9 +35,10 @@ public class User {
 
 	@NotBlank(message = "FullName " + ConstantsValidation.ERROR_BLANK_MSG )
 	@Column(name = " fullname")
-	private String fullname;
+	private String fullName;
 
 	@NotBlank(message = "Role " + ConstantsValidation.ERROR_BLANK_MSG )
 	@Column(name = " role")
 	private String role;
+	
 }
