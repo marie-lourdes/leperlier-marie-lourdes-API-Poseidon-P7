@@ -93,7 +93,7 @@ public class BidListController {
 	}
 
 	@PostMapping("/update/{id}")
-	public ModelAndView updateBid(@PathVariable("id") Integer id, @Valid @ModelAttribute BidList bidListUpdated,
+	public ModelAndView updateBid(@PathVariable("id") Integer id, @Valid @ModelAttribute BidList bidListUpdated,BindingResult result,
 			Model model) {
 		// TODO: check required fields, if valid call service to update Bid and return
 		// list Bid

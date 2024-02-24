@@ -20,11 +20,10 @@ public class RatingService {
 
 	public Rating addRating(Rating ratingCreated) throws NullPointerException {
 		Rating ratingRegistered = new Rating();
-		if (ratingCreated != null) {
-			if (ratingCreated.getOrderNumber() == null) {
-				throw new IllegalArgumentException(
-						"Empty data order number of Rating" + ratingCreated + " provided and created");
-			}
+		if (ratingCreated == null) {
+			throw new IllegalArgumentException(
+					"Empty data order number of Rating" + ratingCreated + " provided and created");
+		}else {
 			ratingRegistered.setMoodysRating(ratingCreated.getMoodysRating());
 			ratingRegistered.setFitchRating(ratingCreated.getFitchRating());
 			ratingRegistered.setSandRating(ratingCreated.getSandRating());
