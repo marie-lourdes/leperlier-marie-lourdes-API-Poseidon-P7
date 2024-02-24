@@ -8,18 +8,19 @@ public class UserDTO {
 	private String username;
 	private String fullName;
 	private String role;
-	
-	public UserDTO(){} 
-	
-	public UserDTO(Integer id,String username,String fullName,String role){
-		this.id=id;
-		this.username=username;
-		this.fullName=fullName;
-		this.role=role;
-	} 
+
+	public UserDTO() {
+	}
+
+	public UserDTO(Integer id, String username, String fullName, String role) {
+		this.id = id;
+		this.username = username;
+		this.fullName = fullName;
+		this.role = role;
+	}
 
 	@Override
 	public String toString() {
-		return "UserDTO{" + "id:" + id+ ", username:" + username  + ", fullName:" + fullName+", role:" + role+"}";
+		return "UserDTO{" + "id:" + id + ", username:" + username + ", fullName:" + fullName + ", role:" + role + "}";
 	}
 }
