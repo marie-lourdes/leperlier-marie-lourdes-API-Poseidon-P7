@@ -83,8 +83,7 @@ public class RuleNameController {
 	}
 
 	@PostMapping("/update/{id}")
-	public ModelAndView updateRuleName(@PathVariable("id") Integer id, @Valid @ModelAttribute RuleName ruleNameUpdated,
-			Model model) {
+	public ModelAndView updateRuleName(@PathVariable("id") Integer id, @Valid @ModelAttribute RuleName ruleNameUpdated,BindingResult result) {
 		try {
 			ruleNameService.updateRuleNameById(id, ruleNameUpdated);
 			return new ModelAndView("redirect:/ruleName/list");

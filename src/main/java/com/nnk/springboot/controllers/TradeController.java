@@ -93,8 +93,7 @@ public class TradeController {
 	}
 
 	@PostMapping("/update/{id}")
-	public ModelAndView updateTrade(@PathVariable("id") Integer id, @Valid @ModelAttribute Trade tradeUpdated,
-			Model model) {
+	public ModelAndView updateTrade(@PathVariable("id") Integer id, @Valid @ModelAttribute Trade tradeUpdated,BindingResult result) {
 		// TODO: check required fields, if valid call service to update Trade and return
 		// list Trade
 		try {

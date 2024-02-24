@@ -85,8 +85,7 @@ public class RatingController {
 	}
 
 	@PostMapping("/update/{id}")
-	public ModelAndView updateRating(@PathVariable("id") Integer id, @Valid @ModelAttribute Rating ratingUpdated,
-			Model model) {
+	public ModelAndView updateRating(@PathVariable("id") Integer id, @Valid @ModelAttribute Rating ratingUpdated,BindingResult result) {
 		// TODO: check required fields, if valid call service to update Rating and
 		// return Rating list
 		try {

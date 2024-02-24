@@ -86,8 +86,7 @@ public class CurveController {
 	}
 
 	@PostMapping("/update/{id}")
-	public ModelAndView updateCurvePoint(@PathVariable("id") Integer id, @Valid @ModelAttribute CurvePoint curvePointUpdated,
-			Model model) {
+	public ModelAndView updateCurvePoint(@PathVariable("id") Integer id, @Valid @ModelAttribute CurvePoint curvePointUpdated,BindingResult result) {
 		// TODO: check required fields, if valid call service to update Curve and return
 		// Curve list
 		try {

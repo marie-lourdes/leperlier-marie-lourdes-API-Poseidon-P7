@@ -59,6 +59,7 @@ public class RatingService {
 		ratingToUpdate.setFitchRating(ratingUpdated.getFitchRating());
 		ratingToUpdate.setSandRating(ratingUpdated.getSandRating());
 		ratingToUpdate.setOrderNumber(ratingUpdated.getOrderNumber());
+		ratingToUpdate = ratingRepository.save(ratingToUpdate);
 		return ratingToUpdate;
 	}
 
