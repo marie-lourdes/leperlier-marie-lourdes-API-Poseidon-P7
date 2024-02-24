@@ -12,7 +12,7 @@ import com.nnk.springboot.service.UserService;
 @SpringBootApplication
 public class Application implements CommandLineRunner {
 	@Autowired
-	UserService  UserService ;
+	UserService  userService ;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
@@ -24,5 +24,8 @@ public class Application implements CommandLineRunner {
 	userCreated.setFullName("FullName");
 	userCreated.setUsername("Username");
 	userCreated.setPassword("userTest1$");
+	userCreated.setRole("USER");
+	userCreated=userService.addUser(userCreated);
+	System.out.println("userCreatedTest"+userCreated);
 	}
 }

@@ -24,21 +24,27 @@ public class User {
 	@Column(name = "id")
 	private Integer id;
 
-	@NotBlank(message = "Username " + ConstantsValidation.ERROR_BLANK_MSG )
+	@NotBlank(message = "Username " + ConstantsValidation.ERROR_BLANK_MSG)
 	@Column(name = " username")
 	private String username;
 
 	@Pattern(regexp = ConstantsValidation.REGEX_PWD, message = "must contain at least 8 characters, an uppercase letter, a symbol, a number")
-	@NotBlank(message = "Password " + ConstantsValidation.ERROR_BLANK_MSG )
+	@NotBlank(message = "Password " + ConstantsValidation.ERROR_BLANK_MSG)
 	@Column(name = " password")
 	private String password;
 
-	@NotBlank(message = "FullName " + ConstantsValidation.ERROR_BLANK_MSG )
+	@NotBlank(message = "FullName " + ConstantsValidation.ERROR_BLANK_MSG)
 	@Column(name = " fullname")
 	private String fullName;
 
-	@NotBlank(message = "Role " + ConstantsValidation.ERROR_BLANK_MSG )
+	@NotBlank(message = "Role " + ConstantsValidation.ERROR_BLANK_MSG)
 	@Column(name = " role")
 	private String role;
-	
+
+	@Override
+	public String toString() {
+		return "User{" + "id:" + id + ", username :" + username + ", password:" + password + ", fullName:"
+				+ fullName + ", role" + role + "}";
+	}
+
 }

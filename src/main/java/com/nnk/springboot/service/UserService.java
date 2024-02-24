@@ -1,10 +1,5 @@
 package com.nnk.springboot.service;
 
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.nnk.springboot.domain.User;
 import com.nnk.springboot.repositories.IUserRepository;
-import com.nnk.springboot.utils.Constants;
 
 @Service
 public class UserService {
@@ -21,7 +15,6 @@ public class UserService {
 	@Autowired
 	private IUserRepository userRepository;
 	
-
 	@Autowired
 	private ValidatorPasswordImpl validatorPassword;
 	
