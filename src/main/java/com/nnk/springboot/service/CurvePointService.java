@@ -33,7 +33,7 @@ public class CurvePointService {
 			if (curvePointCreated != null) {
 				if (curvePointCreated.getCurveId() == null) {
 					throw new IllegalArgumentException(
-							"Empty data getCurveId of CurvePoint" + curvePointCreated + " provided and created");
+							"Empty data CurveId of CurvePoint" + curvePointCreated + " provided and created");
 				}
 				curvePointRegistered.setCurveId(curvePointCreated.getCurveId());
 				curvePointRegistered.setTerm(curvePointCreated.getTerm());

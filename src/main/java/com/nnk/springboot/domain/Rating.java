@@ -34,7 +34,7 @@ public class Rating {
 	private String fitchRating;
 	
 	@NotNull(message="must be not null")
-	@Positive(message="Order number must be > 0")
+	//@Positive(message="Order number must be > 0")
 	@Column(name = "order_number")
 	private Integer orderNumber;
 
