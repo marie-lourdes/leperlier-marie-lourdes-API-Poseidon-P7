@@ -10,64 +10,70 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.nnk.springboot.domain.BidList;
+import com.nnk.springboot.domain.User;
 import com.nnk.springboot.repositories.IUserRepository;
 import com.nnk.springboot.utils.Constants;
 
 @Service
-public class UserService implements IValidatorPassword {
+public class UserService {
 	private static final Logger log = LogManager.getLogger(UserService.class);
 
 	@Autowired
 	private IUserRepository userRepository;
 	
-	public BidList addBid(BidList bidListCreated /*String username*/)
+
+	@Autowired
+	private ValidatorPasswordImpl validatorPassword;
+	
+	public User addBid(User userCreated)
 			throws NullPointerException {
-		BidList bidListRegistered = new BidList();
-		Date date = new Date();
-		Timestamp timestamp = new Timestamp(date.getTime());
+		User userRegistered = new User();
+		boolean isPasswordUserValid= validatorPassword.validPassword(userCreated.getPassword());
 		try {
-			if (bidListCreated != null) {
-				if (bidListCreated.getAccount() == null && bidListCreated.getType() == null) {
-					throw new IllegalArgumentException("Empty data of Bid " + bidListCreated + " provided and created");
-				}
-				bidListRegistered.setAccount(bidListCreated.getAccount());
-				bidListRegistered.setType(bidListCreated.getType());
-				bidListRegistered.setBidQuantity(bidListCreated.getBidQuantity());
-				bidListRegistered.setCreationName("bid");
-				bidListRegistered.setCreationDate(timestamp);
-			//	bidListRegistered.setTrader(username);
+			if (userCreated == null) {
+				throw new IllegalArgumentException("Empty data of User " + userCreated + " provided and created");
+			}else if(isPasswordUserValid) {
+				throw new IllegalArgumentException("Password of User " + userCreated + " provided is incorrect");
+			}
+			else {
+				
+				userRegistered.setUsername(userCreated.getUsername());
+				userRegistered.setpassword(userCreated.getPassword());
+				userRegistered.setBidQuantity(userCreated.getBidQuantity());
+				userRegistered.setCreationName("bid");
+				userRegistered.setCreationDate(timestamp);
+			//	userRegistered.setTrader(username);
 			}
 		} catch (IllegalArgumentException e) {
 			log.error(e.getMessage());
 		}
 		
-		bidListRegistered = bidListRepository.save(bidListRegistered);
-		return bidListRegistered;
+		userRegistered = userRepository.save(userRegistered);
+		return userRegistered;
 	}
 
-	/*public BidListDTO getBidById(Integer id) throws NullPointerException {
-		BidList bidlistFoundById = bidListRepository.findById(id)
+	/*public UserDTO getBidById(Integer id) throws NullPointerException {
+		User bidlistFoundById = bidListRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("Bid " + id + " not found"));
-		BidListDTO bidListDTO = mapper.bidListToBidListDTO(bidlistFoundById);
+		UserDTO bidListDTO = mapper.bidListToUserDTO(bidlistFoundById);
 		return bidListDTO;
 	}
 
-	public List<BidListDTO> getAllBids() throws NullPointerException {
-		List<BidList> allBidLists = bidListRepository.findAll();
-		List<BidListDTO> allBidListDto = new ArrayList<BidListDTO>();
-		if (allBidLists.isEmpty()) {
+	public List<UserDTO> getAllBids() throws NullPointerException {
+		List<User> allUsers = bidListRepository.findAll();
+		List<UserDTO> allUserDto = new ArrayList<UserDTO>();
+		if (allUsers.isEmpty()) {
 			return new ArrayList<>();
 		}
-		allBidLists.forEach(bid -> {
-			allBidListDto.add(mapper.bidListToBidListDTO(bid));
+		allUsers.forEach(bid -> {
+			allUserDto.add(mapper.bidListToUserDTO(bid));
 		});
-		return allBidListDto;
+		return allUserDto;
 	}
 
-	public BidList updateBidById(Integer id, BidList bidListUpdated)
+	public User updateBidById(Integer id, User bidListUpdated)
 			throws NullPointerException, IllegalArgumentException {
-		BidList bidListToUpdate = new BidList();
+		User bidListToUpdate = new User();
 		bidListToUpdate = bidListRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("Bid " + id + " not found for updating"));
 

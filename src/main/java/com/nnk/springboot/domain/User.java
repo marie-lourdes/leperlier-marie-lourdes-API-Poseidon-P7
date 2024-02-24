@@ -1,6 +1,7 @@
 package com.nnk.springboot.domain;
 
 import com.nnk.springboot.utils.Constants;
+import com.nnk.springboot.utils.ConstantsErrorMessage;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,20 +24,20 @@ public class User {
     @Column(name="id")
     private Integer id;
     
-    @NotBlank(message = "Username is mandatory")
+    @NotBlank(message = "Username"+ConstantsErrorMessage.ERROR_BLANK_DATA)
     @Column(name=" username")
     private String username;
     
-    @Pattern(regexp=Constants.REGEX_PWD)
-    @NotBlank(message = "Password is mandatory")
+    @Pattern(regexp=Constants.REGEX_PWD,message = "must contain at least 8 characters, an uppercase letter, a symbol, a number")
+    @NotBlank(message = "Password"+ConstantsErrorMessage.ERROR_BLANK_DATA)
     @Column(name=" password")
     private String password;
     
-    @NotBlank(message = "FullName is mandatory")
+    @NotBlank(message = "FullName"+ConstantsErrorMessage.ERROR_BLANK_DATA)
     @Column(name=" fullname")
     private String fullname;
     
-    @NotBlank(message = "Role is mandatory")
+    @NotBlank(message = "Role"+ConstantsErrorMessage.ERROR_BLANK_DATA)
     @Column(name=" role")
     private String role;
 }
