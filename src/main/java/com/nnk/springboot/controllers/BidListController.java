@@ -99,10 +99,17 @@ public class BidListController {
 		try {
 			bidListService.updateBidById(id, bidListUpdated);
 			return new ModelAndView("redirect:/bidList/list");
+		}catch (ConstraintViolationException e) {
+			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
+			for (ConstraintViolation<?> constraint : violationsException) {
+				log.error("Errors fields of Bid updated " + constraint.getMessageTemplate());
+			}
+			return new ModelAndView("redirect:/bidList/update");
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
 			return new ModelAndView("redirect:/error-404");
-		}
+			
+		}	
 	}
 
 	@GetMapping("/update/{id}")

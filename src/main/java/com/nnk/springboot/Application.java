@@ -20,12 +20,12 @@ public class Application implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-	User userCreated = new User();
+	/*User userCreated = new User();
 	userCreated.setFullName("FullName");
 	userCreated.setUsername("Username");
 	userCreated.setPassword("userTest1$");
 	userCreated.setRole("USER");
 	userCreated=userService.addUser(userCreated);
-	System.out.println("userCreatedTest"+userCreated);
+	System.out.println("userCreatedTest"+userCreated);*/
 	}
 }

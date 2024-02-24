@@ -1,63 +1,151 @@
 package com.nnk.springboot.controllers;
 
-/*@Controller
-  @RequestMapping("user")
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.nnk.springboot.domain.User;
+import com.nnk.springboot.domain.dto.BidListDTO;
+import com.nnk.springboot.domain.dto.UserDTO;
+import com.nnk.springboot.service.UserService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
+
+@Controller
+@RequestMapping("user")
 public class UserController {
-    @Autowired
-    private UserRepository userRepository;
+	private static final Logger log = LogManager.getLogger(UserController.class);
 
-    @GetMapping("/list")
-    public String home(Model model)
-    {
-        model.addAttribute("users", userRepository.findAll());
-        return "user/list";
-    }
+	@Autowired
+	private UserService userService;
 
-    @GetMapping("/add")
-    public String addUser(User bid) {
-        return "user/add";
-    }
+	@PostMapping("/validate")
+	public String validate(@Valid @ModelAttribute User userCreated, BindingResult result) {
+		try {
+			if (!result.hasErrors()) {
+				BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+				userCreated.setPassword(encoder.encode(userCreated.getPassword()));
+				// model.addAttribute("userUpdateds", userService.findAll());
+			}
 
-    @PostMapping("/validate")
-    public String validate(@Valid User user, BindingResult result, Model model) {
-        if (!result.hasErrors()) {
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            user.setPassword(encoder.encode(user.getPassword()));
-            userRepository.save(user);
-            model.addAttribute("users", userRepository.findAll());
-            return "redirect:/user/list";
-        }
-        return "user/add";
-    }
+			userService.addUser(userCreated);
+			return "redirect:/user/list";
+		} catch (ConstraintViolationException e) {
+			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
+			for (ConstraintViolation<?> constraint : violationsException) {
+				log.error("Errors fields of User created " + constraint.getMessageTemplate());
+			}
 
-    @GetMapping("/update/{id}")
-    public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
-        user.setPassword("");
-        model.addAttribute("user", user);
-        return "user/update";
-    }
+			return "user/add";
+		} catch (NullPointerException e) {
+			log.error(e.getMessage());
+			return "redirect:/error-404";
+		}
+	}
 
-    @PostMapping("/update/{id}")
-    public String updateUser(@PathVariable("id") Integer id, @Valid User user,
-                             BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return "user/update";
-        }
+	@GetMapping("/add")
+	public String getUserFormPage(Model model) {
+		User userToCreate = new User();
+		try {
+			model.addAttribute("user", userToCreate);
 
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        user.setPassword(encoder.encode(user.getPassword()));
-        user.setId(id);
-        userRepository.save(user);
-        model.addAttribute("users", userRepository.findAll());
-        return "redirect:/user/list";
-    }
+		} catch (Exception e) {
+			log.error("Failed to retrieve user form creation  page" + e.getMessage());
+			// return Constants.ERROR_PAGE;
+		}
 
-    @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") Integer id, Model model) {
-        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
-        userRepository.delete(user);
-        model.addAttribute("users", userRepository.findAll());
-        return "redirect:/user/list";
-    }
-}*/
+		log.info(" User  form creation page successfully retrieved");
+		return "user/add";
+	}
+
+	@GetMapping("/list")
+	public String getUserListPage(HttpServletRequest httpServletRequest, Model model) {
+		List<UserDTO> users = new ArrayList<UserDTO>();
+		try {
+			users = userService.getAllUsers();
+			if (users.isEmpty()) {
+				throw new NullPointerException("List of users not found");
+			}
+		} catch (NullPointerException e) {
+			log.error(e.getMessage());
+		}
+
+		model.addAttribute("users", users);
+		model.addAttribute("remoteUser", httpServletRequest.getRemoteUser());
+		return "user/list";
+	}
+
+	@PostMapping("/update/{id}")
+	public String updateUser(@PathVariable("id") Integer id, @Valid @ModelAttribute User userUpdated,
+			BindingResult result) {
+
+		try {
+			if (!result.hasErrors()) {
+				BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+				userUpdated.setPassword(encoder.encode(userUpdated.getPassword()));
+				// model.addAttribute("userUpdateds", userService.findAll());
+				return "redirect:/user/list";
+			}
+		} catch (NullPointerException e) {
+			log.error(e.getMessage());
+			return "/error-404";
+		}
+
+		// userUpdated.setId(id);
+		// userService.save(userUpdated);
+		// model.addAttribute("userUpdateds", userService.findAll());
+		userService.updateUserById(id, userUpdated);
+		return "redirect:/user/list";
+	}
+
+	@GetMapping("/update/{id}")
+	public ModelAndView getUpdateFormBidListPage(@PathVariable("id") Integer id, Model model) {
+		UserDTO userToUpdate = new UserDTO();
+		try {
+			userToUpdate = userService.getUserById(id);
+			if (userToUpdate != null) {
+				model.addAttribute("bidList", userToUpdate);
+			}
+
+			log.info(" User  form update page successfully retrieved");
+			return new ModelAndView("/user/update");
+		} catch (NullPointerException e) {
+			log.error(e.getMessage());
+			return new ModelAndView("redirect:/error-404");
+		}
+	}
+
+	@GetMapping("/delete/{id}")
+	public ModelAndView deleteUser(@PathVariable("id") Integer id, Model model) {
+		try {
+			userService.deleteUserById(id);
+			return new ModelAndView("redirect:/user/list");
+		} catch (NullPointerException e) {
+			log.error(e.getMessage());
+			return new ModelAndView("redirect:/error-404");
+		}
+		/*
+		 * User user= userService.findById(id).orElseThrow(() -> new
+		 * IllegalArgumentException("Invalid userUpdated Id:" + id));
+		 * userService.delete(user); model.addAttribute("users", userService.findAll());
+		 */
+		// return "redirect:/user/list";
+	}
+}

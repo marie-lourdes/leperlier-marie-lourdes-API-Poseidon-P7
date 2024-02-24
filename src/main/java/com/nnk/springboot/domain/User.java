@@ -1,6 +1,5 @@
 package com.nnk.springboot.domain;
 
-import com.nnk.springboot.utils.Constants;
 import com.nnk.springboot.utils.ConstantsValidation;
 
 import jakarta.persistence.Column;

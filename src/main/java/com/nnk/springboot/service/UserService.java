@@ -71,8 +71,8 @@ public class UserService {
 		if (allUsers.isEmpty()) {
 			return new ArrayList<>();
 		}
-		allUsers.forEach(bid -> {
-			allUserDto.add(mapper.userToUserDTO(bid));
+		allUsers.forEach(user -> {
+			allUserDto.add(mapper.userToUserDTO(user));
 		});
 		return allUserDto;
 	}

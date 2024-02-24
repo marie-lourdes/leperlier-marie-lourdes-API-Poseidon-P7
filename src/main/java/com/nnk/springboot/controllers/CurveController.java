@@ -86,17 +86,23 @@ public class CurveController {
 	}
 
 	@PostMapping("/update/{id}")
-	public ModelAndView updateCurvePoint(@PathVariable("id") Integer id, @Valid @ModelAttribute CurvePoint curvePointUpdated,BindingResult result) {
+	public ModelAndView updateCurvePoint(@PathVariable("id") Integer id,
+			@Valid @ModelAttribute CurvePoint curvePointUpdated, BindingResult result) {
 		// TODO: check required fields, if valid call service to update Curve and return
 		// Curve list
 		try {
 			curvePointService.updateCurvePointById(id, curvePointUpdated);
 			return new ModelAndView("redirect:/curvePoint/list");
+		} catch (ConstraintViolationException e) {
+			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
+			for (ConstraintViolation<?> constraint : violationsException) {
+				log.error("Errors fields of Curve point updated " + constraint.getMessageTemplate());
+			}
+			return new ModelAndView("redirect:/curvePoint/update");
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
 			return new ModelAndView("redirect:/error-404");
 		}
-
 	}
 
 	@GetMapping("/update/{id}")

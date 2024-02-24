@@ -87,10 +87,17 @@ public class RuleNameController {
 		try {
 			ruleNameService.updateRuleNameById(id, ruleNameUpdated);
 			return new ModelAndView("redirect:/ruleName/list");
+		}catch (ConstraintViolationException e) {
+			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
+			for (ConstraintViolation<?> constraint : violationsException) {
+				log.error("Errors fields of RuleName updated " + constraint.getMessageTemplate());
+			}
+			return new ModelAndView("redirect:/ruleName/update");
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
 			return new ModelAndView("redirect:/error-404");
-		}
+			
+		}	
 
 	}
 

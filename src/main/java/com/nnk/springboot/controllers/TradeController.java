@@ -99,10 +99,17 @@ public class TradeController {
 		try {
 			tradeService.updateTradeById(id, tradeUpdated);
 			return new ModelAndView("redirect:/trade/list");
+		}catch (ConstraintViolationException e) {
+			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
+			for (ConstraintViolation<?> constraint : violationsException) {
+				log.error("Errors fields of Trade updated " + constraint.getMessageTemplate());
+			}
+			return new ModelAndView("redirect:/trade/update");
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
 			return new ModelAndView("redirect:/error-404");
-		}
+			
+		}	
 	}
 
 	@GetMapping("/update/{id}")

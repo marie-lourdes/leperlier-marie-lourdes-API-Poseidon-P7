@@ -91,10 +91,17 @@ public class RatingController {
 		try {
 			ratingService.updateRatingById(id, ratingUpdated);
 			return new ModelAndView("redirect:/rating/list");
+		} catch (ConstraintViolationException e) {
+			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
+			for (ConstraintViolation<?> constraint : violationsException) {
+				log.error("Errors fields of Rating updated " + constraint.getMessageTemplate());
+			}
+			return new ModelAndView("redirect:/rating/update");
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
 			return new ModelAndView("redirect:/error-404");
-		}
+			
+		}	
 	}
 
 	@GetMapping("/update/{id}")
