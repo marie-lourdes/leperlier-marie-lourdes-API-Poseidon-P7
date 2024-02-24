@@ -60,7 +60,7 @@ public class Trade {
 	@Column(name = "security ")
 	private String security;
 
-	@Size(min = 0, max = 10)
+	@Size(min = ConstantsValidation.MIN_SIZE_TRADE_DATA, max = ConstantsValidation.MAX_SIZE_TRADE_DATA)
 	@Column(name = "status ")
 	private String status;
 
