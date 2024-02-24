@@ -13,14 +13,14 @@ import org.springframework.stereotype.Service;
 import com.nnk.springboot.domain.Trade;
 import com.nnk.springboot.domain.dto.TradeDTO;
 import com.nnk.springboot.domain.dto.TradeMapperImpl;
-import com.nnk.springboot.repositories.TradeRepository;
+import com.nnk.springboot.repositories.ITradeRepository;
 
 @Service
 public class TradeService {
 	private static final Logger log = LogManager.getLogger(TradeService.class);
 
 	@Autowired
-	private TradeRepository tradeRepository;
+	private ITradeRepository tradeRepository;
 
 	@Autowired
 	private TradeMapperImpl mapper;

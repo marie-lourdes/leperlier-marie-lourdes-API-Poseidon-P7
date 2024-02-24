@@ -13,14 +13,14 @@ import org.springframework.stereotype.Service;
 import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.domain.dto.BidListDTO;
 import com.nnk.springboot.domain.dto.BidListMapperImpl;
-import com.nnk.springboot.repositories.BidListRepository;
+import com.nnk.springboot.repositories.IBidListRepository;
 
 @Service
 public class BidListService {
 	private static final Logger log = LogManager.getLogger(BidListService.class);
 
 	@Autowired
-	private BidListRepository bidListRepository;
+	private IBidListRepository bidListRepository;
 
 	@Autowired
 	private BidListMapperImpl mapper;

@@ -13,13 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.nnk.springboot.domain.BidList;
-import com.nnk.springboot.repositories.BidListRepository;
+import com.nnk.springboot.repositories.IBidListRepository;
 
 @SpringBootTest
 public class BidTests {
 
 	@Autowired
-	private BidListRepository bidListRepository;
+	private IBidListRepository bidListRepository;
 
 	@Test
 	public void bidListTest() {

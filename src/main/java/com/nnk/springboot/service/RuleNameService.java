@@ -9,14 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nnk.springboot.domain.RuleName;
-import com.nnk.springboot.repositories.RuleNameRepository;
+import com.nnk.springboot.repositories.IRuleNameRepository;
 
 @Service
 public class RuleNameService {
 	private static final Logger log = LogManager.getLogger(RuleNameService.class);
 
 	@Autowired
-	private RuleNameRepository ruleNameRepository;
+	private IRuleNameRepository ruleNameRepository;
 
 	public RuleName addRuleName(RuleName ruleNameCreated) throws NullPointerException {
 		RuleName ruleNameRegistered = new RuleName();

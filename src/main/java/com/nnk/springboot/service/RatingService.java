@@ -9,14 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nnk.springboot.domain.Rating;
-import com.nnk.springboot.repositories.RatingRepository;
+import com.nnk.springboot.repositories.IRatingRepository;
 
 @Service
 public class RatingService {
 	private static final Logger log = LogManager.getLogger(RatingService.class);
 	
 	@Autowired
-	private RatingRepository ratingRepository;
+	private IRatingRepository ratingRepository;
 
 	public Rating addRating(Rating ratingCreated) throws NullPointerException {
 		Rating ratingRegistered = new Rating();

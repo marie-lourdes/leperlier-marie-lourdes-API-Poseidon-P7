@@ -12,13 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.nnk.springboot.domain.Trade;
-import com.nnk.springboot.repositories.TradeRepository;
+import com.nnk.springboot.repositories.ITradeRepository;
 
 @SpringBootTest
 public class TradeTests {
 
 	@Autowired
-	private TradeRepository tradeRepository;
+	private ITradeRepository tradeRepository;
 
 	@Test
 	public void tradeTest() {

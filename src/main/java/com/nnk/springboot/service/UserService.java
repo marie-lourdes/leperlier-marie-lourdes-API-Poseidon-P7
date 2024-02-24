@@ -11,15 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nnk.springboot.domain.BidList;
-import com.nnk.springboot.repositories.UserRepository;
+import com.nnk.springboot.repositories.IUserRepository;
 import com.nnk.springboot.utils.Constants;
 
 @Service
-public class UserService implements ValidatorPassword {
+public class UserService implements IValidatorPassword {
 	private static final Logger log = LogManager.getLogger(UserService.class);
 
 	@Autowired
-	private UserRepository userRepository;
+	private IUserRepository userRepository;
 	
 	public BidList addBid(BidList bidListCreated /*String username*/)
 			throws NullPointerException {
