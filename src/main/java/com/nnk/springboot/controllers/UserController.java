@@ -121,7 +121,7 @@ public class UserController {
 		try {
 			userToUpdate = userService.getUserById(id);
 			if (userToUpdate != null) {
-				model.addAttribute("bidList", userToUpdate);
+				model.addAttribute("user", userToUpdate);
 			}
 
 			log.info(" User  form update page successfully retrieved");
