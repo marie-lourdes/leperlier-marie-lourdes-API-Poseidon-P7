@@ -7,12 +7,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name ="users")
 public class User {
+	private final String REGEX_PWD="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id")
@@ -22,6 +24,7 @@ public class User {
     @Column(name=" username")
     private String username;
     
+    @Pattern(regexp=REGEX_PWD)
     @NotBlank(message = "Password is mandatory")
     @Column(name=" password")
     private String password;
