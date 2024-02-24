@@ -25,11 +25,11 @@ public class Application implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-	BidList bid = new BidList("account test", "type", 10.2);
+	/*BidList bid = new BidList("account test", "type", 10.2);
 		bidListService.addBid(bid);
 
 		CurvePoint curvePoint = new CurvePoint(12, 14.0, 10.0);
 		curvePoint.setId(1);
-		curvePointService.addCurvePoint(curvePoint);
+		curvePointService.addCurvePoint(curvePoint);*/
 	}
 }
