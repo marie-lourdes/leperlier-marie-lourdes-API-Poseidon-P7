@@ -21,10 +21,10 @@ public class AuthenticationUserService implements UserDetailsService{
 	private UserService userService;
 
 	@Override
-	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		UserDTO userDTO =userService.
-	   // User	userdetails= new User(userDTO.getEmail(), userDTO.getPassword(), getGrantedAuthorities(userDTO.getRole()));
-		//return userdetails;
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User userDTO =userService.getUserByUserName(username);
+	    User	userdetails= new User(userDTO.getUsername(), userDTO.getPassword(), getGrantedAuthorities(userDTO.getRole()));
+		return userdetails;
 	}
 
 	protected List<GrantedAuthority> getGrantedAuthorities(String role) {

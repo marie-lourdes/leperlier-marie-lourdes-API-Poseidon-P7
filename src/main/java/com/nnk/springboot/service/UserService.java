@@ -58,11 +58,10 @@ public class UserService {
 		return userDTO;
 	}
 
-	public UserDTO getUserByUserName(String username) throws NullPointerException {
+	public User getUserByUserName(String username) throws NullPointerException {
 		User userFoundByUserName = userRepository.findByUsername(username)
 				.orElseThrow(() -> new NullPointerException("User" + username + " not found"));
-		UserDTO userDTO = mapper.userToUserDTO(userFoundByUserName);
-		return userDTO;
+		return userFoundByUserName;
 	}
 
 	public User getUserEntityById(Integer id) throws NullPointerException {
