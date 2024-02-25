@@ -27,15 +27,14 @@ public class WebSecurity {
 			requests.requestMatchers("/user/{id}").hasRole("USER");
 			requests.anyRequest().authenticated();
 
-		})
-	/*	.rememberMe((remember) -> {
+		})	/*.rememberMe((remember) -> {
 			remember.rememberMeServices(rememberMeServices(authenticationService));
 			remember.useSecureCookie(true);
 		})*/
-		.formLogin(form -> form.loginPage("/app/login").permitAll());
-		/*.logout((logout) -> {
+		.formLogin(form -> form.loginPage("/app/login").permitAll())
+		.logout((logout) -> {
 			logout.deleteCookies("JSESSIONID");
-		});*/
+		});
 		return http.build();
 	}
 }
