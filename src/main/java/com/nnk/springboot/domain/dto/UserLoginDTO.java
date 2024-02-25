@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class UserLoginDTO {
-
+	private Integer id;
 	private String username;
 	private String password;
 	private String role;
@@ -12,14 +12,15 @@ public class UserLoginDTO {
 	public UserLoginDTO() {
 	}
 
-	public UserLoginDTO(Integer id, String username,  String password, String role) {
+	public UserLoginDTO(Integer id, String username, String password, String role) {
+		this.id = id;
 		this.username = username;
-		this.password= password;
+		this.password = password;
 		this.role = role;
 	}
 
 	@Override
 	public String toString() {
-		return "UserDTO{" + ", username:" + username + ", password:" +password + ", role:" + role + "}";
+		return "UserDTO{" + "id:" + id +  ", username:" + username + ", password:" + password + ", role:" + role + "}";
 	}
 }
