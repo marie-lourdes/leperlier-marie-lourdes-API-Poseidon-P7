@@ -1,60 +1,67 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
 	<meta charset="utf-8" />
 	<title>Rating Creation</title>
 	<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+	<link th:href="@{/css/main.css}" rel="stylesheet">
 </head>
+
 <body>
 	<div class="container">
-		<div class="row">
-			<h2>Add New Rating</h2>
-		</div>
-		<div class="row">
-			<form action="#" th:action="@{/rating/validate}" th:object="${rating}" method="post" class="form-horizontal"
-				style="width: 100%">
-				<div class="form-group">
-					<label for="moodysRating" class="col-sm-2 control-label">Moodys Rating</label>
-					<div class="col-sm-10">
-						<input type="text" th:field="*{moodysRating}" id="moodysRating" placeholder="Moodys Rating"
-							class="col-4">
-						<p class="text-danger" th:if="${#fields.hasErrors('moodysRating')}" th:errors="*{moodysRating}">
-						</p>
+		<main>
+			<div class="row">
+				<h2>Add New Rating</h2>
+			</div>
+			<div class="row">
+				<form action="#" th:action="@{/rating/validate}" th:object="${rating}" method="post"
+					class="form-horizontal">
+					<div class="form-group">
+						<label for="moodysRating" class="col-sm-2 control-label">Moodys Rating</label>
+						<div class="col-sm-10">
+							<input type="text" th:field="*{moodysRating}" id="moodysRating" placeholder="Moodys Rating">
+							<p class="text-danger" th:if="${#fields.hasErrors('moodysRating')}"
+								th:errors="*{moodysRating}">
+							</p>
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label for="sandRating" class="col-sm-2 control-label">Sand Rating</label>
-					<div class="col-sm-10">
-						<input type="text" th:field="*{sandRating}" id="sandRating" placeholder="Sand Rating" class="col-4">
-						<p class="text-danger" th:if="${#fields.hasErrors('sandRating')}" th:errors="*{sandRating}"></p>
+					<div class="form-group">
+						<label for="sandRating" class="col-sm-2 control-label">Sand Rating</label>
+						<div class="col-sm-10">
+							<input type="text" th:field="*{sandRating}" id="sandRating" placeholder="Sand Rating">
+							<p class="text-danger" th:if="${#fields.hasErrors('sandRating')}" th:errors="*{sandRating}">
+							</p>
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label for="fitchRating" class="col-sm-2 control-label">Fitch Rating</label>
-					<div class="col-sm-10">
-						<input type="text" th:field="*{fitchRating}" id="fitchRating" placeholder="Fitch Rating"
-							class="col-4">
-						<p class="text-danger" th:if="${#fields.hasErrors('fitchRating')}" th:errors="*{fitchRating}">
-						</p>
+					<div class="form-group">
+						<label for="fitchRating" class="col-sm-2 control-label">Fitch Rating</label>
+						<div class="col-sm-10">
+							<input type="text" th:field="*{fitchRating}" id="fitchRating" placeholder="Fitch Rating">
+							<p class="text-danger" th:if="${#fields.hasErrors('fitchRating')}"
+								th:errors="*{fitchRating}">
+							</p>
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label for="orderNumber" class="col-sm-2 control-label">Order number</label>
-					<div class="col-sm-10">
-						<input type="number" th:field="*{orderNumber}" id="orderNumber" placeholder="Order Number"
-							class="col-4">
-						<p class="text-danger" th:if="${#fields.hasErrors('orderNumber')}" th:errors="*{orderNumber}">
-						</p>
+					<div class="form-group">
+						<label for="orderNumber" class="col-sm-2 control-label">Order number</label>
+						<div class="col-sm-10">
+							<input type="number" th:field="*{orderNumber}" id="orderNumber" placeholder="Order Number">
+							<p class="text-danger" th:if="${#fields.hasErrors('orderNumber')}"
+								th:errors="*{orderNumber}">
+							</p>
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<div class="col-sm-12">
-						<a class="btn btn-danger btn-sm" th:href="@{/rating/list}">Cancel</a>
-						<input class="btn btn-primary btn-sm" type="submit" value="Add Rating">
+					<div class="form-group">
+						<div class="col-sm-12">
+							<a class="btn btn-danger btn-sm" th:href="@{/rating/list}">Cancel</a>
+							<input class="btn btn-primary btn-sm" type="submit" value="Add Rating">
+						</div>
 					</div>
-				</div>
-			</form>
-		</div>
+				</form>
+		</main>
+	</div>
 	</div>
 </body>
+
 </html>

@@ -1,0 +1,43 @@
+@charset "UTF-8";
+
+main {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+	margin-top: -4rem;
+}
+
+.row {
+	justify-content: center;
+
+}
+
+.form-horizontal {
+	width: 80%;
+}
+
+.form-horizontal--login{
+	width: 50%;
+}
+
+.form-group--signup {
+	margin-top: 5 rem;
+}
+
+.form-group--login{
+	margin-left:1rem;
+}
+.col-sm-10 input {
+	width: 20rem;
+}
+
+.button-signUp {
+	color: #007bff;;
+	text-decoration: underline;
+}
+
+label{
+	margin-right:1rem;
+}
