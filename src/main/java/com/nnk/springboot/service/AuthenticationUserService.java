@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.nnk.springboot.domain.dto.UserDTO;
+import com.nnk.springboot.domain.dto.UserLoginDTO;
 
 @Service
 public class AuthenticationUserService implements UserDetailsService{
@@ -22,7 +22,7 @@ public class AuthenticationUserService implements UserDetailsService{
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User userDTO =userService.getUserByUserName(username);
+		UserLoginDTO userDTO =userService.getUserByUserName(username);
 	    User	userdetails= new User(userDTO.getUsername(), userDTO.getPassword(), getGrantedAuthorities(userDTO.getRole()));
 		return userdetails;
 	}

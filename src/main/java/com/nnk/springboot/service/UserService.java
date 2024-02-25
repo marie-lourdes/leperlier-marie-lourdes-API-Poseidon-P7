@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.nnk.springboot.domain.User;
 import com.nnk.springboot.domain.dto.UserDTO;
+import com.nnk.springboot.domain.dto.UserLoginDTO;
+import com.nnk.springboot.domain.dto.UserLoginMapperImpl;
 import com.nnk.springboot.domain.dto.UserMapperImpl;
 import com.nnk.springboot.repositories.IUserRepository;
 
@@ -22,6 +24,9 @@ public class UserService {
 
 	@Autowired
 	private UserMapperImpl mapper;
+
+	@Autowired
+	private UserLoginMapperImpl userLoginMapper;
 
 	@Autowired
 	private ValidatorPasswordImpl validatorPassword;
@@ -58,10 +63,11 @@ public class UserService {
 		return userDTO;
 	}
 
-	public User getUserByUserName(String username) throws NullPointerException {
+	public UserLoginDTO getUserByUserName(String username) throws NullPointerException {
 		User userFoundByUserName = userRepository.findByUsername(username)
 				.orElseThrow(() -> new NullPointerException("User" + username + " not found"));
-		return userFoundByUserName;
+		UserLoginDTO userLoginDTO = userLoginMapper.userToUserLoginDTO(userFoundByUserName);
+		return userLoginDTO;
 	}
 
 	public User getUserEntityById(Integer id) throws NullPointerException {
