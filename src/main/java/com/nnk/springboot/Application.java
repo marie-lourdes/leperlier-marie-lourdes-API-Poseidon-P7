@@ -15,13 +15,6 @@ public class Application implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-	/*System.out.println("user"+userService.getUserById(18));	
-	User userCreated = new User();
-	userCreated.setFullName("FullName");
-	userCreated.setUsername("Username test updated");
-	userCreated.setPassword("userTest1$");
-	userCreated.setRole("USER");
-	userCreated=userService.updateUserById(18,userCreated);
-	System.out.println("userUpdatedTest"+userCreated);*/
+	
 	}
 }
