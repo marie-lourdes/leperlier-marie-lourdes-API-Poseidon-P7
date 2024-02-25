@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.nnk.springboot.domain.User;
-import com.nnk.springboot.domain.dto.BidListDTO;
 import com.nnk.springboot.domain.dto.UserDTO;
 import com.nnk.springboot.service.UserService;
 

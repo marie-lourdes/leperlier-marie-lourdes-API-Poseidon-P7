@@ -7,22 +7,22 @@
  <link th:href="@{/css/bootstrap.min.css}"  rel="stylesheet">
 </head>
 <body>
-<div class="container">
-	<div class="row">
-		<div class="col-6">
+<header class="container">
+	<header class="row">
+		<nav class="col-6">
 			<a th:href="@{/bidList/list}">Bid List</a>&nbsp;|&nbsp;
 			<a th:href="@{/curvePoint/list}">Curve Points</a>&nbsp;|&nbsp;
 			<a th:href="@{/rating/list}">Ratings</a>&nbsp;|&nbsp;
 			<a th:href="@{/trade/list}">Trade</a>&nbsp;|&nbsp;
 			<a th:href="@{/ruleName/list}">Rule</a>
-		</div>
+		</nav>
 		<div class="col-6 text-right">
 			Logged in user: <b th:text="${remoteUser}"  class="user">  </b>
 			<form th:action="@{/app-logout}" method="post">
 				<input type="submit" value="Logout"/>
 			</form>
 		</div>
-	</div>
+	</header>
 	<div class="row"><h2>Curve Point List</h2></div>
 	<div class="row">
 		<a th:href="@{/curvePoint/add}" class="btn btn-primary btn-sm">Add New</a>
