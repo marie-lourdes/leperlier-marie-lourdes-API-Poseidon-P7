@@ -1,4 +1,4 @@
-package com.nnk.springboot;
+package com.nnk.springboot.repositories;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -15,7 +15,7 @@ import com.nnk.springboot.domain.Trade;
 import com.nnk.springboot.repositories.ITradeRepository;
 
 @SpringBootTest
-public class TradeTests {
+public class TradeRepositoryTests {
 
 	@Autowired
 	private ITradeRepository tradeRepository;

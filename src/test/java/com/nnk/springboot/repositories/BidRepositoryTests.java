@@ -1,4 +1,4 @@
-package com.nnk.springboot;
+package com.nnk.springboot.repositories;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -16,7 +16,7 @@ import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.repositories.IBidListRepository;
 
 @SpringBootTest
-public class BidTests {
+public class BidRepositoryTests {
 
 	@Autowired
 	private IBidListRepository bidListRepository;

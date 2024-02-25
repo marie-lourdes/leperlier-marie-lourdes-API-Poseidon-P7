@@ -1,4 +1,4 @@
-package com.nnk.springboot;
+package com.nnk.springboot.repositories;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -15,7 +15,7 @@ import com.nnk.springboot.domain.RuleName;
 import com.nnk.springboot.repositories.IRuleNameRepository;
 
 @SpringBootTest
-public class RuleTests {
+public class RuleRepositoryTests {
 
 	@Autowired
 	private IRuleNameRepository ruleNameRepository;
