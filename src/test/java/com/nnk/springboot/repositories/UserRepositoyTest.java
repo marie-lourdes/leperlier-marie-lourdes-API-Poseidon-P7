@@ -1,5 +1,5 @@
 package com.nnk.springboot.repositories;
 
-public class UserRepositoyTests {
+public class UserRepositoyTest {
 
 }

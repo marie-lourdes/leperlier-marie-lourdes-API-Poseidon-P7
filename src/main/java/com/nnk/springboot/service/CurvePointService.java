@@ -13,14 +13,14 @@ import org.springframework.stereotype.Service;
 import com.nnk.springboot.domain.CurvePoint;
 import com.nnk.springboot.domain.dto.CurvePointDTO;
 import com.nnk.springboot.domain.dto.CurvePointMapperImpl;
-import com.nnk.springboot.repositories.CurvePointRepository;
+import com.nnk.springboot.repositories.ICurvePointRepository;
 
 @Service
 public class CurvePointService {
 	private static final Logger log = LogManager.getLogger(CurvePointService.class);
 
 	@Autowired
-	private CurvePointRepository curvePointRepository;
+	private ICurvePointRepository curvePointRepository;
 
 	@Autowired
 	private CurvePointMapperImpl mapper;
