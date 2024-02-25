@@ -9,9 +9,12 @@ main {
 	margin-top: -4rem;
 }
 
+h2 {
+	margin: 2rem auto
+}
+
 .row {
 	justify-content: center;
-
 }
 
 .form-horizontal {
