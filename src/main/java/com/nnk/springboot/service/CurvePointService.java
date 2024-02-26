@@ -48,11 +48,10 @@ public class CurvePointService {
 		return curvePointRegistered;
 	}
 
-	public CurvePointDTO getCurvePointById(Integer id) throws NullPointerException {
+	public CurvePoint getCurvePointById(Integer id) throws NullPointerException {
 		CurvePoint curvePointFoundById = curvePointRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("CurvePoint" + id + " not found"));
-		CurvePointDTO curvePointDTO = mapper.curvePointToCurvePointDTO(curvePointFoundById);
-		return curvePointDTO;
+		return curvePointFoundById;
 	}
 
 	public List<CurvePointDTO> getAllCurvePoints() throws NullPointerException {
@@ -88,5 +87,9 @@ public class CurvePointService {
 		curvePointRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("CurvePoint" + id + " not found for deleting"));
 		curvePointRepository.deleteById(id);
+	}
+
+	public void deleteAllCurvePoints() throws Exception {
+		curvePointRepository.deleteAll();
 	}
 }

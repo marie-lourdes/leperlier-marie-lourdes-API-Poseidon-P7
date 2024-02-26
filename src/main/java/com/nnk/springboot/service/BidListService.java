@@ -98,8 +98,7 @@ public class BidListService {
 		bidListRepository.deleteById(id);
 	}
 	
-	public void deleteAllBids() throws NullPointerException {
-	
+	public void deleteAllBids() throws Exception {
 		bidListRepository.deleteAll();
 	}
 }

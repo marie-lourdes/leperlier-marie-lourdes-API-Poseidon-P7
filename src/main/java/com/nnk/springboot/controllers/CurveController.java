@@ -108,7 +108,7 @@ public class CurveController {
 	@GetMapping("/update/{id}")
 	public ModelAndView getUpdateFormCurvePointListPage(@PathVariable("id") Integer id, Model model) {
 		// TODO: get CurvePoint by Id and to model then show to the form
-		CurvePointDTO curvePointToUpdate = new CurvePointDTO();
+		CurvePoint curvePointToUpdate = new CurvePoint();
 		try {
 			curvePointToUpdate = curvePointService.getCurvePointById(id);
 			if (curvePointToUpdate != null) {
