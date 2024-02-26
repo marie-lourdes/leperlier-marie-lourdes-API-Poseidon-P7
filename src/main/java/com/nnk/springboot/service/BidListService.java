@@ -16,8 +16,10 @@ import com.nnk.springboot.domain.dto.BidListMapperImpl;
 import com.nnk.springboot.repositories.IBidListRepository;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-//@AllArgsConstructor
+/*@AllArgsConstructor
+@RequiredArgsConstructor*/
 @Service
 public class BidListService {
 	private static final Logger log = LogManager.getLogger(BidListService.class);
@@ -54,11 +56,11 @@ public class BidListService {
 		return bidListRegistered;
 	}
 
-	public BidListDTO getBidById(Integer id) throws NullPointerException {
+	public BidList getBidById(Integer id) throws NullPointerException {
 		BidList bidlistFoundById = bidListRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("Bid " + id + " not found"));
-		BidListDTO bidListDTO = mapper.bidListToBidListDTO(bidlistFoundById);
-		return bidListDTO;
+		//BidListDTO bidListDTO = mapper.bidListToBidListDTO(bidlistFoundById);
+		return bidlistFoundById ;
 	}
 
 	public List<BidListDTO> getAllBids() throws NullPointerException {
@@ -94,5 +96,10 @@ public class BidListService {
 		bidListRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("Bid " + id + " not found for deleting"));
 		bidListRepository.deleteById(id);
+	}
+	
+	public void deleteAllBids() throws NullPointerException {
+	
+		bidListRepository.deleteAll();
 	}
 }

@@ -115,7 +115,7 @@ public class BidListController {
 	@GetMapping("/update/{id}")
 	public ModelAndView getUpdateFormBidListPage(@PathVariable("id") Integer id, Model model) {
 		// TODO: get Bid by Id and to model then show to the form
-		BidListDTO bidListToUpdate = new BidListDTO();
+		BidList bidListToUpdate = new BidList();
 		try {
 			bidListToUpdate = bidListService.getBidById(id);
 			if (bidListToUpdate != null) {
