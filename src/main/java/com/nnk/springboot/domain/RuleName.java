@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
@@ -20,19 +21,21 @@ public class RuleName {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
-
+	@Pattern(regexp=ConstantsValidation.REGEX_CHARACTER, message=ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
 	@NotBlank(message = "Name "+ConstantsValidation.ERROR_BLANK_MSG )
 	@Column(name = "name")
 	private String name;
-
+	
+	@Pattern(regexp=ConstantsValidation.REGEX_CHARACTER, message=ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
 	@NotBlank(message = "Description "+ConstantsValidation.ERROR_BLANK_MSG )
 	@Column(name = "description")
 	private String description;
-
+	
 	@NotBlank(message = "Json "+ConstantsValidation.ERROR_BLANK_MSG )
 	@Column(name = "json")
 	private String json;
-
+	
+	@Pattern(regexp=ConstantsValidation.REGEX_CHARACTER, message=ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
 	@NotBlank(message = "Template "+ConstantsValidation.ERROR_BLANK_MSG )
 	@Column(name = "template")
 	private String template;

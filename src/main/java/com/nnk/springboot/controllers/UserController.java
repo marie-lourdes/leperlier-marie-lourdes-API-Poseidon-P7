@@ -96,13 +96,18 @@ public class UserController {
 			BindingResult result) {
 
 		try {
+			if (!result.hasErrors()) {
 				BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 				userUpdated.setPassword(encoder.encode(userUpdated.getPassword()));
+				// model.addAttribute("userUpdateds", userService.findAll());
+			}
+			
 				userService.updateUserById(id, userUpdated);
+				return "redirect:/user/list";
 		}  catch (ConstraintViolationException e) {
 			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
 			for (ConstraintViolation<?> constraint : violationsException) {
-				log.error("Errors fields of User created " + constraint.getMessageTemplate());
+				log.error("Errors fields of User updated " + constraint.getMessageTemplate());
 			}
 
 			return "redirect:/user/update";
@@ -110,7 +115,7 @@ public class UserController {
 			log.error(e.getMessage());
 			return "/error-404";
 		}
-		return "redirect:/user/list";
+	
 	}
 
 	@GetMapping("/update/{id}")

@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
@@ -24,6 +25,7 @@ public class CurvePoint {
 	@Column(name = "id")
 	private Integer id;
 	
+
 	@Positive(message="Curve point "+ConstantsValidation.ERROR_NOT_POSITIVE_MSG)
 	@NotNull(message="must be not null")
 	@Column(name = "curve_id")

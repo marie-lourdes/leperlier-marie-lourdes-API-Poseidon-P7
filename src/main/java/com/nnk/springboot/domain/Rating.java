@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
@@ -23,14 +24,17 @@ public class Rating {
 	@Column(name = "id")
 	private Integer id;
 	
+	@Pattern(regexp=ConstantsValidation.REGEX_CHARACTER, message=ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
 	@NotBlank(message="Moodys rating "+ConstantsValidation.ERROR_BLANK_MSG )
 	@Column(name = " moodys_rating")
 	private String moodysRating;
 	
+	@Pattern(regexp=ConstantsValidation.REGEX_CHARACTER, message=ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
 	@NotBlank(message="Sand "+ConstantsValidation.ERROR_BLANK_MSG )
 	@Column(name = "sand_rating")
 	private String sandRating;
 	
+	@Pattern(regexp=ConstantsValidation.REGEX_CHARACTER, message=ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
 	@NotBlank(message="Fitch rating "+ConstantsValidation.ERROR_BLANK_MSG )
 	@Column(name = "fitch_rating") 
 	private String fitchRating;

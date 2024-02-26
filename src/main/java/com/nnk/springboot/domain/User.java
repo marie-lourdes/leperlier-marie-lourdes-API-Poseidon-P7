@@ -17,14 +17,11 @@ import lombok.Data;
 @Entity
 @Table(name = "users")
 public class User {
-	private final String REGEX_PWD = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
 
-	@Size(min=1, max=125)
 	@NotBlank(message = "Username " + ConstantsValidation.ERROR_BLANK_MSG)
 	@Column(name = " username")
 	private String username;
@@ -33,11 +30,13 @@ public class User {
 	@NotBlank(message = "Password " + ConstantsValidation.ERROR_BLANK_MSG)
 	@Column(name = " password")
 	private String password;
-
+	
+	@Pattern(regexp=ConstantsValidation.REGEX_CHARACTER, message=ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
 	@NotBlank(message = "FullName " + ConstantsValidation.ERROR_BLANK_MSG)
 	@Column(name = " fullname")
 	private String fullName;
-
+	
+	@Pattern(regexp=ConstantsValidation.REGEX_CHARACTER, message=ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
 	@NotBlank(message = "Role " + ConstantsValidation.ERROR_BLANK_MSG)
 	@Column(name = " role")
 	private String role;

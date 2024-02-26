@@ -32,9 +32,10 @@ public class BidListService {
 		Timestamp timestamp = new Timestamp(date.getTime());
 		try {
 			if (bidListCreated != null) {
-				if (bidListCreated.getAccount() == null && bidListCreated.getType() == null) {
-					throw new IllegalArgumentException("Empty data of Bid " + bidListCreated + " provided and created");
+				if (bidListCreated.getAccount() == null || bidListCreated.getType() == null) {
+					throw new IllegalArgumentException("Empty data required of Bid " + bidListCreated + " provided and created");
 				}
+	
 				bidListRegistered.setAccount(bidListCreated.getAccount());
 				bidListRegistered.setType(bidListCreated.getType());
 				bidListRegistered.setBidQuantity(bidListCreated.getBidQuantity());
@@ -74,7 +75,11 @@ public class BidListService {
 		BidList bidListToUpdate = new BidList();
 		bidListToUpdate = bidListRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("Bid " + id + " not found for updating"));
-
+		
+		if (bidListUpdated.getAccount() == null || bidListUpdated.getType() == null) {
+			throw new IllegalArgumentException("Empty data required of Bid " + bidListUpdated+ " provided and updated");
+		}
+		
 		bidListToUpdate.setAccount(bidListUpdated.getAccount());
 		bidListToUpdate.setType(bidListUpdated.getType());
 		bidListToUpdate.setBidQuantity(bidListUpdated.getBidQuantity());

@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -24,7 +25,8 @@ public class BidList {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "bidlist_id")
 	private Integer bidListId;
-
+	
+	@Pattern(regexp=ConstantsValidation.REGEX_CHARACTER, message=ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
 	@Size(
 			min = ConstantsValidation.MIN_SIZE_ACCOUNTANDTYPE_DATA,
 			max = ConstantsValidation.MAX_SIZE_ACCOUNTANDTYPE_DATA
@@ -32,7 +34,8 @@ public class BidList {
 	@NotBlank(message = "Account "+ConstantsValidation.ERROR_BLANK_MSG )
 	@Column(name = "account")
 	private String account;
-
+	
+	@Pattern(regexp=ConstantsValidation.REGEX_CHARACTER, message=ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
 	@Size(
 			min = ConstantsValidation.MIN_SIZE_ACCOUNTANDTYPE_DATA,
 			max = ConstantsValidation.MAX_SIZE_ACCOUNTANDTYPE_DATA
@@ -40,14 +43,17 @@ public class BidList {
 	@NotBlank(message = "Type "+ConstantsValidation.ERROR_BLANK_MSG )
 	@Column(name = "type")
 	private String type;
-
+	
+	
 	@Positive(message="bidQuantity "+ConstantsValidation.ERROR_NOT_POSITIVE_MSG)
 	@Column(name = "bid_quantity")
 	private Double bidQuantity;
-
+	
+	
 	@Column(name = "sell_quantity")
 	private Double sellQuantity;
-
+	
+	@Pattern(regexp=ConstantsValidation.REGEX_DIGIT, message=ConstantsValidation.ERROR_NOT_DIGIT_MSG)
 	@Column(name = "bid")
 	private Double bid;
 

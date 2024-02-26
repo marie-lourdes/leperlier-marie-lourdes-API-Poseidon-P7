@@ -31,8 +31,8 @@ public class TradeService {
 		Timestamp timestamp = new Timestamp(date.getTime());
 		try {
 			if (tradeCreated != null) {
-				if (tradeCreated.getAccount() == null && tradeCreated.getType() == null) {
-					throw new IllegalArgumentException("Empty data of Bid " + tradeCreated + " provided and created");
+				if (tradeCreated.getAccount() == null ||tradeCreated.getType() == null) {
+					throw new IllegalArgumentException("Empty data of Trade" + tradeCreated + " provided and created");
 				}
 				tradeRegistered.setAccount(tradeCreated.getAccount());
 				tradeRegistered.setType(tradeCreated.getType());
@@ -72,7 +72,9 @@ public class TradeService {
 		Trade tradeToUpdate = new Trade();
 		tradeToUpdate = tradeRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("Trade" + id + " not found for updating"));
-
+		if ( tradeUpdated.getAccount() == null ||tradeUpdated.getType() == null) {
+			throw new IllegalArgumentException("Empty data of Trade" + tradeUpdated + " provided and updated");
+		}
 		tradeToUpdate.setAccount(tradeUpdated.getAccount());
 		tradeToUpdate.setType(tradeUpdated.getType());
 		tradeToUpdate.setBuyQuantity(tradeUpdated.getBuyQuantity());

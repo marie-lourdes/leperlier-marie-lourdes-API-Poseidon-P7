@@ -31,9 +31,9 @@ public class CurvePointService {
 		Timestamp timestamp = new Timestamp(date.getTime());
 		try {
 			if (curvePointCreated != null) {
-				if (curvePointCreated.getCurveId() == null) {
+				if (curvePointCreated.getCurveId() == null || curvePointCreated.getCurveId().getClass()!=Integer.class) {
 					throw new IllegalArgumentException(
-							"Empty data CurveId of CurvePoint" + curvePointCreated + " provided and created");
+							"Invalid CurveId of CurvePoint " + curvePointCreated + " provided and created");
 				}
 				curvePointRegistered.setCurveId(curvePointCreated.getCurveId());
 				curvePointRegistered.setTerm(curvePointCreated.getTerm());
@@ -72,7 +72,11 @@ public class CurvePointService {
 		CurvePoint curvePointToUpdate = new CurvePoint();
 		curvePointToUpdate = curvePointRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("CurvePoint" + id + " not found for updating"));
-
+		
+		if (curvePointUpdated.getCurveId().getClass()!=Integer.class) {
+			throw new IllegalArgumentException(
+					"Invalid CurveId of CurvePoint " + curvePointUpdated + " provided and updated");
+		}
 		curvePointToUpdate.setCurveId(curvePointUpdated.getCurveId());
 		curvePointToUpdate.setTerm(curvePointUpdated.getTerm());
 		curvePointToUpdate.setValue(curvePointUpdated.getValue());

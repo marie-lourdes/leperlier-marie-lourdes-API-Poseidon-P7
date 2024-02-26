@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -24,7 +25,8 @@ public class Trade {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "trade_id")
 	private Integer tradeId;
-
+	
+	@Pattern(regexp=ConstantsValidation.REGEX_CHARACTER, message=ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
 	@Size(
 			min = ConstantsValidation.MIN_SIZE_ACCOUNTANDTYPE_DATA,
 			max = ConstantsValidation.MAX_SIZE_ACCOUNTANDTYPE_DATA
@@ -32,7 +34,8 @@ public class Trade {
 	@NotBlank(message = "Account "+ConstantsValidation.ERROR_BLANK_MSG )
 	@Column(name = "account")
 	private String account;
-
+	
+	@Pattern(regexp=ConstantsValidation.REGEX_CHARACTER, message=ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
 	@Size(
 			min = ConstantsValidation.MIN_SIZE_ACCOUNTANDTYPE_DATA,
 			max = ConstantsValidation.MAX_SIZE_ACCOUNTANDTYPE_DATA
@@ -44,7 +47,8 @@ public class Trade {
 	@Positive(message="Trade "+ConstantsValidation.ERROR_NOT_POSITIVE_MSG)
 	@Column(name = "buy_quantity")
 	private Double buyQuantity;
-
+	
+	@Positive(message="Trade "+ConstantsValidation.ERROR_NOT_POSITIVE_MSG)
 	@Column(name = "sell_quantity")
 	private Double sellQuantity;
 
