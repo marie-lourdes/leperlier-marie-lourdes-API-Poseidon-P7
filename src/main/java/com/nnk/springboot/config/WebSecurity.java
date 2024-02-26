@@ -19,8 +19,9 @@ public class WebSecurity {
 			requests.requestMatchers("/user/**").hasRole("ADMIN");
 			requests.requestMatchers("/ruleName/**").hasRole("ADMIN");
 			requests.requestMatchers("/*/add").hasRole("ADMIN");
+			requests.requestMatchers("/*/validate").hasRole("ADMIN");
 			requests.requestMatchers("/*/update/**").hasRole("ADMIN");
-			requests.requestMatchers("/*/delete/**").hasRole("ADMIN");
+			requests.requestMatchers("/*/delete/**").hasRole("ADMIN");		
 			requests.anyRequest().authenticated();
 
 		})	/*.rememberMe((remember) -> {
