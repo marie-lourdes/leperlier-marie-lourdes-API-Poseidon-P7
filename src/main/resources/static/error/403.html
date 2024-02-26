@@ -1,16 +1,26 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-      <title>Page Forbidden</title>
+	<title>Page Forbidden</title>
+	<link href="/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/css/main.css" rel="stylesheet">
 </head>
+
 <body>
-   <h3>Access Denied Exception</h3>
-   <div>
-	   <!--Logged in user: <b th:text="${remoteUser}"  class="user">  </b>-->
-	    <form action="/logout" method="post">
-	         <input type="submit" value="Logout"/>
-	    </form>
-   </div> 	 
-    <p class="error" th:text="${errorMsg}">Error</p>
+	<div class="container">
+		<main>
+			<div class="row">
+				<h3>Access Denied Exception</h3>
+			</div>
+			
+				<div >
+					<a class="btn btn-primary btn-sm" href="/bidList/list">Dashboard Profil</a>
+				</div>
+			
+			<p class="text-danger">You are not authorized for the requested data.</p>
+		</main>
+	</div>
 </body>
-</html>   
+
+</html>

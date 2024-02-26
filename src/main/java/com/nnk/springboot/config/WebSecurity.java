@@ -15,7 +15,7 @@ public class WebSecurity {
 			requests.requestMatchers("/css/**").permitAll();
 			requests.requestMatchers("/").permitAll();	
 			requests.requestMatchers("/user/add").permitAll();
-			requests.requestMatchers("/user/validate").permitAll();			
+			requests.requestMatchers("/user/validate").permitAll();	
 			requests.requestMatchers("/admin/home").hasRole("ADMIN");
 			requests.requestMatchers("/app/secure/article-details").hasRole("ADMIN");
 			requests.requestMatchers("/user/list").hasRole("ADMIN");
@@ -24,7 +24,7 @@ public class WebSecurity {
 			requests.requestMatchers("/curvePoint/**").hasRole("USER");
 			requests.requestMatchers("/rating/**").hasRole("USER");	
 			requests.requestMatchers("/trade/**").hasRole("USER");
-			requests.requestMatchers("/user/{id}").hasRole("USER");
+			requests.requestMatchers("/user/{id}").hasRole("USER");	
 			requests.anyRequest().authenticated();
 
 		})	/*.rememberMe((remember) -> {
@@ -34,6 +34,7 @@ public class WebSecurity {
 		.formLogin(form -> form.loginPage("/app/login").permitAll())
 		.logout((logout) -> {
 			logout.deleteCookies("JSESSIONID");
+			logout.permitAll();
 		});
 		return http.build();
 	}

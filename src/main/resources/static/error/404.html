@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-      <title>Page Not Found</title>
+	<title>Page Not Found</title>
+	<link href="/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/css/main.css" rel="stylesheet">
 </head>
+
 <body>
-   <h3>Error 404</h3>
-   <div>
-	   
-	    <form action="/logout" method="post">
-	         <input type="submit" value="Logout"/>
-	    </form>
-   </div> 	 
-    <p class="error" th:text="${errorMsg}">Error</p>
+	<div class="container">
+		<main>
+			<div class="row">
+				<h3>Error 404</h3>
+			</div>
+			<div>
+				<a class="btn btn-primary btn-sm" href="/bidList/list">Dashboard Profil</a>
+			</div>
+			<p class="text-danger">Page not found</p>
+		</main>
+	</div>
 </body>
-</html>   
+
+</html>

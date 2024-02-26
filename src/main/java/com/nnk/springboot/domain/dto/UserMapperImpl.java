@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.nnk.springboot.domain.User;
 
-@Component
+@Component(value = "userMapperImpl")
 public class UserMapperImpl implements IMapper< UserDTO,  User> {
 	
 	public UserDTO userToUserDTO(User user) {

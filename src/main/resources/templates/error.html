@@ -1,15 +1,26 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-      <title> Error</title>
+	<title> Error</title>
+	<link href="/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/css/main.css" rel="stylesheet">
 </head>
+
 <body>
-   <h3>Error </h3>
-   <div>
-	    <form th:action="@{/logout}" method="post">
-	         <input type="submit" value="Logout"/>
-	    </form>
-   </div> 	 
-    <p class="error" >Error has occured...</p>
+	<div class="container">
+		<main>
+			<div class="row">
+				<h3>Error</h3>
+			</div>
+			<div>
+				<form th:action="@{/logout}" method="post">
+					<input type="submit" value="Logout" />
+				</form>
+			</div>
+			<p class="error">An error has occured...</p>
+		</main>
+	</div>
 </body>
-</html>   
+
+</html>
