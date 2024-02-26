@@ -55,7 +55,7 @@ public class TradeController {
 			return "trade/add";
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return "redirect:/error-404";
+			return "trade/add";
 		}
 	}
 

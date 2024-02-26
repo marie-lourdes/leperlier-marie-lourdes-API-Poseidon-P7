@@ -55,7 +55,7 @@ public class UserController {
 			return "user/add";
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return "redirect:/error-404";
+			return "user/add";
 		}
 	}
 

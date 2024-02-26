@@ -47,7 +47,7 @@ public class RuleNameController {
 			return "ruleName/add";
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return "redirect:/error-404";
+			return "ruleName/add";
 		}
 	}
 

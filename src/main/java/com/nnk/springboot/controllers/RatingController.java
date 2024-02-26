@@ -49,7 +49,7 @@ public class RatingController {
 			return "rating/add";
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return "redirect:/error-404";
+			return "rating/add";
 		}
 	}
 

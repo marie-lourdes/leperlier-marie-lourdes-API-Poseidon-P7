@@ -55,7 +55,7 @@ public class BidListController {
 			return "bidList/add";
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return "redirect:/error-404";
+			return "bidList/add";
 		}
 	}
 

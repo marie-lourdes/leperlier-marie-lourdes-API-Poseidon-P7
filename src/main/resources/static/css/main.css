@@ -1,7 +1,9 @@
 @charset "UTF-8";
+
 header {
-	margin:2rem 0;
+	margin: 2rem 0;
 }
+
 main {
 	display: flex;
 	flex-direction: column;
@@ -15,6 +17,15 @@ h2 {
 	margin: 2rem auto
 }
 
+.h2--font {
+	font-weight: bold;
+	font-family: serif;
+}
+
+.label--font {
+	font-family: serif;
+}
+
 .row {
 	justify-content: center;
 }
@@ -23,7 +34,7 @@ h2 {
 	width: 80%;
 }
 
-.form-horizontal--login{
+.form-horizontal--login {
 	width: 50%;
 }
 
@@ -31,18 +42,20 @@ h2 {
 	margin-top: 5 rem;
 }
 
-.form-group--login{
-	margin-left:1rem;
+.form-group--login {
+	margin-left: 1rem;
 }
+
 .col-sm-10 input {
 	width: 20rem;
 }
 
 .button-signUp {
-	color: #007bff;;
+	color: #007bff;
+	;
 	text-decoration: underline;
 }
 
-label{
-	margin-right:1rem;
+label {
+	margin-right: 1rem;
 }

@@ -50,7 +50,7 @@ public class CurveController {
 			return "curvePoint/add";
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return "redirect:/error-404";
+			return "curvePoint/add";
 		}
 	}
 
