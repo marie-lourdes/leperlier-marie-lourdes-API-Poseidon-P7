@@ -46,7 +46,7 @@ class RatingServiceTest {
 			ratingCreated.setFitchRating("fitch rating test");
 			ratingCreated.setSandRating("sand rating test");
 			ratingCreated.setOrderNumber(10);
-			
+
 			Rating result = ratingServiceUnderTest.addRating(ratingCreated);
 			assertAll("assertion data curve point created", () -> {
 				assertNotNull(result.getId());
@@ -66,8 +66,7 @@ class RatingServiceTest {
 			rating.setOrderNumber(-1);
 			ratingServiceUnderTest.addRating(rating);
 		} catch (ConstraintViolationException e) {
-			assertThrows(ConstraintViolationException.class,
-					() -> ratingServiceUnderTest.addRating(rating));
+			assertThrows(ConstraintViolationException.class, () -> ratingServiceUnderTest.addRating(rating));
 		} catch (AssertionError e) {
 			fail(e.getMessage());
 		}
@@ -83,8 +82,7 @@ class RatingServiceTest {
 		} catch (IllegalArgumentException e) {
 			assertThrows(IllegalArgumentException.class, () -> ratingServiceUnderTest.addRating(rating));
 		} catch (ConstraintViolationException e) {
-			assertThrows(ConstraintViolationException.class,
-					() -> ratingServiceUnderTest.addRating(rating));
+			assertThrows(ConstraintViolationException.class, () -> ratingServiceUnderTest.addRating(rating));
 
 		} catch (AssertionError e) {
 			fail(e.getMessage());
@@ -97,8 +95,7 @@ class RatingServiceTest {
 			rating.setOrderNumber(15);
 			Rating RatingToUpdateTest = ratingServiceUnderTest.addRating(rating);
 
-			Rating result = ratingServiceUnderTest.updateRatingById(RatingToUpdateTest.getId(),
-					rating);
+			Rating result = ratingServiceUnderTest.updateRatingById(RatingToUpdateTest.getId(), rating);
 			assertAll("assertion data rating created", () -> {
 				assertNotNull(result.getId());
 				assertEquals("moodys rating test", result.getMoodysRating());
@@ -118,14 +115,11 @@ class RatingServiceTest {
 
 			assertNull(result);
 		} catch (IllegalArgumentException e) {
-			assertThrows(IllegalArgumentException.class,
-					() -> ratingServiceUnderTest.updateRatingById(15, rating));
+			assertThrows(IllegalArgumentException.class, () -> ratingServiceUnderTest.updateRatingById(15, rating));
 		} catch (NullPointerException e) {
-			assertThrows(NullPointerException.class,
-					() -> ratingServiceUnderTest.updateRatingById(15, rating));
+			assertThrows(NullPointerException.class, () -> ratingServiceUnderTest.updateRatingById(15, rating));
 		} catch (ConstraintViolationException e) {
-			assertThrows(ConstraintViolationException.class,
-					() -> ratingServiceUnderTest.updateRatingById(15, rating));
+			assertThrows(ConstraintViolationException.class, () -> ratingServiceUnderTest.updateRatingById(15, rating));
 		} catch (AssertionError e) {
 			fail(e.getMessage());
 		}

@@ -56,11 +56,10 @@ public class UserService {
 		return userRegistered;
 	}
 
-	public UserDTO getUserById(Integer id) throws NullPointerException {
+	public User getUserById(Integer id) throws NullPointerException {
 		User userFoundById = userRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("User" + id + " not found"));
-		UserDTO userDTO = mapper.userToUserDTO(userFoundById);
-		return userDTO;
+		return userFoundById ;
 	}
 
 	public UserLoginDTO getUserByUserName(String username) throws NullPointerException {
@@ -107,5 +106,9 @@ public class UserService {
 		userRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("User" + id + " not found for deleting"));
 		userRepository.deleteById(id);
+	}
+	
+	public void deleteAllUsers() throws Exception {
+		userRepository.deleteAll();
 	}
 }
