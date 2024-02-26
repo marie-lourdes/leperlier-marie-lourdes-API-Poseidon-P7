@@ -68,4 +68,8 @@ public class RatingService {
 				.orElseThrow(() -> new NullPointerException("Rating" + id + " not found for deleting"));
 		ratingRepository.deleteById(id);
 	}
+
+	public void deleteAllRatings() throws Exception {
+		ratingRepository.deleteAll();
+	}
 }

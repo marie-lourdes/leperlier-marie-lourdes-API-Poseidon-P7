@@ -28,15 +28,17 @@ public class BidRepositoryTest {
 	@BeforeEach
 	public void setUpPerTest() {
 		bid = new BidList("Account Test", "Type Test", 10d);
+		bidListRepository.save(bid);
 	}
 
 	@DisplayName("test for save bid operation")
 	@Test
 	public void givenBidObject_whenSave_thenReturnSavedBid() throws Exception {
 		try {
+			BidList bid = new BidList("Account Test", "Type Test", 12d);
 			bid = bidListRepository.save(bid);
 			assertNotNull(bid.getBidListId());
-			assertEquals(bid.getBidQuantity(), 10d);
+			assertEquals(bid.getBidQuantity(), 12d);
 		} catch (AssertionError e) {
 			fail(e.getMessage());
 		}

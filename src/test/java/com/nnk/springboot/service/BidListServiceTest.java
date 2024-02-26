@@ -41,6 +41,7 @@ class BidListServiceTest {
 	void testAddBid() throws Exception {
 		try {
 			BidList bidListCreated = new BidList();
+			bidListCreated.setBidListId(2);
 			bidListCreated.setType("type test");
 			bidListCreated.setAccount("account test");
 			bidListCreated.setBidQuantity(14.0);

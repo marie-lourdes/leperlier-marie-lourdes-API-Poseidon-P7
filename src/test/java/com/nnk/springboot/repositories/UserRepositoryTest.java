@@ -33,16 +33,22 @@ import com.nnk.springboot.domain.User;
 		user.setUsername("Username test");
 		user.setPassword(pw );
 		user.setRole("USER");
+		userRepository.save(user);
 	}
 
 	@DisplayName("test for save user operation")
 	@Test
 	public void givenUserObject_whenSave_thenReturnSavedUser() throws Exception {
 		try {
+			User user = new User();
+			user.setFullName("FullName");
+			user.setUsername("Username");
+			user.setPassword(pw );
+			user.setRole("USER");
 			user = userRepository.save(user);
 			assertNotNull(user.getId());
-			assertEquals(user.getFullName(), "FullName test");
-			assertEquals(user.getUsername(), "Username test");
+			assertEquals(user.getFullName(), "FullName");
+			assertEquals(user.getUsername(), "Username");
 			assertEquals(user.getRole(), "USER");
 		} catch (AssertionError e) {
 			fail(e.getMessage());

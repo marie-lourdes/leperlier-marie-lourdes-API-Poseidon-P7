@@ -26,15 +26,17 @@ public class RatingRepositoryTest {
 	@BeforeEach
 	public void setUpPerTest() {
 		rating = new Rating("Moodys Rating", "Sand Rating", "Fitch Rating", 10);
+		ratingRepository.save(rating);
 	}
 
 	@DisplayName("test for save Rating operation")
 	@Test
 	public void givenRatingObject_whenSave_thenReturnSavedRating() throws Exception {
 		try {
+			Rating rating = new Rating("Moodys Rating", "Sand Rating", "Fitch Rating", 12);
 			rating = ratingRepository.save(rating);
 			assertNotNull(rating.getId());
-			assertTrue(rating.getOrderNumber() == 10);
+			assertTrue(rating.getOrderNumber() == 12);
 		} catch (AssertionError e) {
 			fail(e.getMessage());
 		}

@@ -25,15 +25,17 @@ public class CurvePointRepositoryTest {
 	@BeforeEach
 	public void setUpPerTest() {
 		curvePoint = new CurvePoint(10, 10d, 30d);
+		curvePointRepository.save(curvePoint);
 	}
 
 	@DisplayName("test for save curve point operation")
 	@Test
 	public void givenCurvePointObject_whenSave_thenReturnSavedCurvePoint() throws Exception {
 		try {
+			CurvePoint curvePoint = new CurvePoint(12, 10d, 30d);
 			curvePoint = curvePointRepository.save(curvePoint);
 			assertNotNull(curvePoint.getId());
-			assertTrue(curvePoint.getCurveId() == 10);
+			assertTrue(curvePoint.getCurveId() == 12);
 		} catch (AssertionError e) {
 			fail(e.getMessage());
 		}

@@ -26,15 +26,17 @@ public class RuleRepositoryTest {
 	@BeforeEach
 	public void setUpPerTest() {
 		rule = new RuleName("Rule Name", "Description", "Json", "Template", "SQL", "SQL Part");
+		ruleNameRepository.save(rule);
 	}
 
 	@DisplayName("test for save RuleName operation")
 	@Test
 	public void givenRuleNameObject_whenSave_thenReturnSavedRuleName() throws Exception {
 		try {
+			RuleName rule = new RuleName("Rule Name test", "Description", "Json", "Template", "SQL", "SQL Part");
 			rule = ruleNameRepository.save(rule);
 			assertNotNull(rule.getId());
-			assertTrue(rule.getName().equals("Rule Name"));
+			assertTrue(rule.getName().equals("Rule Name test"));
 		} catch (AssertionError e) {
 			fail(e.getMessage());
 		}

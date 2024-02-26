@@ -38,10 +38,10 @@ class CurvePointServiceTest {
 	}
 
 	@Test
-	void testAddBid() throws Exception {
+	void testAddCurvePoint() throws Exception {
 		try {
 			CurvePoint curvePointCreated = new CurvePoint();
-			curvePointCreated.setId(1);
+			curvePointCreated.setId(2);
 			curvePointCreated.setCurveId(12);
 			curvePointCreated.setTerm(10.0);
 			curvePointCreated.setValue(10.0);
@@ -60,7 +60,7 @@ class CurvePointServiceTest {
 	}
 
 	@Test
-	void testAddBid_WithInvalidData() throws Exception {
+	void testAddCurvePoint_WithInvalidData() throws Exception {
 		try {
 			curvePoint.setTerm(-1.0);
 			CurvePoint result = curvePointServiceUnderTest.addCurvePoint(curvePoint);
@@ -76,7 +76,7 @@ class CurvePointServiceTest {
 	}
 
 	@Test
-	void testAddBid_WithEmptyCurveId() throws Exception {
+	void testAddCurvePoint_WithEmptyCurveId() throws Exception {
 		try {
 			curvePoint.setCurveId(null);
 			CurvePoint result = curvePointServiceUnderTest.addCurvePoint(curvePoint);
@@ -94,7 +94,7 @@ class CurvePointServiceTest {
 	}
 
 	@Test
-	void testUpdateBid() throws Exception {
+	void testUpdateCurvePoint() throws Exception {
 		try {
 			curvePoint.setCurveId(13);
 			CurvePoint CurvePointToUpdateTest = curvePointServiceUnderTest.addCurvePoint(curvePoint);
@@ -113,7 +113,7 @@ class CurvePointServiceTest {
 	}
 
 	@Test
-	void testUpdateBid_WithBidNotFound() throws Exception {
+	void testUpdateCurvePoint_WithCurvePointNotFound() throws Exception {
 		try {
 			CurvePoint result = curvePointServiceUnderTest.updateCurvePointById(15, curvePoint);
 
@@ -133,7 +133,7 @@ class CurvePointServiceTest {
 	}
 
 	@Test
-	void testGetAllBids() throws Exception {
+	void testGetAllCurvePoints() throws Exception {
 		try {
 			curvePointServiceUnderTest.addCurvePoint(curvePoint);
 
@@ -145,7 +145,7 @@ class CurvePointServiceTest {
 	}
 
 	@Test
-	void testGetAllBids_WithListOfBidsNotFound() throws Exception {
+	void testGetAllCurvePoints_WithListOfCurvePointsNotFound() throws Exception {
 		try {
 			curvePointServiceUnderTest.deleteAllCurvePoints();
 
@@ -159,7 +159,7 @@ class CurvePointServiceTest {
 	}
 
 	@Test
-	void testGetBidById() throws Exception {
+	void testGetCurvePointById() throws Exception {
 		try {
 			CurvePoint result = curvePointServiceUnderTest.addCurvePoint(curvePoint);
 			result = curvePointServiceUnderTest.getCurvePointById(result.getId());
@@ -170,7 +170,7 @@ class CurvePointServiceTest {
 	}
 
 	@Test
-	void tesGetBidById_WithBidNotFound() throws Exception {
+	void tesGetCurvePointById_WithCurvePointNotFound() throws Exception {
 		try {
 			curvePointServiceUnderTest.deleteAllCurvePoints();
 
@@ -184,7 +184,7 @@ class CurvePointServiceTest {
 	}
 
 	@Test
-	void testDeleteBidById() throws Exception {
+	void testDeleteCurvePointById() throws Exception {
 		try {
 			CurvePoint curvePointCreated = curvePointServiceUnderTest.addCurvePoint(curvePoint);
 			curvePointServiceUnderTest.deleteCurvePointById(curvePointCreated.getId());
@@ -199,7 +199,7 @@ class CurvePointServiceTest {
 	}
 
 	@Test
-	void testDeleteBidById_WithNoExistingBid() throws Exception {
+	void testDeleteCurvePointById_WithNoExistingCurvePoint() throws Exception {
 		try {
 			curvePointServiceUnderTest.deleteCurvePointById(15);
 		} catch (NullPointerException e) {

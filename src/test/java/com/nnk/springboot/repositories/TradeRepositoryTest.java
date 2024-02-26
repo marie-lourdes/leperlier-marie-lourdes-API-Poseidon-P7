@@ -26,15 +26,17 @@ public class TradeRepositoryTest {
 	@BeforeEach
 	public void setUpPerTest() {
 		trade = new Trade("Trade Account", "Type");
+		tradeRepository.save(trade);
 	}
 
 	@DisplayName("test for save Trade operation")
 	@Test
 	public void givenTradeObject_whenSave_thenReturnSavedTrade() throws Exception {
 		try {
+			Trade trade = new Trade("Trade Account test", "Type");
 			trade = tradeRepository.save(trade);
 			assertNotNull(trade.getTradeId());
-			assertTrue(trade.getAccount().equals("Trade Account"));
+			assertTrue(trade.getAccount().equals("Trade Account test"));
 		} catch (AssertionError e) {
 			fail(e.getMessage());
 		}
