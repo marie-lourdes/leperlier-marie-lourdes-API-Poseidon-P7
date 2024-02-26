@@ -2,7 +2,6 @@ package com.nnk.springboot.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -19,14 +18,9 @@ public class WebSecurity {
 			requests.requestMatchers("/app/secure/article-details").hasRole("ADMIN");
 			requests.requestMatchers("/user/**").hasRole("ADMIN");
 			requests.requestMatchers("/ruleName/**").hasRole("ADMIN");
-			requests.requestMatchers("/bidList/**").hasRole("ADMIN");
-			requests.requestMatchers("/curvePoint/**").hasRole("ADMIN");
-			requests.requestMatchers("/rating/**").hasRole("ADMIN");	
-			requests.requestMatchers("/trade/**").hasRole("ADMIN");
-			requests.requestMatchers(HttpMethod.GET,"/bidList/list").hasRole("USER");
-			requests.requestMatchers(HttpMethod.GET,"/curvePoint/**").hasRole("USER");
-			requests.requestMatchers(HttpMethod.GET,"/rating/**").hasRole("USER");	
-			requests.requestMatchers(HttpMethod.GET,"/trade/**").hasRole("USER");
+			requests.requestMatchers("/*/add").hasRole("ADMIN");
+			requests.requestMatchers("/*/update/**").hasRole("ADMIN");
+			requests.requestMatchers("/*/delete/**").hasRole("ADMIN");
 			requests.anyRequest().authenticated();
 
 		})	/*.rememberMe((remember) -> {
