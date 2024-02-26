@@ -115,7 +115,7 @@ public class TradeController {
 	@GetMapping("/update/{id}")
 	public ModelAndView getUpdateFormTradeListPage(@PathVariable("id") Integer id, Model model) {
 		// TODO: get Trade by Id and to model then show to the form
-		TradeDTO tradeToUpdate = new TradeDTO();
+		Trade tradeToUpdate = new Trade();
 		try {
 			tradeToUpdate = tradeService.getTradeById(id);
 			if (tradeToUpdate != null) {

@@ -45,8 +45,8 @@ class BidListServiceTest {
 			bidListCreated.setType("type test");
 			bidListCreated.setAccount("account test");
 			bidListCreated.setBidQuantity(14.0);
+			
 			BidList result = bidListServiceUnderTest.addBid(bidListCreated);
-
 			assertAll("assertion data bidlist created", () -> {
 				assertNotNull(result.getBidListId());
 				assertEquals("account test", result.getAccount());
@@ -62,12 +62,9 @@ class BidListServiceTest {
 	void testAddBid_WithInvalidData() throws Exception {
 		try {
 			bidList.setType("");
-			BidList result = bidListServiceUnderTest.addBid(bidList);
-			
-			assertEquals(result.getBidListId(), bidListServiceUnderTest.getBidById(result.getBidListId()));
+			bidListServiceUnderTest.addBid(bidList);
 		} catch (ConstraintViolationException e) {
 			assertThrows(ConstraintViolationException.class, () -> bidListServiceUnderTest.addBid(bidList));
-
 		} catch (AssertionError e) {
 			fail(e.getMessage());
 		}

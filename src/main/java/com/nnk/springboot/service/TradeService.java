@@ -49,11 +49,10 @@ public class TradeService {
 		return tradeRegistered;
 	}
 
-	public TradeDTO getTradeById(Integer id) throws NullPointerException {
+	public Trade getTradeById(Integer id) throws NullPointerException {
 		Trade tradeFoundById = tradeRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("Trade " + id + " not found"));
-		TradeDTO tradeDTO = mapper.tradeToTradeDTO(tradeFoundById);
-		return tradeDTO;
+		return tradeFoundById ;
 	}
 
 	public List<TradeDTO> getAllTrades() throws NullPointerException {
@@ -86,5 +85,9 @@ public class TradeService {
 		tradeRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("Trade" + id + " not found for deleting"));
 		tradeRepository.deleteById(id);
+	}
+	
+	public void deleteAllTrades() throws Exception {
+		tradeRepository.deleteAll();
 	}
 }
