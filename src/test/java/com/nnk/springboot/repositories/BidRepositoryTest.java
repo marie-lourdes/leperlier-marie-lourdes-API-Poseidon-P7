@@ -36,7 +36,7 @@ public class BidRepositoryTest {
 		try {
 			bid = bidListRepository.save(bid);
 			assertNotNull(bid.getBidListId());
-			assertEquals(bid.getBidQuantity(), 10d, 10d);
+			assertEquals(bid.getBidQuantity(), 10d);
 		} catch (AssertionError e) {
 			fail(e.getMessage());
 		}
@@ -48,7 +48,7 @@ public class BidRepositoryTest {
 		try {
 			bid.setBidQuantity(20d);
 			bid = bidListRepository.save(bid);
-			assertEquals(bid.getBidQuantity(), 20d, 20d);
+			assertEquals(bid.getBidQuantity(), 20d);
 		} catch (AssertionError e) {
 			fail(e.getMessage());
 		}

@@ -15,6 +15,9 @@ import com.nnk.springboot.domain.dto.BidListDTO;
 import com.nnk.springboot.domain.dto.BidListMapperImpl;
 import com.nnk.springboot.repositories.IBidListRepository;
 
+import lombok.AllArgsConstructor;
+
+//@AllArgsConstructor
 @Service
 public class BidListService {
 	private static final Logger log = LogManager.getLogger(BidListService.class);

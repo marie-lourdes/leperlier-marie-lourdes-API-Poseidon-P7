@@ -53,7 +53,6 @@ public class BidList {
 	@Column(name = "sell_quantity")
 	private Double sellQuantity;
 	
-	@Pattern(regexp=ConstantsValidation.REGEX_DIGIT, message=ConstantsValidation.ERROR_NOT_DIGIT_MSG)
 	@Column(name = "bid")
 	private Double bid;
 
