@@ -21,6 +21,7 @@ public class RuleName {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
+	
 	@Pattern(regexp=ConstantsValidation.REGEX_CHARACTER, message=ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
 	@NotBlank(message = "Name "+ConstantsValidation.ERROR_BLANK_MSG )
 	@Column(name = "name")

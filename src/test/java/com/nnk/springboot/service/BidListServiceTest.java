@@ -45,8 +45,8 @@ class BidListServiceTest {
 			bidListCreated.setType("type test");
 			bidListCreated.setAccount("account test");
 			bidListCreated.setBidQuantity(14.0);
+			
 			BidList result = bidListServiceUnderTest.addBid(bidListCreated);
-
 			assertAll("assertion data bidlist created", () -> {
 				assertNotNull(result.getBidListId());
 				assertEquals("account test", result.getAccount());

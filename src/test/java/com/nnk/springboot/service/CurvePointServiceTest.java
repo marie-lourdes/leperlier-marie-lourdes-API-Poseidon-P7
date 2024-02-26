@@ -45,8 +45,8 @@ class CurvePointServiceTest {
 			curvePointCreated.setCurveId(12);
 			curvePointCreated.setTerm(10.0);
 			curvePointCreated.setValue(10.0);
+			
 			CurvePoint result = curvePointServiceUnderTest.addCurvePoint(curvePointCreated);
-
 			assertAll("assertion data curve point created", () -> {
 				assertNotNull(result.getId());
 				assertEquals(12, result.getCurveId());

@@ -72,5 +72,8 @@ public class RuleNameService {
 				.orElseThrow(() -> new NullPointerException("RuleName" + id + " not found for deleting"));
 		ruleNameRepository.deleteById(id);
 	}
-
+	
+	public void deleteAllRuleNames() throws Exception {
+		ruleNameRepository.deleteAll();
+	}
 }
