@@ -96,29 +96,28 @@ public class UserController {
 			BindingResult result) {
 
 		try {
-			if (!result.hasErrors()) {
 				BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 				userUpdated.setPassword(encoder.encode(userUpdated.getPassword()));
-				// model.addAttribute("userUpdateds", userService.findAll());
-				return "redirect:/user/list";
+				userService.updateUserById(id, userUpdated);
+		}  catch (ConstraintViolationException e) {
+			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
+			for (ConstraintViolation<?> constraint : violationsException) {
+				log.error("Errors fields of User created " + constraint.getMessageTemplate());
 			}
-		} catch (NullPointerException e) {
+
+			return "redirect:/user/update";
+		}catch (NullPointerException e) {
 			log.error(e.getMessage());
 			return "/error-404";
 		}
-
-		// userUpdated.setId(id);
-		// userService.save(userUpdated);
-		// model.addAttribute("userUpdateds", userService.findAll());
-		userService.updateUserById(id, userUpdated);
 		return "redirect:/user/list";
 	}
 
 	@GetMapping("/update/{id}")
 	public ModelAndView getUpdateFormBidListPage(@PathVariable("id") Integer id, Model model) {
-		UserDTO userToUpdate = new UserDTO();
+		User userToUpdate = new User();
 		try {
-			userToUpdate = userService.getUserById(id);
+			userToUpdate = userService.getUserEntityById(id);
 			if (userToUpdate != null) {
 				model.addAttribute("user", userToUpdate);
 			}

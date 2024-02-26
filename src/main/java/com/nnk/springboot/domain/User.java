@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
@@ -23,6 +24,7 @@ public class User {
 	@Column(name = "id")
 	private Integer id;
 
+	@Size(min=1, max=125)
 	@NotBlank(message = "Username " + ConstantsValidation.ERROR_BLANK_MSG)
 	@Column(name = " username")
 	private String username;

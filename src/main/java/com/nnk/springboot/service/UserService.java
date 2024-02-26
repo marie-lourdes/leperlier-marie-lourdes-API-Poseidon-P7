@@ -93,12 +93,13 @@ public class UserService {
 		User userToUpdate = new User();
 		userToUpdate = userRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("User" + id + " not found for updating"));
-
+		log.info("user to update {}",userToUpdate);
 		userToUpdate.setUsername(userUpdated.getUsername());
 		userToUpdate.setPassword(userUpdated.getPassword());
 		userToUpdate.setFullName(userUpdated.getFullName());
 		userToUpdate.setRole(userUpdated.getRole());
 		userToUpdate = userRepository.save(userToUpdate);
+		log.info("user updated {}",userToUpdate);
 		return userToUpdate;
 	}
 

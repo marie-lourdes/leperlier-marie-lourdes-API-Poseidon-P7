@@ -1,5 +1,7 @@
 @charset "UTF-8";
-
+header {
+	margin:2rem 0;
+}
 main {
 	display: flex;
 	flex-direction: column;

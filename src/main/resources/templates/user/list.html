@@ -8,11 +8,12 @@
 <body>
 	<div class="container">
 		<div class="row">
-			<div class="col-6">
+			<div class="col-6 ">
+				<a th:href="@{/}">Home</a>&nbsp;|&nbsp;<a th:href="@{/app/login}">Login</a>
 
 			</div>
 			<div class="col-6 text-right">
-				<a th:href="@{/}">Home</a>&nbsp;|&nbsp;<a th:href="@{/app/login}">Login</a>
+					Logged in user: <b th:text="${remoteUser}" class="user"> </b>
 			</div>
 		</div>
 		<div class="row">
