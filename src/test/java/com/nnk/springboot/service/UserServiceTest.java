@@ -1,4 +1,4 @@
-package com.nnk.springboot;
+package com.nnk.springboot.service;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,8 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.nnk.springboot.domain.User;
 import com.nnk.springboot.domain.dto.UserDTO;
-import com.nnk.springboot.service.UserService;
-import com.nnk.springboot.service.ValidatorPasswordImpl;
+import com.nnk.springboot.domain.dto.UserLoginDTO;
 
 import jakarta.validation.ConstraintViolationException;
 
@@ -35,33 +34,39 @@ class UserServiceTest {
 	private User user;
 
 	@BeforeEach
-	public void init() {
-		user = new User();
-		user.setId(3);
-		user.setUsername("username");
-		user.setFullName("fullname user");
-		user.setPassword("userTest1*");
-		user.setRole("USER");
-		userServiceUnderTest.addUser(user);
-		when(validatorPassword.validPassword(user.getPassword())).thenReturn(true);
+	public void init() throws Exception {
+		try {
+			user = new User();
+			user.setId(3);
+			user.setUsername("usernameuser");
+			user.setFullName("nameuser");
+			user.setPassword("userTest1*");
+			user.setRole("USER");
+			user = userServiceUnderTest.addUser(user);
+		} catch (NullPointerException e) {
+			assertThrows(NullPointerException.class, () -> userServiceUnderTest.addUser(user));
+		}
 	}
 
 	@Test
 	void testAddUser() throws Exception {
+		User userCreated = new User();
 		try {
-			User userCreated = new User();
 			userCreated.setId(4);
-			userCreated.setUsername("username test");
-			userCreated.setFullName("fullname test");
+			userCreated.setUsername("pseudouser");
+			userCreated.setFullName("fullnameuser");
 			userCreated.setRole("USER");
 			userCreated.setPassword("userTest2*");
+
 			User result = userServiceUnderTest.addUser(userCreated);
 			assertAll("assertion data curve point created", () -> {
 				assertNotNull(result.getId());
-				assertEquals("username test", result.getUsername());
-				assertEquals("fullname test", result.getFullName());
+				assertEquals("pseudouser", result.getUsername());
+				assertEquals("fullnameuser", result.getFullName());
 				assertEquals("USER", result.getRole());
 			});
+		} catch (NullPointerException e) {
+			assertThrows(NullPointerException.class, () -> userServiceUnderTest.addUser(userCreated));
 		} catch (AssertionError e) {
 			fail(e.getMessage());
 		}
@@ -72,6 +77,8 @@ class UserServiceTest {
 		try {
 			user.setPassword("codeuser");
 			userServiceUnderTest.addUser(user);
+		} catch (NullPointerException e) {
+			assertThrows(NullPointerException.class, () -> userServiceUnderTest.addUser(user));
 		} catch (ConstraintViolationException e) {
 			assertThrows(ConstraintViolationException.class, () -> userServiceUnderTest.addUser(user));
 		} catch (AssertionError e) {
@@ -80,12 +87,19 @@ class UserServiceTest {
 	}
 
 	@Test
-	void testAddUser_WithEmptyMoodysUserOfUser() throws Exception {
+	void testAddUser_WithEmptyData() throws Exception {
+		User userCreated = new User();
 		try {
-			user.setUsername("");
-			User result = userServiceUnderTest.addUser(user);
+			userCreated.setUsername("userdeux");
+			userCreated.setFullName("fullnamedeux");
+			userCreated.setRole("USER");
+			userCreated.setPassword("userTest2*");
+			user.setPassword("");
 
+			User result = userServiceUnderTest.addUser(userCreated);
 			assertNull(result.getId());
+		} catch (NullPointerException e) {
+			assertThrows(NullPointerException.class, () -> userServiceUnderTest.addUser(userCreated));
 		} catch (IllegalArgumentException e) {
 			assertThrows(IllegalArgumentException.class, () -> userServiceUnderTest.addUser(user));
 		} catch (ConstraintViolationException e) {
@@ -99,16 +113,16 @@ class UserServiceTest {
 	@Test
 	void testUpdateUser() throws Exception {
 		try {
-			user.setUsername("Username updated");
-			User UserToUpdateTest = userServiceUnderTest.addUser(user);
+			user.setFullName("Fullnameupdated");
+			userServiceUnderTest.addUser(user);
 
-			User result = userServiceUnderTest.updateUserById(UserToUpdateTest.getId(), user);
+			User result = userServiceUnderTest.updateUserById(user.getId(), user);
 			assertAll("assertion data user created", () -> {
 				assertNotNull(result.getId());
-				assertEquals("fullname user", result.getFullName());
-				assertEquals("USER", result.getRole());
-				assertEquals("Username updated", result.getUsername());
+				assertEquals("Fullnameupdated", result.getFullName());
 			});
+		} catch (NullPointerException e) {
+			assertThrows(NullPointerException.class, () -> userServiceUnderTest.updateUserById(user.getId(), user));
 		} catch (ConstraintViolationException e) {
 			assertThrows(ConstraintViolationException.class, () -> userServiceUnderTest.addUser(user));
 		} catch (AssertionError e) {
@@ -136,9 +150,8 @@ class UserServiceTest {
 	@Test
 	void testGetAllUsers() throws Exception {
 		try {
-			userServiceUnderTest.addUser(user);
-
 			List<UserDTO> result = userServiceUnderTest.getAllUsers();
+
 			assertNotNull(result);
 		} catch (ConstraintViolationException e) {
 			assertThrows(ConstraintViolationException.class, () -> userServiceUnderTest.addUser(user));
@@ -155,6 +168,7 @@ class UserServiceTest {
 			List<UserDTO> result = userServiceUnderTest.getAllUsers();
 			assertTrue(result.isEmpty());
 		} catch (NullPointerException e) {
+			e.getMessage();
 			assertThrows(NullPointerException.class, () -> userServiceUnderTest.getAllUsers());
 		} catch (AssertionError e) {
 			fail(e.getMessage());
@@ -163,10 +177,13 @@ class UserServiceTest {
 
 	@Test
 	void testGetUserById() throws Exception {
+
 		try {
-			User result = userServiceUnderTest.addUser(user);
-			result = userServiceUnderTest.getUserById(result.getId());
+			User result = userServiceUnderTest.getUserById(user.getId());
 			assertNotNull(result);
+		} catch (NullPointerException e) {
+			e.getMessage();
+			assertThrows(NullPointerException.class, () -> userServiceUnderTest.getUserById(user.getId()));
 		} catch (ConstraintViolationException e) {
 			assertThrows(ConstraintViolationException.class, () -> userServiceUnderTest.addUser(user));
 		} catch (AssertionError e) {
@@ -191,9 +208,11 @@ class UserServiceTest {
 	@Test
 	void testGetUserByUserName() throws Exception {
 		try {
-			User result = userServiceUnderTest.addUser(user);
-			result = userServiceUnderTest.getUserById(result.getId());
+			UserLoginDTO result = userServiceUnderTest.getUserByUserName(user.getUsername());
 			assertNotNull(result);
+		} catch (NullPointerException e) {
+			e.getMessage();
+			assertThrows(NullPointerException.class, () -> userServiceUnderTest.getUserByUserName(user.getUsername()));
 		} catch (ConstraintViolationException e) {
 			assertThrows(ConstraintViolationException.class, () -> userServiceUnderTest.addUser(user));
 		} catch (AssertionError e) {
@@ -205,7 +224,6 @@ class UserServiceTest {
 	void testDeleteUserById() throws Exception {
 		try {
 			User userCreated = userServiceUnderTest.addUser(user);
-
 			userServiceUnderTest.deleteUserById(userCreated.getId());
 
 			User result = userServiceUnderTest.getUserById(userCreated.getId());

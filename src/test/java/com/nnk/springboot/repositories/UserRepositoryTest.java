@@ -13,11 +13,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.nnk.springboot.domain.User;
 
-/*public class UserRepositoryTest {
+@SpringBootTest
+public class UserRepositoryTest {
 	private User user;
 
 	@Autowired
@@ -40,6 +42,8 @@ import com.nnk.springboot.domain.User;
 	@Test
 	public void givenUserObject_whenSave_thenReturnSavedUser() throws Exception {
 		try {
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+			String pw = encoder.encode("userTest1$");	
 			User user = new User();
 			user.setFullName("FullName");
 			user.setUsername("Username");
@@ -104,4 +108,4 @@ import com.nnk.springboot.domain.User;
 			fail(e.getMessage());
 		}
 	}
-}*/
+}

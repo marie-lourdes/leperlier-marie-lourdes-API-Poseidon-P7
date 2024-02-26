@@ -15,6 +15,8 @@ import com.nnk.springboot.domain.dto.UserLoginMapperImpl;
 import com.nnk.springboot.domain.dto.UserMapperImpl;
 import com.nnk.springboot.repositories.IUserRepository;
 
+import lombok.AllArgsConstructor;
+@AllArgsConstructor
 @Service
 public class UserService {
 	private static final Logger log = LogManager.getLogger(UserService.class);
@@ -33,20 +35,26 @@ public class UserService {
 
 	public User addUser(User userCreated) throws NullPointerException {
 		User userRegistered = new User();
-
+		UserLoginDTO existingUser= new UserLoginDTO();
+		if (userCreated == null ) {	
+			throw new IllegalArgumentException("Empty data of User " + userCreated + " provided and created");
+		}else {
+			 existingUser= this.getUserByUserName(userCreated.getUsername());
+		}
+		
 		try {
-			if (userCreated == null) {
-				throw new IllegalArgumentException("Empty data of User " + userCreated + " provided and created");
-			} else {
+			 if( existingUser != null) {
+				throw new IllegalArgumentException(" Username " + existingUser.getUsername()+ " already exist");
+			}
+			else {
 				boolean isPasswordUserValid = validatorPassword.validPassword(userCreated.getPassword());
-				if (isPasswordUserValid) {
+				if (isPasswordUserValid  ) {
 					throw new IllegalArgumentException("Password of User " + userCreated + " provided is incorrect");
 				}
 				userRegistered.setUsername(userCreated.getUsername());
 				userRegistered.setPassword(userCreated.getPassword());
 				userRegistered.setFullName(userCreated.getFullName());
 				userRegistered.setRole(userCreated.getRole());
-
 			}
 		} catch (IllegalArgumentException e) {
 			log.error(e.getMessage());
@@ -110,5 +118,9 @@ public class UserService {
 	
 	public void deleteAllUsers() throws Exception {
 		userRepository.deleteAll();
+	}
+
+	public UserService() {
+		// TODO Auto-generated constructor stub
 	}
 }
