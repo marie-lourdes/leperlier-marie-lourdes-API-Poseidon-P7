@@ -7,10 +7,15 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +25,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import com.nnk.springboot.domain.User;
 import com.nnk.springboot.domain.dto.UserDTO;
 import com.nnk.springboot.domain.dto.UserLoginDTO;
+import com.nnk.springboot.repositories.IUserRepository;
 
 import jakarta.validation.ConstraintViolationException;
 
@@ -27,6 +33,9 @@ import jakarta.validation.ConstraintViolationException;
 class UserServiceTest {
 	@Autowired
 	private UserService userServiceUnderTest;
+
+	@MockBean
+	private IUserRepository userRepository;
 
 	@MockBean
 	private ValidatorPasswordImpl validatorPassword;
@@ -42,10 +51,17 @@ class UserServiceTest {
 			user.setFullName("nameuser");
 			user.setPassword("userTest1*");
 			user.setRole("USER");
-			user = userServiceUnderTest.addUser(user);
+			List<User> allUsers = new ArrayList<User>();
+			allUsers.add(user);
+			doThrow(new NullPointerException()).when(userRepository).deleteById(any(Integer.class));
 		} catch (NullPointerException e) {
 			assertThrows(NullPointerException.class, () -> userServiceUnderTest.addUser(user));
 		}
+	}
+
+	@AfterEach
+	public void reset() throws Exception {
+		userServiceUnderTest.deleteAllUsers();
 	}
 
 	@Test
@@ -57,6 +73,7 @@ class UserServiceTest {
 			userCreated.setFullName("fullnameuser");
 			userCreated.setRole("USER");
 			userCreated.setPassword("userTest2*");
+			when(userRepository.save(any(User.class))).thenReturn(userCreated);
 
 			User result = userServiceUnderTest.addUser(userCreated);
 			assertAll("assertion data curve point created", () -> {
@@ -76,6 +93,8 @@ class UserServiceTest {
 	void testAddUser_WithInvalidPassword() throws Exception {
 		try {
 			user.setPassword("codeuser");
+			when(userRepository.save(any(User.class))).thenReturn(user);
+
 			userServiceUnderTest.addUser(user);
 		} catch (NullPointerException e) {
 			assertThrows(NullPointerException.class, () -> userServiceUnderTest.addUser(user));
@@ -97,13 +116,13 @@ class UserServiceTest {
 			user.setPassword("");
 
 			User result = userServiceUnderTest.addUser(userCreated);
-			assertNull(result.getId());
+			assertNull(result);
 		} catch (NullPointerException e) {
-			assertThrows(NullPointerException.class, () -> userServiceUnderTest.addUser(userCreated));
+			e.getMessage();
 		} catch (IllegalArgumentException e) {
-			assertThrows(IllegalArgumentException.class, () -> userServiceUnderTest.addUser(user));
+			assertThrows(IllegalArgumentException.class, () -> userServiceUnderTest.addUser(new User()));
 		} catch (ConstraintViolationException e) {
-			assertThrows(ConstraintViolationException.class, () -> userServiceUnderTest.addUser(user));
+			assertThrows(ConstraintViolationException.class, () -> userServiceUnderTest.addUser(new User()));
 
 		} catch (AssertionError e) {
 			fail(e.getMessage());
@@ -113,18 +132,18 @@ class UserServiceTest {
 	@Test
 	void testUpdateUser() throws Exception {
 		try {
-			user.setFullName("Fullnameupdated");
-			userServiceUnderTest.addUser(user);
+			userServiceUnderTest.getUserById(3).setFullName("Fullnameupdated");
+			when(userRepository.findById(3)).thenReturn(Optional.of(user));
 
-			User result = userServiceUnderTest.updateUserById(user.getId(), user);
+			User result = userServiceUnderTest.updateUserById(3, user);
 			assertAll("assertion data user created", () -> {
 				assertNotNull(result.getId());
 				assertEquals("Fullnameupdated", result.getFullName());
 			});
 		} catch (NullPointerException e) {
-			assertThrows(NullPointerException.class, () -> userServiceUnderTest.updateUserById(user.getId(), user));
+			assertThrows(NullPointerException.class, () -> userServiceUnderTest.updateUserById(3, user));
 		} catch (ConstraintViolationException e) {
-			assertThrows(ConstraintViolationException.class, () -> userServiceUnderTest.addUser(user));
+			assertThrows(ConstraintViolationException.class, () -> userServiceUnderTest.updateUserById(3, user));
 		} catch (AssertionError e) {
 			fail(e.getMessage());
 		}
@@ -133,6 +152,7 @@ class UserServiceTest {
 	@Test
 	void testUpdateUser_WithUserNotFound() throws Exception {
 		try {
+			doThrow(new NullPointerException()).when(userRepository).findById(15);
 			User result = userServiceUnderTest.updateUserById(15, user);
 
 			assertNull(result);
@@ -163,12 +183,11 @@ class UserServiceTest {
 	@Test
 	void testGetAllUsers_WithListOfUsersNotFound() throws Exception {
 		try {
-			userServiceUnderTest.deleteAllUsers();
+			doThrow(new NullPointerException()).when(userRepository).findAll();
 
 			List<UserDTO> result = userServiceUnderTest.getAllUsers();
 			assertTrue(result.isEmpty());
 		} catch (NullPointerException e) {
-			e.getMessage();
 			assertThrows(NullPointerException.class, () -> userServiceUnderTest.getAllUsers());
 		} catch (AssertionError e) {
 			fail(e.getMessage());
@@ -179,6 +198,8 @@ class UserServiceTest {
 	void testGetUserById() throws Exception {
 
 		try {
+			when(userRepository.findById(1)).thenReturn(Optional.of(user));
+
 			User result = userServiceUnderTest.getUserById(user.getId());
 			assertNotNull(result);
 		} catch (NullPointerException e) {

@@ -35,6 +35,7 @@ class BidListServiceTest {
 
 	@MockBean
 	private IBidListRepository bidListRepository;
+	
 	private BidList bidList;
 
 	@BeforeEach
