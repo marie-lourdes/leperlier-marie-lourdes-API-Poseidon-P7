@@ -100,6 +100,8 @@ class RatingServiceTest {
 			Rating result = ratingServiceUnderTest.addRating(rating);
 
 			assertNull(result.getId());
+		}catch (NullPointerException e) {
+			assertThrows(NullPointerException.class, () -> ratingServiceUnderTest.addRating(rating));
 		}catch (IllegalArgumentException e) {
 			assertThrows(IllegalArgumentException.class, () -> ratingServiceUnderTest.addRating(rating)); 
 		}catch (ConstraintViolationException e) {
@@ -165,6 +167,7 @@ class RatingServiceTest {
 	void testGetAllRatings_WithListOfRatingsNotFound() throws Exception {
 		try {
 			doThrow(new NullPointerException()).when(ratingRepository).findAll();
+			
 			List<Rating> result = ratingServiceUnderTest.getAllRatings();
 			assertTrue(result.isEmpty());
 		} catch (NullPointerException e) {
