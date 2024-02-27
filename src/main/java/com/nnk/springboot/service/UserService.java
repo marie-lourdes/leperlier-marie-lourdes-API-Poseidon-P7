@@ -33,9 +33,9 @@ public class UserService {
 	@Autowired
 	private ValidatorPasswordImpl validatorPassword;
 
-	public User addUser(User userCreated) throws NullPointerException {
+	public User addUser(User userCreated) throws NullPointerException,IllegalArgumentException {
 		User userRegistered = new User();
-		 boolean hasExistingUser=getAllUsers().removeIf(user-> user.equals(userCreated.getUsername()));
+		 boolean hasExistingUser=getAllUsers().removeIf(user-> user.getUsername().equals(userCreated.getUsername()));
 		
 			boolean isPasswordUserValid = validatorPassword.validPassword(userCreated.getPassword());	
 			 if (userCreated != null ) {

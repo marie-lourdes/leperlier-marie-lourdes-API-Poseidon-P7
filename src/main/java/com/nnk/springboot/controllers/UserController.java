@@ -56,6 +56,9 @@ public class UserController {
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
 			return "user/add";
+		}catch (IllegalArgumentException e) {
+			log.error(e.getMessage());
+			return "user/add";
 		}
 	}
 
