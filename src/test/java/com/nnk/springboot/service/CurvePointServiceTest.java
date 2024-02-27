@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.domain.CurvePoint;
 import com.nnk.springboot.domain.dto.CurvePointDTO;
 import com.nnk.springboot.repositories.ICurvePointRepository;
@@ -65,8 +64,8 @@ class CurvePointServiceTest {
 			curvePointCreated.setTerm(10.0);
 			curvePointCreated.setValue(10.0);
 			when(curvePointRepository.save(any(CurvePoint.class))).thenReturn(curvePointCreated);
+			
 			CurvePoint result = curvePointServiceUnderTest.addCurvePoint(curvePointCreated);
-
 			assertAll("assertion data curve point created", () -> {
 				assertNotNull(result.getId());
 				assertEquals(12, result.getCurveId());
@@ -120,7 +119,7 @@ class CurvePointServiceTest {
 			curvePointServiceUnderTest.getCurvePointById(2).setCurveId(13);
 			when(curvePointRepository.findById(2)).thenReturn(Optional.of(curvePoint));
 
-			CurvePoint result = curvePointServiceUnderTest.updateCurvePointById(2, curvePoint);
+			CurvePoint result = curvePointServiceUnderTest.updateCurvePointById(12, curvePoint);
 			assertAll("assertion data bidlist created", () -> {
 				assertNotNull(result.getId());
 				assertEquals(13, result.getCurveId());
@@ -187,6 +186,7 @@ class CurvePointServiceTest {
 		try {
 			when(curvePointRepository.findById(2)).thenReturn(Optional.of(curvePoint));
 			CurvePoint result = curvePointServiceUnderTest.getCurvePointById(2);
+			
 			assertNotNull(result);
 		} catch (AssertionError e) {
 			fail(e.getMessage());
