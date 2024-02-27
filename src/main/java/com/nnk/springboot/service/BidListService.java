@@ -18,8 +18,6 @@ import com.nnk.springboot.repositories.IBidListRepository;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
-/*@AllArgsConstructor
-@RequiredArgsConstructor*/
 @Service
 public class BidListService {
 	private static final Logger log = LogManager.getLogger(BidListService.class);

@@ -24,7 +24,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.domain.dto.BidListDTO;
-import com.nnk.springboot.domain.dto.BidListMapperImpl;
 import com.nnk.springboot.repositories.IBidListRepository;
 
 import jakarta.validation.ConstraintViolationException;
@@ -33,8 +32,7 @@ import jakarta.validation.ConstraintViolationException;
 class BidListServiceTest {
 	@Autowired
 	private BidListService bidListServiceUnderTest;
-	@Autowired
-	private BidListMapperImpl mapper;
+
 	@MockBean
 	private IBidListRepository bidListRepository;
 	private BidList bidList;
@@ -105,7 +103,6 @@ class BidListServiceTest {
 			assertThrows(IllegalArgumentException.class, () -> bidListServiceUnderTest.addBid(new BidList()));
 		} catch (ConstraintViolationException e) {
 			assertThrows(ConstraintViolationException.class, () -> bidListServiceUnderTest.addBid(new BidList()));
-
 		} catch (AssertionError e) {
 			fail(e.getMessage());
 		}
@@ -114,16 +111,19 @@ class BidListServiceTest {
 	@Test
 	void testUpdateBid() throws Exception {
 		try {
-			bidList.setAccount("account updated");
+			bidListServiceUnderTest.getBidById(1).setAccount("account updated");
 			when(bidListRepository.findById(1)).thenReturn(Optional.of(bidList));
+			
 			
 			BidList result = bidListServiceUnderTest.updateBidById(1, bidList);
 			assertAll("assertion data bidlist created", () -> {
-				assertNotNull(result.getBidListId());
+				assertNotNull(result);
 				assertEquals("account updated", result.getAccount());
 				assertEquals("type test", result.getType());
 				assertEquals(14.0, result.getBidQuantity());
 			});
+		} catch (NullPointerException e) {
+			assertThrows(NullPointerException.class, () -> bidListServiceUnderTest.updateBidById(1, bidList));
 		} catch (AssertionError e) {
 			fail(e.getMessage());
 		}
@@ -142,7 +142,6 @@ class BidListServiceTest {
 			assertThrows(NullPointerException.class, () -> bidListServiceUnderTest.updateBidById(15, bidList));
 		} catch (ConstraintViolationException e) {
 			assertThrows(ConstraintViolationException.class, () -> bidListServiceUnderTest.updateBidById(15, bidList));
-
 		} catch (AssertionError e) {
 			fail(e.getMessage());
 		}

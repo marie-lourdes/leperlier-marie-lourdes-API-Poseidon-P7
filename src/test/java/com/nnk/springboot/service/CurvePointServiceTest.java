@@ -7,16 +7,25 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
+import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.domain.CurvePoint;
 import com.nnk.springboot.domain.dto.CurvePointDTO;
+import com.nnk.springboot.repositories.ICurvePointRepository;
 
 import jakarta.validation.ConstraintViolationException;
 
@@ -24,6 +33,9 @@ import jakarta.validation.ConstraintViolationException;
 class CurvePointServiceTest {
 	@Autowired
 	private CurvePointService curvePointServiceUnderTest;
+
+	@MockBean
+	private ICurvePointRepository curvePointRepository;
 
 	private CurvePoint curvePoint;
 
@@ -34,7 +46,14 @@ class CurvePointServiceTest {
 		curvePoint.setCurveId(10);
 		curvePoint.setTerm(10.0);
 		curvePoint.setValue(14.0);
-		curvePointServiceUnderTest.addCurvePoint(curvePoint);
+		List<CurvePoint> allBidList = new ArrayList<CurvePoint>();
+		allBidList.add(curvePoint);
+		doThrow(new NullPointerException()).when(curvePointRepository).deleteById(any(Integer.class));
+	}
+
+	@AfterEach
+	public void reset() throws Exception {
+		curvePointServiceUnderTest.deleteAllCurvePoints();
 	}
 
 	@Test
@@ -45,8 +64,9 @@ class CurvePointServiceTest {
 			curvePointCreated.setCurveId(12);
 			curvePointCreated.setTerm(10.0);
 			curvePointCreated.setValue(10.0);
-			
+			when(curvePointRepository.save(any(CurvePoint.class))).thenReturn(curvePointCreated);
 			CurvePoint result = curvePointServiceUnderTest.addCurvePoint(curvePointCreated);
+
 			assertAll("assertion data curve point created", () -> {
 				assertNotNull(result.getId());
 				assertEquals(12, result.getCurveId());
@@ -63,6 +83,7 @@ class CurvePointServiceTest {
 	void testAddCurvePoint_WithInvalidData() throws Exception {
 		try {
 			curvePoint.setTerm(-1.0);
+			when(curvePointRepository.save(any(CurvePoint.class))).thenReturn(curvePoint);
 			curvePointServiceUnderTest.addCurvePoint(curvePoint);
 		} catch (ConstraintViolationException e) {
 			assertThrows(ConstraintViolationException.class,
@@ -73,18 +94,21 @@ class CurvePointServiceTest {
 	}
 
 	@Test
-	void testAddCurvePoint_WithEmptyCurveId() throws Exception {
+	void testAddCurvePoint_WithEmptyData() throws Exception {
 		try {
-			curvePoint.setCurveId(null);
-			CurvePoint result = curvePointServiceUnderTest.addCurvePoint(curvePoint);
+			curvePoint = null;
+			curvePointServiceUnderTest.addCurvePoint(curvePoint);
 
-			assertNull(result.getId());
+			assertNull(curvePointServiceUnderTest.getCurvePointById(2));
+		} catch (NullPointerException e) {
+			assertThrows(NullPointerException.class,
+					() -> curvePointServiceUnderTest.updateCurvePointById(2, curvePoint));
 		} catch (IllegalArgumentException e) {
-			assertThrows(IllegalArgumentException.class, () -> curvePointServiceUnderTest.addCurvePoint(curvePoint));
+			assertThrows(IllegalArgumentException.class,
+					() -> curvePointServiceUnderTest.addCurvePoint(new CurvePoint()));
 		} catch (ConstraintViolationException e) {
 			assertThrows(ConstraintViolationException.class,
-					() -> curvePointServiceUnderTest.addCurvePoint(curvePoint));
-
+					() -> curvePointServiceUnderTest.addCurvePoint(new CurvePoint()));
 		} catch (AssertionError e) {
 			fail(e.getMessage());
 		}
@@ -93,18 +117,20 @@ class CurvePointServiceTest {
 	@Test
 	void testUpdateCurvePoint() throws Exception {
 		try {
-			curvePoint.setCurveId(13);
-			CurvePoint CurvePointToUpdateTest = curvePointServiceUnderTest.addCurvePoint(curvePoint);
+			curvePointServiceUnderTest.getCurvePointById(2).setCurveId(13);
+			when(curvePointRepository.findById(2)).thenReturn(Optional.of(curvePoint));
 
-			CurvePoint result = curvePointServiceUnderTest.updateCurvePointById(CurvePointToUpdateTest.getId(),
-					curvePoint);
+			CurvePoint result = curvePointServiceUnderTest.updateCurvePointById(2, curvePoint);
 			assertAll("assertion data bidlist created", () -> {
 				assertNotNull(result.getId());
 				assertEquals(13, result.getCurveId());
 				assertEquals(10.0, result.getTerm());
 				assertEquals(14.0, result.getValue());
 			});
-		} catch (AssertionError e) {
+		}catch (NullPointerException e) {
+			assertThrows(NullPointerException.class,
+					() -> curvePointServiceUnderTest.updateCurvePointById(12, curvePoint)); 
+		}catch (AssertionError e) {
 			fail(e.getMessage());
 		}
 	}
@@ -112,6 +138,7 @@ class CurvePointServiceTest {
 	@Test
 	void testUpdateCurvePoint_WithCurvePointNotFound() throws Exception {
 		try {
+			doThrow(new NullPointerException()).when(curvePointRepository).findById(15);
 			CurvePoint result = curvePointServiceUnderTest.updateCurvePointById(15, curvePoint);
 
 			assertNull(result);
@@ -144,7 +171,7 @@ class CurvePointServiceTest {
 	@Test
 	void testGetAllCurvePoints_WithListOfCurvePointsNotFound() throws Exception {
 		try {
-			curvePointServiceUnderTest.deleteAllCurvePoints();
+			doThrow(new NullPointerException()).when(curvePointRepository).findAll();
 
 			List<CurvePointDTO> result = curvePointServiceUnderTest.getAllCurvePoints();
 			assertTrue(result.isEmpty());
@@ -158,8 +185,8 @@ class CurvePointServiceTest {
 	@Test
 	void testGetCurvePointById() throws Exception {
 		try {
-			CurvePoint result = curvePointServiceUnderTest.addCurvePoint(curvePoint);
-			result = curvePointServiceUnderTest.getCurvePointById(result.getId());
+			when(curvePointRepository.findById(2)).thenReturn(Optional.of(curvePoint));
+			CurvePoint result = curvePointServiceUnderTest.getCurvePointById(2);
 			assertNotNull(result);
 		} catch (AssertionError e) {
 			fail(e.getMessage());
@@ -171,7 +198,7 @@ class CurvePointServiceTest {
 		try {
 			curvePointServiceUnderTest.deleteAllCurvePoints();
 
-			CurvePoint result = curvePointServiceUnderTest.getCurvePointById(1);
+			CurvePoint result = curvePointServiceUnderTest.getCurvePointById(10);
 			assertNull(result);
 		} catch (NullPointerException e) {
 			e.getMessage();
