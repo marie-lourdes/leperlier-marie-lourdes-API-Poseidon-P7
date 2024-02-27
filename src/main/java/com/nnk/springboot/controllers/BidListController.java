@@ -43,7 +43,6 @@ public class BidListController {
 		 * if(result.hasErrors()) { return new ModelAndView("redirect:/bidList/add"); }
 		 */
 		try {
-			// bidListService.addBid(bidCreated, principal.getName());
 			bidListService.addBid(bidCreated);
 			return "redirect:/bidList/list";
 		} catch (ConstraintViolationException e) {

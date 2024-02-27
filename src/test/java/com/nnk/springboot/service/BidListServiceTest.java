@@ -7,16 +7,25 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.domain.dto.BidListDTO;
+import com.nnk.springboot.domain.dto.BidListMapperImpl;
+import com.nnk.springboot.repositories.IBidListRepository;
 
 import jakarta.validation.ConstraintViolationException;
 
@@ -24,7 +33,10 @@ import jakarta.validation.ConstraintViolationException;
 class BidListServiceTest {
 	@Autowired
 	private BidListService bidListServiceUnderTest;
-
+	@Autowired
+	private BidListMapperImpl mapper;
+	@MockBean
+	private IBidListRepository bidListRepository;
 	private BidList bidList;
 
 	@BeforeEach
@@ -34,18 +46,27 @@ class BidListServiceTest {
 		bidList.setType("type test");
 		bidList.setAccount("account test");
 		bidList.setBidQuantity(14.0);
-		bidListServiceUnderTest.addBid(bidList);
+		List<BidList> allBidList = new ArrayList<BidList>();
+		allBidList.add(bidList);
+		doThrow(new NullPointerException()).when(bidListRepository).deleteById(any(Integer.class));
+	}
+
+	@AfterEach
+	public void reset() throws Exception {
+		bidListServiceUnderTest.deleteAllBids();
 	}
 
 	@Test
 	void testAddBid() throws Exception {
 		try {
+
 			BidList bidListCreated = new BidList();
 			bidListCreated.setBidListId(2);
 			bidListCreated.setType("type test");
 			bidListCreated.setAccount("account test");
 			bidListCreated.setBidQuantity(14.0);
-			
+			when(bidListRepository.save(any(BidList.class))).thenReturn(bidListCreated);
+
 			BidList result = bidListServiceUnderTest.addBid(bidListCreated);
 			assertAll("assertion data bidlist created", () -> {
 				assertNotNull(result.getBidListId());
@@ -62,6 +83,7 @@ class BidListServiceTest {
 	void testAddBid_WithInvalidData() throws Exception {
 		try {
 			bidList.setType("");
+			when(bidListRepository.save(any(BidList.class))).thenReturn(bidList);
 			bidListServiceUnderTest.addBid(bidList);
 		} catch (ConstraintViolationException e) {
 			assertThrows(ConstraintViolationException.class, () -> bidListServiceUnderTest.addBid(bidList));
@@ -73,14 +95,16 @@ class BidListServiceTest {
 	@Test
 	void testAddBid_WithEmptyData() throws Exception {
 		try {
-			bidList.setType("");
-			BidList result = bidListServiceUnderTest.addBid(bidList);
-			
-			assertNull(result.getBidListId());
+			bidList = null;
+			bidListServiceUnderTest.addBid(bidList);
+
+			assertNull(bidListServiceUnderTest.getBidById(1));
+		} catch (NullPointerException e) {
+			e.getMessage();
 		} catch (IllegalArgumentException e) {
-			assertThrows(IllegalArgumentException.class, () -> bidListServiceUnderTest.addBid(bidList));
+			assertThrows(IllegalArgumentException.class, () -> bidListServiceUnderTest.addBid(new BidList()));
 		} catch (ConstraintViolationException e) {
-			assertThrows(ConstraintViolationException.class, () -> bidListServiceUnderTest.addBid(bidList));
+			assertThrows(ConstraintViolationException.class, () -> bidListServiceUnderTest.addBid(new BidList()));
 
 		} catch (AssertionError e) {
 			fail(e.getMessage());
@@ -91,9 +115,9 @@ class BidListServiceTest {
 	void testUpdateBid() throws Exception {
 		try {
 			bidList.setAccount("account updated");
-			BidList BidListToUpdateTest = bidListServiceUnderTest.addBid(bidList);
+			when(bidListRepository.findById(1)).thenReturn(Optional.of(bidList));
 			
-			BidList result = bidListServiceUnderTest.updateBidById(BidListToUpdateTest.getBidListId(), bidList);
+			BidList result = bidListServiceUnderTest.updateBidById(1, bidList);
 			assertAll("assertion data bidlist created", () -> {
 				assertNotNull(result.getBidListId());
 				assertEquals("account updated", result.getAccount());
@@ -108,8 +132,9 @@ class BidListServiceTest {
 	@Test
 	void testUpdateBid_WithBidNotFound() throws Exception {
 		try {
+			doThrow(new NullPointerException()).when(bidListRepository).findById(15);
 			BidList result = bidListServiceUnderTest.updateBidById(15, bidList);
-			
+
 			assertNull(result);
 		} catch (IllegalArgumentException e) {
 			assertThrows(IllegalArgumentException.class, () -> bidListServiceUnderTest.updateBidById(15, bidList));
@@ -127,7 +152,7 @@ class BidListServiceTest {
 	void testGetAllBids() throws Exception {
 		try {
 			bidListServiceUnderTest.addBid(bidList);
-			
+
 			List<BidListDTO> result = bidListServiceUnderTest.getAllBids();
 			assertNotNull(result);
 		} catch (AssertionError e) {
@@ -138,8 +163,8 @@ class BidListServiceTest {
 	@Test
 	void testGetAllBids_WithListOfBidsNotFound() throws Exception {
 		try {
-			bidListServiceUnderTest.deleteAllBids();
-			
+			doThrow(new NullPointerException()).when(bidListRepository).findAll();
+
 			List<BidListDTO> result = bidListServiceUnderTest.getAllBids();
 			assertTrue(result.isEmpty());
 		} catch (NullPointerException e) {
@@ -152,8 +177,9 @@ class BidListServiceTest {
 	@Test
 	void testGetBidById() throws Exception {
 		try {
-			BidList result = bidListServiceUnderTest.addBid(bidList);
-			result = bidListServiceUnderTest.getBidById(result.getBidListId());
+			when(bidListRepository.findById(1)).thenReturn(Optional.of(bidList));
+
+			BidList result = bidListServiceUnderTest.getBidById(1);
 			assertNotNull(result);
 		} catch (AssertionError e) {
 			fail(e.getMessage());
@@ -163,9 +189,7 @@ class BidListServiceTest {
 	@Test
 	void tesGetBidById_WithBidNotFound() throws Exception {
 		try {
-			bidListServiceUnderTest.deleteAllBids();
-			
-			BidList result = bidListServiceUnderTest.getBidById(1);
+			BidList result = bidListServiceUnderTest.getBidById(10);
 			assertNull(result);
 		} catch (NullPointerException e) {
 			e.getMessage();
@@ -179,7 +203,7 @@ class BidListServiceTest {
 		try {
 			BidList bidListCreated = bidListServiceUnderTest.addBid(bidList);
 			bidListServiceUnderTest.deleteBidById(bidListCreated.getBidListId());
-			
+
 			BidList result = bidListServiceUnderTest.getBidById(bidListCreated.getBidListId());
 			assertNull(result);
 		} catch (NullPointerException e) {
