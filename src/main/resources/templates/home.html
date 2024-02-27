@@ -12,7 +12,7 @@
 		<header class="row">
 			<nav class="col-6">
 				<a th:href="@{/app/login}">Login</a> &nbsp;|&nbsp;
-				 <a th:href="@{/user/list}">User management</a>
+				<a th:href="@{/user/list}">User management</a>
 			</nav>
 			<div class="col-6 text-right" sec:authorize="isAuthenticated()">
 				Logged in user: <b class="user" sec:authentication="name"></b>
@@ -22,7 +22,9 @@
 			</div>
 		</header>
 		<main>
-			<h2> HOME PAGE </h2>
+			<div class="row">
+				<h2> HOME PAGE </h2>
+				<div class="row">
 		</main>
 	</div>
 </body>

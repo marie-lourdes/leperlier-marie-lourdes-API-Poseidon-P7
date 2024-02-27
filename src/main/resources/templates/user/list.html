@@ -7,14 +7,21 @@
 </head>
 <body>
 	<div class="container">
-		<header class="row">
-			<nav class="col-6 ">
+		<		<header class="row">
+			<nav class="col-6">
 				<a th:href="@{/}">Home</a>&nbsp;|&nbsp;
-				<a th:href="@{/app/login}">Login</a>
-
+				<a th:href="@{/app/login}">Login</a>&nbsp;|&nbsp;
+				<a th:href="@{/bidList/list}">Bid List</a>&nbsp;|&nbsp;
+				<a th:href="@{/curvePoint/list}">Curve Points</a>&nbsp;|&nbsp;
+				<a th:href="@{/rating/list}">Ratings</a>&nbsp;|&nbsp;
+				<a th:href="@{/trade/list}">Trade</a>&nbsp;|&nbsp;
+				<a th:href="@{/ruleName/list}">Rule</a>
 			</nav>
-			<div class="col-6 text-right">
-					Logged in user: <b th:text="${remoteUser}" class="user"> </b>
+			<div class="col-6 text-right"sec:authorize="isAuthenticated()">
+				Logged in user: <b class="user"sec:authentication="name"></b>
+				<form th:action="@{/logout}" method="post">
+					<input type="submit" value="Logout" />
+				</form>
 			</div>
 		</header>
 		<div class="row">
