@@ -15,8 +15,8 @@
 				<a th:href="@{/trade/list}">Trade</a>&nbsp;|&nbsp;
 				<a th:href="@{/ruleName/list}">Rule</a>
 			</nav>
-			<div class="col-6 text-right">
-				Logged in user: <b th:text="${remoteUser}" class="user"> </b>
+			<div class="col-6 text-right"sec:authorize="isAuthenticated()">
+				Logged in user: <b class="user"sec:authentication="name"></b>
 				<form th:action="@{/logout}" method="post">
 					<input type="submit" value="Logout" />
 				</form>

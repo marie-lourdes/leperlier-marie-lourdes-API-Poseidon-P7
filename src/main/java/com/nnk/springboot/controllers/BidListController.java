@@ -8,6 +8,7 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -74,8 +75,9 @@ public class BidListController {
 	}
 
 	@GetMapping("/list")
-	public String getBidListPage(HttpServletRequest httpServletRequest, Model model) {
+	public String getBidListPage(HttpServletRequest httpServletRequest, Model model,Authentication authentication ) {
 		// TODO: call service find all bids to show to the view
+		log.error("authentication {}",authentication.getAuthorities());
 		List<BidListDTO> bidLists = new ArrayList<BidListDTO>();
 		try {
 			bidLists = bidListService.getAllBids();

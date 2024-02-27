@@ -4,18 +4,26 @@
 <head>
 	<title> Home</title>
 	<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+	<link th:href="@{/css/main.css}" rel="stylesheet">
 </head>
 
 <body>
-	<h3> HOME PAGE </h3>
-	<p>
-		<a th:href="@{/app/login}">Login</a> or create one <a th:href="@{/user/list}">User management</a>
-	</p>
-	<div class="col-6 text-right">
-		Logged in user: <b th:text="${remoteUser}" class="user"> </b>
-		<form th:action="@{/logout}" method="post">
-			<input type="submit" value="Logout" />
-		</form>
+	<div class="container">
+		<header class="row">
+			<nav class="col-6">
+				<a th:href="@{/app/login}">Login</a> &nbsp;|&nbsp;
+				 <a th:href="@{/user/list}">User management</a>
+			</nav>
+			<div class="col-6 text-right" sec:authorize="isAuthenticated()">
+				Logged in user: <b class="user" sec:authentication="name"></b>
+				<form th:action="@{/logout}" method="post">
+					<input type="submit" value="Logout" />
+				</form>
+			</div>
+		</header>
+		<main>
+			<h2> HOME PAGE </h2>
+		</main>
 	</div>
 </body>
 

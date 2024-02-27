@@ -9,12 +9,21 @@
 
 <body>
 	<div class="container">
+		<header class="row">
+			<div class="col-6 text-right"sec:authorize="isAuthenticated()">
+				Logged in user: <b class="user"sec:authentication="name"></b>
+				<form th:action="@{/logout}" method="post">
+					<input type="submit" value="Logout" />
+				</form>
+			</div>
+		</header class="row">
 		<main>
 			<div class="row">
 				<h3>Access Denied Exception</h3>
 			</div>
+			
 			<div>
-				<a class="btn btn-primary btn-sm" href="/bidList/list">Dashboard Profil</a>
+				<a class="btn btn-primary btn-sm" href="/"> Home</a>
 			</div>
 			<p class="text-danger">You are not authorized for the requested data.</p>
 		</main>

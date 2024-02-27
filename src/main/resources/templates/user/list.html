@@ -7,15 +7,16 @@
 </head>
 <body>
 	<div class="container">
-		<div class="row">
-			<div class="col-6 ">
-				<a th:href="@{/}">Home</a>&nbsp;|&nbsp;<a th:href="@{/app/login}">Login</a>
+		<header class="row">
+			<nav class="col-6 ">
+				<a th:href="@{/}">Home</a>&nbsp;|&nbsp;
+				<a th:href="@{/app/login}">Login</a>
 
-			</div>
+			</nav>
 			<div class="col-6 text-right">
 					Logged in user: <b th:text="${remoteUser}" class="user"> </b>
 			</div>
-		</div>
+		</header>
 		<div class="row">
 			<h2>User List</h2>
 		</div>
