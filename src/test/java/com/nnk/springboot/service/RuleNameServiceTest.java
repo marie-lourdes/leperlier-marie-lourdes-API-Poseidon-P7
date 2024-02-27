@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import com.nnk.springboot.domain.Rating;
 import com.nnk.springboot.domain.RuleName;
 import com.nnk.springboot.repositories.IRuleNameRepository;
 
@@ -35,7 +34,7 @@ class RuleNameServiceTest {
 
 	@MockBean
 	private IRuleNameRepository ruleNameRepository;
-	
+
 	private RuleName ruleName;
 
 	@BeforeEach
@@ -47,17 +46,17 @@ class RuleNameServiceTest {
 		ruleName.setSqlPart("sql part test");
 		ruleName.setSqlStr("sql str test");
 		ruleName.setTemplate("template test");
-		ruleName.setDescription("description test");	
-		List<RuleName> allBidList = new ArrayList<RuleName>();
-		allBidList.add(ruleName);
+		ruleName.setDescription("description test");
+		List<RuleName> allRuleNames = new ArrayList<RuleName>();
+		allRuleNames.add(ruleName);
 		doThrow(new NullPointerException()).when(ruleNameRepository).deleteById(any(Integer.class));
 	}
-	
+
 	@AfterEach
 	public void reset() throws Exception {
 		ruleNameServiceUnderTest.deleteAllRuleNames();
 	}
-	
+
 	@Test
 	void testAddRuleName() throws Exception {
 		try {
@@ -70,7 +69,7 @@ class RuleNameServiceTest {
 			ruleName.setTemplate("template");
 			ruleName.setDescription("description");
 			when(ruleNameRepository.save(any(RuleName.class))).thenReturn(ruleName);
-			
+
 			RuleName result = ruleNameServiceUnderTest.addRuleName(ruleName);
 			assertAll("assertion data rulename created", () -> {
 				assertNotNull(result.getId());
@@ -102,14 +101,15 @@ class RuleNameServiceTest {
 	@Test
 	void testAddRuleName_WithEmptyData() throws Exception {
 		try {
-			ruleName=null;
+			ruleName = null;
 			RuleName result = ruleNameServiceUnderTest.addRuleName(ruleName);
 
 			assertNull(result);
-		}catch (IllegalArgumentException e) {
-			assertThrows(IllegalArgumentException.class, () -> ruleNameServiceUnderTest.addRuleName(new RuleName ()));
+		} catch (IllegalArgumentException e) {
+			assertThrows(IllegalArgumentException.class, () -> ruleNameServiceUnderTest.addRuleName(new RuleName()));
 		} catch (ConstraintViolationException e) {
-			assertThrows(ConstraintViolationException.class, () -> ruleNameServiceUnderTest.addRuleName(new RuleName ()));
+			assertThrows(ConstraintViolationException.class,
+					() -> ruleNameServiceUnderTest.addRuleName(new RuleName()));
 		} catch (AssertionError e) {
 			fail(e.getMessage());
 		}
@@ -118,9 +118,9 @@ class RuleNameServiceTest {
 	@Test
 	void testUpdateRuleName() throws Exception {
 		try {
-		    ruleNameServiceUnderTest.getRuleNameById(2).setName("name updated");
+			ruleNameServiceUnderTest.getRuleNameById(2).setName("name updated");
 			when(ruleNameRepository.findById(2)).thenReturn(Optional.of(ruleName));
-			
+
 			RuleName result = ruleNameServiceUnderTest.updateRuleNameById(2, ruleName);
 			assertAll("assertion data ruleName created", () -> {
 				assertNotNull(result.getId());
@@ -131,7 +131,7 @@ class RuleNameServiceTest {
 			});
 		} catch (NullPointerException e) {
 			assertThrows(NullPointerException.class, () -> ruleNameServiceUnderTest.updateRuleNameById(2, ruleName));
-		}catch (AssertionError e) {
+		} catch (AssertionError e) {
 			fail(e.getMessage());
 		}
 	}
@@ -173,7 +173,7 @@ class RuleNameServiceTest {
 		try {
 			doThrow(new NullPointerException()).when(ruleNameRepository).findAll();
 			List<RuleName> result = ruleNameServiceUnderTest.getAllRuleNames();
-			
+
 			assertTrue(result.isEmpty());
 		} catch (NullPointerException e) {
 			assertThrows(NullPointerException.class, () -> ruleNameServiceUnderTest.getAllRuleNames());
@@ -185,13 +185,13 @@ class RuleNameServiceTest {
 	@Test
 	void testGetRuleNameById() throws Exception {
 		try {
-			when(ruleNameRepository.findById(2)).thenReturn(Optional.of(ruleName));	
-			
-			RuleName	result = ruleNameServiceUnderTest.getRuleNameById(2);
+			when(ruleNameRepository.findById(2)).thenReturn(Optional.of(ruleName));
+
+			RuleName result = ruleNameServiceUnderTest.getRuleNameById(2);
 			assertNotNull(result);
-		}catch (NullPointerException e) {
-			assertThrows(NullPointerException.class, () ->ruleNameServiceUnderTest.getRuleNameById(2));
-		}catch (AssertionError e) {
+		} catch (NullPointerException e) {
+			assertThrows(NullPointerException.class, () -> ruleNameServiceUnderTest.getRuleNameById(2));
+		} catch (AssertionError e) {
 			fail(e.getMessage());
 		}
 	}

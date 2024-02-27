@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import com.nnk.springboot.domain.CurvePoint;
 import com.nnk.springboot.domain.Rating;
 import com.nnk.springboot.repositories.IRatingRepository;
 
@@ -35,7 +34,7 @@ class RatingServiceTest {
 
 	@MockBean
 	private IRatingRepository ratingRepository;
-	
+
 	private Rating rating;
 
 	@BeforeEach
@@ -46,8 +45,8 @@ class RatingServiceTest {
 		rating.setFitchRating("fitch rating test");
 		rating.setSandRating("sand rating test");
 		rating.setOrderNumber(10);
-		List<Rating> allBidList = new ArrayList<Rating>();
-		allBidList.add(rating);
+		List<Rating> allRatings = new ArrayList<Rating>();
+		allRatings.add(rating);
 		doThrow(new NullPointerException()).when(ratingRepository).deleteById(any(Integer.class));
 	}
 
@@ -66,7 +65,7 @@ class RatingServiceTest {
 			ratingCreated.setSandRating("sand rating test");
 			ratingCreated.setOrderNumber(10);
 			when(ratingRepository.save(any(Rating.class))).thenReturn(ratingCreated);
-			
+
 			Rating result = ratingServiceUnderTest.addRating(ratingCreated);
 			assertAll("assertion data curve point created", () -> {
 				assertNotNull(result.getId());
@@ -96,15 +95,15 @@ class RatingServiceTest {
 	@Test
 	void testAddRating_WithEmptyData() throws Exception {
 		try {
-			rating=null;
+			rating = null;
 			Rating result = ratingServiceUnderTest.addRating(rating);
 
 			assertNull(result.getId());
-		}catch (NullPointerException e) {
+		} catch (NullPointerException e) {
 			assertThrows(NullPointerException.class, () -> ratingServiceUnderTest.addRating(rating));
-		}catch (IllegalArgumentException e) {
-			assertThrows(IllegalArgumentException.class, () -> ratingServiceUnderTest.addRating(rating)); 
-		}catch (ConstraintViolationException e) {
+		} catch (IllegalArgumentException e) {
+			assertThrows(IllegalArgumentException.class, () -> ratingServiceUnderTest.addRating(rating));
+		} catch (ConstraintViolationException e) {
 			assertThrows(ConstraintViolationException.class, () -> ratingServiceUnderTest.addRating(new Rating()));
 		} catch (AssertionError e) {
 			fail(e.getMessage());
@@ -126,9 +125,9 @@ class RatingServiceTest {
 				assertEquals("sand rating test", result.getSandRating());
 				assertEquals(15, result.getOrderNumber());
 			});
-		}catch (NullPointerException e) {
+		} catch (NullPointerException e) {
 			assertThrows(NullPointerException.class, () -> ratingServiceUnderTest.updateRatingById(1, rating));
-		}catch (AssertionError e) {
+		} catch (AssertionError e) {
 			fail(e.getMessage());
 		}
 	}
@@ -167,7 +166,7 @@ class RatingServiceTest {
 	void testGetAllRatings_WithListOfRatingsNotFound() throws Exception {
 		try {
 			doThrow(new NullPointerException()).when(ratingRepository).findAll();
-			
+
 			List<Rating> result = ratingServiceUnderTest.getAllRatings();
 			assertTrue(result.isEmpty());
 		} catch (NullPointerException e) {
@@ -180,13 +179,13 @@ class RatingServiceTest {
 	@Test
 	void testGetRatingById() throws Exception {
 		try {
-			when(ratingRepository.findById(1)).thenReturn(Optional.of(rating));	
-			
+			when(ratingRepository.findById(1)).thenReturn(Optional.of(rating));
+
 			Rating result = ratingServiceUnderTest.getRatingById(1);
 			assertNotNull(result);
-		}catch (NullPointerException e) {
+		} catch (NullPointerException e) {
 			assertThrows(NullPointerException.class, () -> ratingServiceUnderTest.getRatingById(1));
-		}catch (AssertionError e) {
+		} catch (AssertionError e) {
 			fail(e.getMessage());
 		}
 	}

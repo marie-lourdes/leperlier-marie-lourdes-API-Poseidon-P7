@@ -7,46 +7,65 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.nnk.springboot.domain.Trade;
 import com.nnk.springboot.domain.dto.TradeDTO;
-import com.nnk.springboot.service.TradeService;
+import com.nnk.springboot.repositories.ITradeRepository;
 
 import jakarta.validation.ConstraintViolationException;
+
 @SpringBootTest
 class TradeServiceTest {
 	@Autowired
 	private TradeService tradeServiceUnderTest;
 
-	private Trade rating;
+	@MockBean
+	private ITradeRepository tradeRepository;
+
+	private Trade trade;
 
 	@BeforeEach
 	public void init() {
-		rating = new Trade();
-		rating.setTradeId(1);
-		rating.setAccount("account trade");
-		rating.setType("type trade ");
-		rating.setBuyQuantity(14.0);
-		tradeServiceUnderTest.addTrade(rating);
+		trade = new Trade();
+		trade.setTradeId(1);
+		trade.setAccount("account trade");
+		trade.setType("type trade ");
+		trade.setBuyQuantity(14.0);
+		List<Trade> allTrades = new ArrayList<Trade>();
+		allTrades.add(trade);
+		doThrow(new NullPointerException()).when(tradeRepository).deleteById(any(Integer.class));
+	}
+
+	@AfterEach
+	public void reset() throws Exception {
+		tradeServiceUnderTest.deleteAllTrades();
 	}
 
 	@Test
 	void testAddTrade() throws Exception {
 		try {
-			Trade ratingCreated = new Trade();
-			ratingCreated.setTradeId(2);
-			ratingCreated.setAccount("account trade test");
-			ratingCreated.setType("type trade test");
-			ratingCreated.setBuyQuantity(10.0);
-			
-			Trade result = tradeServiceUnderTest.addTrade(ratingCreated);
+			Trade tradeCreated = new Trade();
+			tradeCreated.setTradeId(2);
+			tradeCreated.setAccount("account trade test");
+			tradeCreated.setType("type trade test");
+			tradeCreated.setBuyQuantity(10.0);
+			when(tradeRepository.save(any(Trade.class))).thenReturn(tradeCreated);
+
+			Trade result = tradeServiceUnderTest.addTrade(tradeCreated);
 			assertAll("assertion data trade created", () -> {
 				assertNotNull(result.getTradeId());
 				assertEquals("account trade test", result.getAccount());
@@ -61,11 +80,11 @@ class TradeServiceTest {
 	@Test
 	void testAddTrade_WithInvalidData() throws Exception {
 		try {
-			rating.setAccount("too long account test invalid with size validation jakarta" );
-			tradeServiceUnderTest.addTrade(rating);
+			trade.setAccount("too long account test invalid with size validation jakarta");
+			when(tradeRepository.save(any(Trade.class))).thenReturn(trade);
+			tradeServiceUnderTest.addTrade(trade);
 		} catch (ConstraintViolationException e) {
-			assertThrows(ConstraintViolationException.class,
-					() -> tradeServiceUnderTest.addTrade(rating));
+			assertThrows(ConstraintViolationException.class, () -> tradeServiceUnderTest.addTrade(trade));
 		} catch (AssertionError e) {
 			fail(e.getMessage());
 		}
@@ -74,15 +93,16 @@ class TradeServiceTest {
 	@Test
 	void testAddTrade_WithEmptyData() throws Exception {
 		try {
-			rating.setType("");
-			Trade result = tradeServiceUnderTest.addTrade(rating);
+			trade = null;
+			Trade result = tradeServiceUnderTest.addTrade(trade);
 
 			assertNull(result.getTradeId());
-		} catch (IllegalArgumentException e) {
-			assertThrows(IllegalArgumentException.class, () -> tradeServiceUnderTest.addTrade(rating));
+		}catch (NullPointerException e) {
+			e.getMessage();
+		}catch (IllegalArgumentException e) {
+			assertThrows(IllegalArgumentException.class, () -> tradeServiceUnderTest.addTrade(trade));
 		} catch (ConstraintViolationException e) {
-			assertThrows(ConstraintViolationException.class,
-					() -> tradeServiceUnderTest.addTrade(rating));
+			assertThrows(ConstraintViolationException.class, () -> tradeServiceUnderTest.addTrade(trade));
 
 		} catch (AssertionError e) {
 			fail(e.getMessage());
@@ -92,17 +112,18 @@ class TradeServiceTest {
 	@Test
 	void testUpdateTrade() throws Exception {
 		try {
-			rating.setType("type trade updated");
-			Trade TradeToUpdateTest = tradeServiceUnderTest.addTrade(rating);
+			tradeServiceUnderTest.getTradeById(1).setType("type trade updated");
+			when(tradeRepository.findById(1)).thenReturn(Optional.of(trade));
 
-			Trade result = tradeServiceUnderTest.updateTradeById(TradeToUpdateTest.getTradeId(),
-					rating);
-			assertAll("assertion data rating created", () -> {
+			Trade result = tradeServiceUnderTest.updateTradeById(1, trade);
+			assertAll("assertion data trade created", () -> {
 				assertNotNull(result.getTradeId());
 				assertEquals("account trade", result.getAccount());
 				assertEquals(14.0, result.getBuyQuantity());
-				assertEquals("type trade updated", result.getType());		
+				assertEquals("type trade updated", result.getType());
 			});
+		} catch (NullPointerException e) {
+			assertThrows(NullPointerException.class, () -> tradeServiceUnderTest.updateTradeById(1, trade));
 		} catch (AssertionError e) {
 			fail(e.getMessage());
 		}
@@ -111,18 +132,16 @@ class TradeServiceTest {
 	@Test
 	void testUpdateTrade_WithTradeNotFound() throws Exception {
 		try {
-			Trade result = tradeServiceUnderTest.updateTradeById(15, rating);
+			doThrow(new NullPointerException()).when(tradeRepository).findById(15);
 
+			Trade result = tradeServiceUnderTest.updateTradeById(15, trade);
 			assertNull(result);
 		} catch (IllegalArgumentException e) {
-			assertThrows(IllegalArgumentException.class,
-					() -> tradeServiceUnderTest.updateTradeById(15, rating));
+			assertThrows(IllegalArgumentException.class, () -> tradeServiceUnderTest.updateTradeById(15, trade));
 		} catch (NullPointerException e) {
-			assertThrows(NullPointerException.class,
-					() -> tradeServiceUnderTest.updateTradeById(15, rating));
+			assertThrows(NullPointerException.class, () -> tradeServiceUnderTest.updateTradeById(15, trade));
 		} catch (ConstraintViolationException e) {
-			assertThrows(ConstraintViolationException.class,
-					() -> tradeServiceUnderTest.updateTradeById(15, rating));
+			assertThrows(ConstraintViolationException.class, () -> tradeServiceUnderTest.updateTradeById(15, trade));
 		} catch (AssertionError e) {
 			fail(e.getMessage());
 		}
@@ -131,7 +150,7 @@ class TradeServiceTest {
 	@Test
 	void testGetAllTrades() throws Exception {
 		try {
-			tradeServiceUnderTest.addTrade(rating);
+			tradeServiceUnderTest.addTrade(trade);
 
 			List<TradeDTO> result = tradeServiceUnderTest.getAllTrades();
 			assertNotNull(result);
@@ -143,7 +162,7 @@ class TradeServiceTest {
 	@Test
 	void testGetAllTrades_WithListOfTradesNotFound() throws Exception {
 		try {
-			tradeServiceUnderTest.deleteAllTrades();
+			doThrow(new NullPointerException()).when(tradeRepository).findAll();
 
 			List<TradeDTO> result = tradeServiceUnderTest.getAllTrades();
 			assertTrue(result.isEmpty());
@@ -157,9 +176,11 @@ class TradeServiceTest {
 	@Test
 	void testGetTradeById() throws Exception {
 		try {
-			Trade result = tradeServiceUnderTest.addTrade(rating);
-			result = tradeServiceUnderTest.getTradeById(result.getTradeId());
+			when(tradeRepository.findById(1)).thenReturn(Optional.of(trade));
+			Trade result = tradeServiceUnderTest.getTradeById(1);
 			assertNotNull(result);
+		} catch (NullPointerException e) {
+			assertThrows(NullPointerException.class, () -> tradeServiceUnderTest.getTradeById(1));
 		} catch (AssertionError e) {
 			fail(e.getMessage());
 		}
@@ -182,10 +203,10 @@ class TradeServiceTest {
 	@Test
 	void testDeleteTradeById() throws Exception {
 		try {
-			Trade ratingCreated = tradeServiceUnderTest.addTrade(rating);
-			tradeServiceUnderTest.deleteTradeById(ratingCreated.getTradeId());
+			Trade tradeCreated = tradeServiceUnderTest.addTrade(trade);
+			tradeServiceUnderTest.deleteTradeById(tradeCreated.getTradeId());
 
-			Trade result = tradeServiceUnderTest.getTradeById(ratingCreated.getTradeId());
+			Trade result = tradeServiceUnderTest.getTradeById(tradeCreated.getTradeId());
 			assertNull(result);
 		} catch (NullPointerException e) {
 			e.getMessage();

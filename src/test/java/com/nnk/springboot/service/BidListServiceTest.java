@@ -113,8 +113,7 @@ class BidListServiceTest {
 		try {
 			bidListServiceUnderTest.getBidById(1).setAccount("account updated");
 			when(bidListRepository.findById(1)).thenReturn(Optional.of(bidList));
-			
-			
+
 			BidList result = bidListServiceUnderTest.updateBidById(1, bidList);
 			assertAll("assertion data bidlist created", () -> {
 				assertNotNull(result);
