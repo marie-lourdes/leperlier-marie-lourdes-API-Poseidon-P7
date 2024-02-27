@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <title> Home</title>
-    <link th:href="@{/css/bootstrap.min.css}"  rel="stylesheet">
+	<title> Home</title>
+	<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
 </head>
+
 <body>
-<h3> HOME PAGE </h3>
-<p>
-    <a th:href="@{/app/login}">Login</a> or create one <a th:href="@{/user/list}">User management</a>
-</p>
+	<h3> HOME PAGE </h3>
+	<p>
+		<a th:href="@{/app/login}">Login</a> or create one <a th:href="@{/user/list}">User management</a>
+	</p>
+	<div class="col-6 text-right">
+		Logged in user: <b th:text="${remoteUser}" class="user"> </b>
+		<form th:action="@{/logout}" method="post">
+			<input type="submit" value="Logout" />
+		</form>
+	</div>
 </body>
+
 </html>

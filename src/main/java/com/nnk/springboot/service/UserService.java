@@ -35,31 +35,22 @@ public class UserService {
 
 	public User addUser(User userCreated) throws NullPointerException {
 		User userRegistered = new User();
-		UserLoginDTO existingUser= new UserLoginDTO();
-		if (userCreated == null ) {	
-			throw new IllegalArgumentException("Empty data of User " + userCreated + " provided and created");
-		}else {
-			 existingUser= this.getUserByUserName(userCreated.getUsername());
-		}
+		 boolean hasExistingUser=getAllUsers().removeIf(user-> user.equals(userCreated.getUsername()));
+		UserLoginDTO existingUser= new UserLoginDTO();	
 		
-		try {
-			 if( existingUser != null) {
-				throw new IllegalArgumentException(" Username " + existingUser.getUsername()+ " already exist");
-			}
-			else {
-				boolean isPasswordUserValid = validatorPassword.validPassword(userCreated.getPassword());
-				if (isPasswordUserValid  ) {
+			boolean isPasswordUserValid = validatorPassword.validPassword(userCreated.getPassword());	
+			 if (userCreated != null ) {
+				 if(hasExistingUser ) {
+						throw new IllegalArgumentException("Username  " + userCreated + " already exist");
+					}else if (isPasswordUserValid  ) {
 					throw new IllegalArgumentException("Password of User " + userCreated + " provided is incorrect");
-				}
-				userRegistered.setUsername(userCreated.getUsername());
-				userRegistered.setPassword(userCreated.getPassword());
-				userRegistered.setFullName(userCreated.getFullName());
-				userRegistered.setRole(userCreated.getRole());
-			}
-		} catch (IllegalArgumentException e) {
-			log.error(e.getMessage());
-		}
-
+					}
+					else		;
+					userRegistered.setUsername(userCreated.getUsername());
+					userRegistered.setPassword(userCreated.getPassword());
+					userRegistered.setFullName(userCreated.getFullName());
+					userRegistered.setRole(userCreated.getRole());
+			 }			
 		userRegistered = userRepository.save(userRegistered);
 		return userRegistered;
 	}

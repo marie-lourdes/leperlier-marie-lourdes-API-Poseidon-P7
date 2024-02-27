@@ -113,7 +113,7 @@ public class UserController {
 			return "redirect:/user/update";
 		}catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return "/error-404";
+			return "redirect:/user/update";
 		}
 	
 	}
