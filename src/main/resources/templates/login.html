@@ -13,7 +13,9 @@
 			<div class="text-danger" th:if="${param.error}">
 				Invalid username and password.
 			</div>
-			<h2 class="h2--font"> Login with Username and Password</h2>
+			<div class="row">
+				<h2 class="h2--font"> Login with Username and Password</h2>
+			</div>
 			<form action="#" th:action="@{/app/login}" method="post" class="form-horizontal form-horizontal--login">
 				<div class="form-group">
 					<div class="col-sm-10">

@@ -10,18 +10,6 @@
 
 <body>
 	<div class="container">
-		<header class="row">
-			<nav class="col-6 ">
-				<a th:href="@{/}">Home</a>&nbsp;|&nbsp;
-				<a th:href="@{/app/login}">Login</a>
-			</nav>
-			<div class="col-6 text-right"sec:authorize="isAuthenticated()">
-				Logged in user: <b class="user"sec:authentication="name"></b>
-				<form th:action="@{/logout}" method="post">
-					<input type="submit" value="Logout" />
-				</form>
-			</div>
-		</header>
 		<main>
 			<div class="row">
 				<h2>Add New Bid</h2>
@@ -59,9 +47,8 @@
 						</div>
 					</div>
 				</form>
+			</div>
 		</main>
-
-	</div>
 	</div>
 </body>
 
