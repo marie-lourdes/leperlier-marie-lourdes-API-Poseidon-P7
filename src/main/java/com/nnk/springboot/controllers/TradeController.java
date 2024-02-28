@@ -133,6 +133,5 @@ public class TradeController {
 			log.error(e.getMessage());
 			return Constants.ERROR_404_PAGE;
 		}
-
 	}
 }
