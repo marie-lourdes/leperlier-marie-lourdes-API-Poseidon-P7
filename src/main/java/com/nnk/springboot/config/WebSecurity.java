@@ -17,7 +17,7 @@ public class WebSecurity {
 	 * @return SecurityFilterChain
 	 */
 	@Bean
-	 SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((requests) -> {
 			requests.requestMatchers("/css/**").permitAll();
 			requests.requestMatchers("/").permitAll();
