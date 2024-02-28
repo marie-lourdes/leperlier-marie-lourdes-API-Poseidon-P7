@@ -32,7 +32,7 @@ The link homepage  is :http://localhost:8080/
 ### MORE INFORMATIONS
 
 -  For infomation about classes or methods used in application Spring Boot and Spring Security:
-See folder /doc  in root project
+See folder /doc/Javadoc  in root project
 
 ### Debugging and Testing with ENV dev
 - For debbuging, use  Maven CLI 'mvn clean package -Denvironnement=dev' and run again 
