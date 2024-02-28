@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.nnk.springboot.domain.Rating;
 import com.nnk.springboot.service.RatingService;
+import com.nnk.springboot.utils.Constants;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
@@ -38,7 +38,7 @@ public class RatingController {
 		// TODO: check data valid and save to db, after saving return Rating list
 		try {
 			ratingService.addRating(ratingCreated);
-			return "redirect:/rating/list";
+			return Constants.REDIRECTION + Constants.RATINGLIST_PAGE;
 
 		} catch (ConstraintViolationException e) {
 			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
@@ -46,10 +46,10 @@ public class RatingController {
 				log.error("Errors fields of rating created " + constraint.getMessageTemplate());
 			}
 
-			return "rating/add";
+			return Constants.RATING_ADD_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return "rating/add";
+			return Constants.RATING_ADD_PAGE;
 		}
 	}
 
@@ -64,7 +64,7 @@ public class RatingController {
 		}
 
 		log.info(" Rating form creation  page successfully retrieved");
-		return "rating/add";	
+		return Constants.RATING_ADD_PAGE;
 	}
 
 	@GetMapping("/list")
@@ -81,31 +81,30 @@ public class RatingController {
 		}
 		model.addAttribute("ratings", ratings);
 		model.addAttribute("remoteUser", httpServletRequest.getRemoteUser());
-		return "rating/list";
+		return Constants.RATINGLIST_PAGE;
 	}
 
 	@PostMapping("/update/{id}")
-	public ModelAndView updateRating(@PathVariable("id") Integer id, @Valid @ModelAttribute Rating ratingUpdated,BindingResult result) {
-		// TODO: check required fields, if valid call service to update Rating and
-		// return Rating list
+	public String updateRating(@PathVariable("id") Integer id, @Valid @ModelAttribute Rating ratingUpdated,
+			BindingResult result) {
+
 		try {
-			ratingService.updateRatingById(id, ratingUpdated);
-			return new ModelAndView("redirect:/rating/list");
-		} catch (ConstraintViolationException e) {
-			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
-			for (ConstraintViolation<?> constraint : violationsException) {
-				log.error("Errors fields of Rating updated " + constraint.getMessageTemplate());
+			if (result.hasErrors()) {
+				return Constants.RATING_UPDATE_PAGE;
 			}
-			return new ModelAndView("redirect:/rating/update");
+			ratingService.updateRatingById(id, ratingUpdated);
+			return Constants.REDIRECTION + Constants.RATINGLIST_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return new ModelAndView("redirect:/error-404");
-			
-		}	
+			return Constants.ERROR_404_PAGE;
+		} catch (IllegalArgumentException e) {
+			log.error(e.getMessage());
+			return Constants.RATING_UPDATE_PAGE;
+		}
 	}
 
 	@GetMapping("/update/{id}")
-	public ModelAndView getUpdateFormRatingListPage(@PathVariable("id") Integer id, Model model) {
+	public String getUpdateFormRatingListPage(@PathVariable("id") Integer id, Model model) {
 		// TODO: get Rating by Id and to model then show to the form
 		Rating ratingToUpdate = new Rating();
 		try {
@@ -114,23 +113,23 @@ public class RatingController {
 				model.addAttribute("rating", ratingToUpdate);
 			}
 
-			log.info(" Curve Point  form update page successfully retrieved");
-			return new ModelAndView("/rating/update");
+			log.info(" Rating  form update page successfully retrieved");
+			return Constants.RATING_UPDATE_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return new ModelAndView("redirect:/error-404");
+			return Constants.ERROR_404_PAGE;
 		}
 	}
 
 	@GetMapping("/delete/{id}")
-	public ModelAndView deleteRating(@PathVariable("id") Integer id, Model model) {
+	public String deleteRating(@PathVariable("id") Integer id, Model model) {
 		// TODO: Find Rating by Id and delete the Rating, return to Rating list
 		try {
 			ratingService.deleteRatingById(id);
-			return new ModelAndView("redirect:/rating/list");
+			return Constants.REDIRECTION + Constants.RATINGLIST_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return new ModelAndView("redirect:/error-404");
+			return Constants.ERROR_404_PAGE;
 		}
 	}
 }

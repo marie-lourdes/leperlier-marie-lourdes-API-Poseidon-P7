@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.nnk.springboot.domain.CurvePoint;
 import com.nnk.springboot.domain.dto.CurvePointDTO;
@@ -94,12 +93,6 @@ public class CurveController {
 			}
 			curvePointService.updateCurvePointById(id, curvePointUpdated);
 			return Constants.REDIRECTION + Constants.CURVEPOINTLIST_PAGE;
-		} catch (ConstraintViolationException e) {
-			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
-			for (ConstraintViolation<?> constraint : violationsException) {
-				log.error("Errors fields of Curve point updated " + constraint.getMessageTemplate());
-			}
-			return Constants.CURVEPOINT_UPDATE_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
 			return Constants.ERROR_404_PAGE;
