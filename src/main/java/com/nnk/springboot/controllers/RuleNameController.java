@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.nnk.springboot.domain.RuleName;
 import com.nnk.springboot.service.RuleNameService;
+import com.nnk.springboot.utils.Constants;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
@@ -29,25 +30,25 @@ import jakarta.validation.Valid;
 @RequestMapping("ruleName")
 public class RuleNameController {
 	private static final Logger log = LogManager.getLogger(RuleNameController.class);
-    // TODO: Inject RuleName service
+	// TODO: Inject RuleName service
 	@Autowired
 	RuleNameService ruleNameService;
-	
+
 	@PostMapping("/validate")
 	public String validateRuleName(@Valid @ModelAttribute RuleName ruleNameCreated, BindingResult result) {
 		try {
 			ruleNameService.addRuleName(ruleNameCreated);
-			return "redirect:/ruleName/list";
+			return Constants.REDIRECTION + Constants.RULENAMELIST_PAGE;
 		} catch (ConstraintViolationException e) {
 			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
 			for (ConstraintViolation<?> constraint : violationsException) {
 				log.error("Errors fields of RuleName created" + constraint.getMessageTemplate());
 			}
 
-			return "ruleName/add";
+			return Constants.RULENAME_ADD_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return "ruleName/add";
+			return Constants.RULENAME_ADD_PAGE;
 		}
 	}
 
@@ -58,15 +59,14 @@ public class RuleNameController {
 			model.addAttribute("ruleName", ruleNameToCreate);
 		} catch (Exception e) {
 			log.error("Failed to retrieve RuleName form creation  page " + e.getMessage());
-			// return Constants.ERROR_PAGE;
 		}
 
 		log.info(" RuleName form creation  page successfully retrieved");
-		return "ruleName/add";
+		return Constants.RULENAME_ADD_PAGE;
 	}
 
 	@GetMapping("/list")
-	public String getRuleNamePage(HttpServletRequest httpServletRequest, Model model) {	
+	public String getRuleNamePage(HttpServletRequest httpServletRequest, Model model) {
 		List<RuleName> ruleNames = new ArrayList<>();
 		try {
 			ruleNames = ruleNameService.getAllRuleNames();
@@ -76,29 +76,31 @@ public class RuleNameController {
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
 		}
-		
+
 		model.addAttribute("ruleNames", ruleNames);
 		model.addAttribute("remoteUser", httpServletRequest.getRemoteUser());
-		return "ruleName/list";
+		return Constants.RULENAMELIST_PAGE;
 	}
 
 	@PostMapping("/update/{id}")
-	public ModelAndView updateRuleName(@PathVariable("id") Integer id, @Valid @ModelAttribute RuleName ruleNameUpdated,BindingResult result) {
+	public String updateRuleName(@PathVariable("id") Integer id, @Valid @ModelAttribute RuleName ruleNameUpdated,
+			BindingResult result) {
 		try {
+			if (result.hasErrors()) {
+				return Constants.RULENAME_UPDATE_PAGE;
+			}
 			ruleNameService.updateRuleNameById(id, ruleNameUpdated);
-			return new ModelAndView("redirect:/ruleName/list");
-		}catch (ConstraintViolationException e) {
+			return Constants.REDIRECTION + Constants.RULENAMELIST_PAGE;
+		} catch (ConstraintViolationException e) {
 			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
 			for (ConstraintViolation<?> constraint : violationsException) {
 				log.error("Errors fields of RuleName updated " + constraint.getMessageTemplate());
 			}
-			return new ModelAndView("redirect:/ruleName/update");
+			return Constants.RULENAME_UPDATE_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return new ModelAndView("redirect:/error-404");
-			
-		}	
-
+			return Constants.RULENAME_UPDATE_PAGE;
+		}
 	}
 
 	@GetMapping("/update/{id}")

@@ -35,7 +35,7 @@ public class RatingController {
 
 	@PostMapping("/validate")
 	public String validateRating(@Valid @ModelAttribute Rating ratingCreated, BindingResult result) {
-		// TODO: check data valid and save to db, after saving return Rating list
+
 		try {
 			ratingService.addRating(ratingCreated);
 			return Constants.REDIRECTION + Constants.RATINGLIST_PAGE;
@@ -60,7 +60,6 @@ public class RatingController {
 			model.addAttribute("rating", ratingToCreate);
 		} catch (Exception e) {
 			log.error("Failed to retrieve rating form creation  page " + e.getMessage());
-			// return Constants.ERROR_PAGE;
 		}
 
 		log.info(" Rating form creation  page successfully retrieved");
@@ -69,7 +68,7 @@ public class RatingController {
 
 	@GetMapping("/list")
 	public String getRatingPage(HttpServletRequest httpServletRequest, Model model) {
-		// TODO: find all Rating, add to model
+	
 		List<Rating> ratings = new ArrayList<>();
 		try {
 			ratings = ratingService.getAllRatings();
@@ -105,7 +104,7 @@ public class RatingController {
 
 	@GetMapping("/update/{id}")
 	public String getUpdateFormRatingListPage(@PathVariable("id") Integer id, Model model) {
-		// TODO: get Rating by Id and to model then show to the form
+		
 		Rating ratingToUpdate = new Rating();
 		try {
 			ratingToUpdate = ratingService.getRatingById(id);
@@ -123,7 +122,7 @@ public class RatingController {
 
 	@GetMapping("/delete/{id}")
 	public String deleteRating(@PathVariable("id") Integer id, Model model) {
-		// TODO: Find Rating by Id and delete the Rating, return to Rating list
+	
 		try {
 			ratingService.deleteRatingById(id);
 			return Constants.REDIRECTION + Constants.RATINGLIST_PAGE;
