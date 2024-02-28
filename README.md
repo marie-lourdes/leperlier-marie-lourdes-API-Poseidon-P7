@@ -1,11 +1,22 @@
-# spring-boot
-## Technical:
+## Webapp Poseidon Conseil
+A Webapp with REST API secured with Spring Security .
 
-1. Spring Boot 3.2.2
-2. Java 17
-3. Thymeleaf
-4. Bootstrap v.4.3.1
+### Getting Started
 
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+
+### Prerequisites
+
+What things you need to install the software and how to install them
+- Java 17
+- Maven 3.9.4
+- SpringBoot 6.1.3
+- Spring Tools 4
+- Spring Security
+-Thymeleaf
+- Bootstrap v.4.3.1
+
+### Installing
 
 ## Setup with Intellij IDE
 1. Create project from Initializr: File > New > project > Spring Initializr
@@ -25,3 +36,27 @@
 ## Security
 1. Create user service to load user from  database and place in package com.nnk.springboot.services
 2. Add configuration class and place in package com.nnk.springboot.config
+
+### Running App
+Post installation of Java, Maven and Spring Tools 4, and BDD you will have to run app
+ with your CLI or with dashboard of Spring Tools.
+ Then move the JAR  generated at root of project , Spring will  run with properties in folder /config for ENV "prod" and finally  run in you CLI: java -jar springboot-0.0.1
+ for app PROD 
+
+Finally, you will be ready to  use webapp and request 
+The link homepage  is :http://localhost:8080/home
+
+### MORE INFORMATIONS
+
+ For testing application use:
+`run as` , then, 'Maven test' for unit test and maven verify for integration test
+
+ For testing request:
+See the file of logging in folder log of project or use Postman after running application
+
+see folder /doc 
+
+### Debugging
+ For debbuging
+Use  Maven CLI 'mvn test or mvn verify  
+
