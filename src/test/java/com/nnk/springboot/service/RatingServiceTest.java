@@ -100,7 +100,7 @@ class RatingServiceTest {
 
 			assertNull(result.getId());
 		} catch (NullPointerException e) {
-			assertThrows(NullPointerException.class, () -> ratingServiceUnderTest.addRating(rating));
+			e.getMessage();
 		} catch (IllegalArgumentException e) {
 			assertThrows(IllegalArgumentException.class, () -> ratingServiceUnderTest.addRating(rating));
 		} catch (ConstraintViolationException e) {

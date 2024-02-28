@@ -1,5 +1,3 @@
-/*use demo;
-use DBTestPoseidon;*/
 
 CREATE TABLE bid_list (
   bidlist_id int NOT NULL AUTO_INCREMENT,

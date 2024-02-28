@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.nnk</groupId>
 	<artifactId>springboot</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>springboot</name>
 	<description>REST API of Poseidon Conseils Enterprise</description>
 	<properties>
@@ -118,7 +118,24 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
+<profiles>
+		<profile>
+			<activation>
+				<property>
+					<name>environnement</name>
+					<value>dev</value>
+				</property>
+			</activation>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/resources/Conf-dev</directory>
+						<filtering>true</filtering>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+	</profiles>
 	<build>
 		<plugins>
 			<plugin>
