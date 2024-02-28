@@ -31,9 +31,6 @@ The link homepage  is :http://localhost:8080/
 
 ### MORE INFORMATIONS
 
-- For testing application use:
-`run as` , then, 'Maven test' for unit test and maven verify for integration test
-
 -  For infomation about classes or methods used in application Spring Boot and Spring Security:
 See folder /doc  in root project
 
