@@ -1,6 +1,11 @@
 package com.nnk.springboot.utils;
 
 public class Constants {
+	
+	public  final static String USERLIST_PAGE = "user/list";
+	public  final static String USER_ADD_PAGE = "user/add";
+	public  final static String USER_UPDATE_PAGE = "user/update";
+	
 	public  final static String BIDLIST_PAGE = "bidList/list";
 	public  final static String BID_ADD_PAGE = "bidList/add";
 	public  final static String BID_UPDATE_PAGE = "bidList/update";
