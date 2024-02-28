@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.nnk.springboot.domain.CurvePoint;
 import com.nnk.springboot.domain.dto.CurvePointDTO;
 import com.nnk.springboot.service.CurvePointService;
+import com.nnk.springboot.utils.Constants;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
@@ -33,21 +34,20 @@ public class CurveController {
 
 	@Autowired
 	CurvePointService curvePointService;
-	// TODO: Inject Curve Point service
 
 	@PostMapping("/validate")
 	public String validateCurvePoint(@Valid @ModelAttribute CurvePoint curvePointCreated, BindingResult result) {
-		// TODO: check data valid and save to db, after saving return Curve list
+
 		try {
 			curvePointService.addCurvePoint(curvePointCreated);
-			return "redirect:/curvePoint/list";
+			return Constants.REDIRECTION+Constants.CURVEPOINTLIST_PAGE;
 		} catch (ConstraintViolationException e) {
 			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
 			for (ConstraintViolation<?> constraint : violationsException) {
 				log.error("Errors fields of Curve Point created" + constraint.getMessageTemplate());
 			}
 
-			return "curvePoint/add";
+			return Constants.REDIRECTION+Constants.CURVEPOINT_ADD_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
 			return "curvePoint/add";
@@ -61,11 +61,10 @@ public class CurveController {
 			model.addAttribute("curvePoint", curvePointToCreate);
 		} catch (Exception e) {
 			log.error("Failed to retrieve curve point form creation  page " + e.getMessage());
-			// return Constants.ERROR_PAGE;
 		}
 
 		log.info(" CurvePoint form creation  page successfully retrieved");
-		return "curvePoint/add";
+		return Constants.CURVEPOINT_ADD_PAGE;
 	}
 
 	@GetMapping("/list")
@@ -82,31 +81,31 @@ public class CurveController {
 		}
 		model.addAttribute("curvePoints", curvePoints);
 		model.addAttribute("remoteUser", httpServletRequest.getRemoteUser());
-		return "curvePoint/list";
+		return Constants.CURVEPOINTLIST_PAGE;
 	}
 
 	@PostMapping("/update/{id}")
-	public ModelAndView updateCurvePoint(@PathVariable("id") Integer id,
+	public String updateCurvePoint(@PathVariable("id") Integer id,
 			@Valid @ModelAttribute CurvePoint curvePointUpdated, BindingResult result) {
 		// TODO: check required fields, if valid call service to update Curve and return
 		// Curve list
 		try {
 			curvePointService.updateCurvePointById(id, curvePointUpdated);
-			return new ModelAndView("redirect:/curvePoint/list");
+			return Constants.REDIRECTION+Constants.CURVEPOINTLIST_PAGE;
 		} catch (ConstraintViolationException e) {
 			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
 			for (ConstraintViolation<?> constraint : violationsException) {
 				log.error("Errors fields of Curve point updated " + constraint.getMessageTemplate());
 			}
-			return new ModelAndView("redirect:/curvePoint/update");
+			return Constants.REDIRECTION+Constants.CURVEPOINT_UPDATE_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return new ModelAndView("redirect:/error-404");
+			return  Constants.REDIRECTION+Constants.ERROR_404_PAGE;
 		}
 	}
 
 	@GetMapping("/update/{id}")
-	public ModelAndView getUpdateFormCurvePointListPage(@PathVariable("id") Integer id, Model model) {
+	public String getUpdateFormCurvePointListPage(@PathVariable("id") Integer id, Model model) {
 		// TODO: get CurvePoint by Id and to model then show to the form
 		CurvePoint curvePointToUpdate = new CurvePoint();
 		try {
@@ -116,22 +115,22 @@ public class CurveController {
 			}
 
 			log.info(" Curve Point  form update page successfully retrieved");
-			return new ModelAndView("/curvePoint/update");
+			return  Constants.CURVEPOINT_UPDATE_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return new ModelAndView("redirect:/error-404");
+			return Constants.ERROR_404_PAGE;
 		}
 	}
 
 	@GetMapping("/delete/{id}")
-	public ModelAndView deleteBid(@PathVariable("id") Integer id, Model model) {
+	public String deleteBid(@PathVariable("id") Integer id, Model model) {
 		// TODO: Find Curve by Id and delete the Curve, return to Curve list
 		try {
 			curvePointService.deleteCurvePointById(id);
-			return new ModelAndView("redirect:/curvePoint/list");
+			return Constants.CURVEPOINTLIST_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return new ModelAndView("redirect:/error-404");
+			return Constants.ERROR_404_PAGE;
 		}
 	}
 }

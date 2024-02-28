@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.domain.dto.BidListDTO;
 import com.nnk.springboot.service.BidListService;
+import com.nnk.springboot.utils.Constants;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
@@ -38,24 +38,19 @@ public class BidListController {
 
 	@PostMapping("/validate")
 	public String validate(@Valid @ModelAttribute BidList bidCreated, BindingResult result, Principal principal) {
-		// TODO: check data valid and save to db, after saving return bid list
-
-		/*
-		 * if(result.hasErrors()) { return new ModelAndView("redirect:/bidList/add"); }
-		 */
 		try {
 			bidListService.addBid(bidCreated);
-			return "redirect:/bidList/list";
+			return Constants.REDIRECTION + Constants.BIDLIST_PAGE;
 		} catch (ConstraintViolationException e) {
 			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
 			for (ConstraintViolation<?> constraint : violationsException) {
 				log.error("Errors fields of Bid created " + constraint.getMessageTemplate());
 			}
 
-			return "bidList/add";
+			return Constants.BID_ADD_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return "bidList/add";
+			return Constants.BID_ADD_PAGE;
 		}
 	}
 
@@ -64,20 +59,17 @@ public class BidListController {
 		BidList bidListToCreate = new BidList();
 		try {
 			model.addAttribute("bidList", bidListToCreate);
-
 		} catch (Exception e) {
 			log.error("Failed to retrieve bid form creation  page" + e.getMessage());
-			// return Constants.ERROR_PAGE;
 		}
 
 		log.info(" Bid  form creation page successfully retrieved");
-		return "bidList/add";
+		return Constants.BID_ADD_PAGE;
 	}
 
 	@GetMapping("/list")
-	public String getBidListPage(HttpServletRequest httpServletRequest, Model model,Authentication authentication ) {
-		// TODO: call service find all bids to show to the view
-		log.error("authentication {}",authentication.getAuthorities());
+	public String getBidListPage(HttpServletRequest httpServletRequest, Model model, Authentication authentication) {
+
 		List<BidListDTO> bidLists = new ArrayList<BidListDTO>();
 		try {
 			bidLists = bidListService.getAllBids();
@@ -90,32 +82,32 @@ public class BidListController {
 
 		model.addAttribute("bidLists", bidLists);
 		model.addAttribute("remoteUser", httpServletRequest.getRemoteUser());
-		return "bidList/list";
+		return Constants.BIDLIST_PAGE;
 	}
 
 	@PostMapping("/update/{id}")
-	public ModelAndView updateBid(@PathVariable("id") Integer id, @Valid @ModelAttribute BidList bidListUpdated,BindingResult result) {
+	public String updateBid(@PathVariable("id") Integer id, @Valid @ModelAttribute BidList bidListUpdated,
+			BindingResult result) {
 		// TODO: check required fields, if valid call service to update Bid and return
 		// list Bid
 		try {
-			bidListService.updateBidById(id, bidListUpdated);
-			return new ModelAndView("redirect:/bidList/list");
-		}catch (ConstraintViolationException e) {
-			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
-			for (ConstraintViolation<?> constraint : violationsException) {
-				log.error("Errors fields of Bid updated " + constraint.getMessageTemplate());
+			if (result.hasErrors()) {
+				return   Constants.BID_UPDATE_PAGE;
 			}
-			return new ModelAndView("redirect:/bidList/update");
+			bidListService.updateBidById(id, bidListUpdated);
+			return Constants.BIDLIST_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return new ModelAndView("redirect:/error-404");
-			
-		}	
+			return Constants.BID_UPDATE_PAGE;
+		} catch (IllegalArgumentException e) {
+			log.error(e.getMessage());
+			return Constants.BID_UPDATE_PAGE;
+		}
 	}
 
 	@GetMapping("/update/{id}")
-	public ModelAndView getUpdateFormBidListPage(@PathVariable("id") Integer id, Model model) {
-		// TODO: get Bid by Id and to model then show to the form
+	public String getUpdateFormBidListPage(@PathVariable("id") Integer id, Model model) {
+		
 		BidList bidListToUpdate = new BidList();
 		try {
 			bidListToUpdate = bidListService.getBidById(id);
@@ -124,22 +116,22 @@ public class BidListController {
 			}
 
 			log.info(" Bid  form update page successfully retrieved");
-			return new ModelAndView("/bidList/update");
+			return Constants.BID_UPDATE_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return new ModelAndView("redirect:/error-404");
+			return  Constants.ERROR_404_PAGE;
 		}
 	}
 
 	@GetMapping("/delete/{id}")
-	public ModelAndView deleteBid(@PathVariable("id") Integer id, Model model) {
-		// TODO: Find Bid by Id and delete the bid, return to Bid list
+	public String deleteBid(@PathVariable("id") Integer id, Model model) {
+
 		try {
 			bidListService.deleteBidById(id);
-			return new ModelAndView("redirect:/bidList/list");
+			return Constants.REDIRECTION + Constants.BIDLIST_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return new ModelAndView("redirect:/error-404");
+			return Constants.ERROR_404_PAGE;
 		}
 
 	}

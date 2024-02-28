@@ -13,7 +13,7 @@ public class ConstantsValidation {
 	public static final String ERROR_NOT_POSITIVE_MSG = "must be > 0";
 	public static final String ERROR_NOT_CHARACTER_MSG = "must be only characters";
 	public static final String ERROR_SIZE_CHARACTER_MSG = "size must be  maximum 10";
-	public static final String ERROR_SIZE_CHARACTER_ACCOUNTANDTYPE_MSG = "size must be between 1 -30";
+	public static final String ERROR_SIZE_CHARACTER_ACCOUNTANDTYPE_MSG = "size must be between  1 - 30";
 	public static final String ERROR_NOT_DIGIT_MSG = "must be only numbers";
 
 	private ConstantsValidation() {}
