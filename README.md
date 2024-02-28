@@ -44,7 +44,7 @@ Post installation of Java, Maven and Spring Tools 4, and BDD you will have to ru
  for app PROD 
 
 Finally, you will be ready to  use webapp and request 
-The link homepage  is :http://localhost:8080/home
+The link homepage  is :http://localhost:8080/
 
 ### MORE INFORMATIONS
 
