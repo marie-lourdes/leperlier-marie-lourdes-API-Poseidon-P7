@@ -20,41 +20,30 @@ import lombok.Data;
 @Entity
 @Table(name = "bid_list")
 public class BidList {
-	// TODO: Map columns in data table BIDLIST with corresponding java fields
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "bidlist_id")
 	private Integer bidListId;
-	
-	@Pattern(regexp=ConstantsValidation.REGEX_CHARACTER, message=ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
-	@Size(
-			min = ConstantsValidation.MIN_SIZE_ACCOUNTANDTYPE_DATA,
-			max = ConstantsValidation.MAX_SIZE_ACCOUNTANDTYPE_DATA,
-			message=ConstantsValidation.ERROR_SIZE_CHARACTER_ACCOUNTANDTYPE_MSG
-			)
-	@NotBlank(message = "Account "+ConstantsValidation.ERROR_BLANK_MSG )
+
+	@Pattern(regexp = ConstantsValidation.REGEX_CHARACTER, message = ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
+	@Size(min = ConstantsValidation.MIN_SIZE_ACCOUNTANDTYPE_DATA, max = ConstantsValidation.MAX_SIZE_ACCOUNTANDTYPE_DATA, message = ConstantsValidation.ERROR_SIZE_CHARACTER_ACCOUNTANDTYPE_MSG)
+	@NotBlank(message = "Account " + ConstantsValidation.ERROR_BLANK_MSG)
 	@Column(name = "account")
 	private String account;
-	
-	@Pattern(regexp=ConstantsValidation.REGEX_CHARACTER, message=ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
-	@Size(
-			min = ConstantsValidation.MIN_SIZE_ACCOUNTANDTYPE_DATA,
-			max = ConstantsValidation.MAX_SIZE_ACCOUNTANDTYPE_DATA,
-			message=ConstantsValidation.ERROR_SIZE_CHARACTER_ACCOUNTANDTYPE_MSG
-			)
-	@NotBlank(message = "Type "+ConstantsValidation.ERROR_BLANK_MSG )
+
+	@Pattern(regexp = ConstantsValidation.REGEX_CHARACTER, message = ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
+	@Size(min = ConstantsValidation.MIN_SIZE_ACCOUNTANDTYPE_DATA, max = ConstantsValidation.MAX_SIZE_ACCOUNTANDTYPE_DATA, message = ConstantsValidation.ERROR_SIZE_CHARACTER_ACCOUNTANDTYPE_MSG)
+	@NotBlank(message = "Type " + ConstantsValidation.ERROR_BLANK_MSG)
 	@Column(name = "type")
 	private String type;
-	
-	
-	@Positive(message="bidQuantity "+ConstantsValidation.ERROR_NOT_POSITIVE_MSG)
+
+	@Positive(message = "bidQuantity " + ConstantsValidation.ERROR_NOT_POSITIVE_MSG)
 	@Column(name = "bid_quantity")
 	private Double bidQuantity;
-	
-	
+
 	@Column(name = "sell_quantity")
 	private Double sellQuantity;
-	
+
 	@Column(name = "bid")
 	private Double bid;
 

@@ -3,8 +3,6 @@ package com.nnk.springboot.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,17 +11,13 @@ import com.nnk.springboot.repositories.IRatingRepository;
 
 @Service
 public class RatingService {
-	private static final Logger log = LogManager.getLogger(RatingService.class);
-	
+
 	@Autowired
 	private IRatingRepository ratingRepository;
 
 	public Rating addRating(Rating ratingCreated) throws NullPointerException {
 		Rating ratingRegistered = new Rating();
-		if (ratingCreated == null) {
-			throw new IllegalArgumentException(
-					"Empty data order number of Rating" + ratingCreated + " provided and created");
-		}else {
+		if (ratingCreated != null) {
 			ratingRegistered.setMoodysRating(ratingCreated.getMoodysRating());
 			ratingRegistered.setFitchRating(ratingCreated.getFitchRating());
 			ratingRegistered.setSandRating(ratingCreated.getSandRating());
@@ -42,7 +36,7 @@ public class RatingService {
 
 	public List<Rating> getAllRatings() throws NullPointerException {
 		List<Rating> allRatings = ratingRepository.findAll();
-		
+
 		if (allRatings.isEmpty()) {
 			return new ArrayList<>();
 		}

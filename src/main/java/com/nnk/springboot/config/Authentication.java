@@ -16,16 +16,19 @@ import com.nnk.springboot.service.AuthenticationUserService;
 public class Authentication {
 	@Autowired
 	private AuthenticationUserService authentificationUserService;
-	
+
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Bean
-	public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
-		AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-	authenticationManagerBuilder.userDetailsService(authentificationUserService).passwordEncoder(bCryptPasswordEncoder);
+	public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder)
+			throws Exception {
+		AuthenticationManagerBuilder authenticationManagerBuilder = http
+				.getSharedObject(AuthenticationManagerBuilder.class);
+		authenticationManagerBuilder.userDetailsService(authentificationUserService)
+				.passwordEncoder(bCryptPasswordEncoder);
 		return authenticationManagerBuilder.build();
-	}	
+	}
 }

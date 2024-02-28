@@ -3,8 +3,6 @@ package com.nnk.springboot.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +14,10 @@ import com.nnk.springboot.domain.dto.UserMapperImpl;
 import com.nnk.springboot.repositories.IUserRepository;
 
 import lombok.AllArgsConstructor;
+
 @AllArgsConstructor
 @Service
 public class UserService {
-	private static final Logger log = LogManager.getLogger(UserService.class);
 
 	@Autowired
 	private IUserRepository userRepository;
@@ -33,23 +31,23 @@ public class UserService {
 	@Autowired
 	private ValidatorPasswordImpl validatorPassword;
 
-	public User addUser(User userCreated) throws NullPointerException,IllegalArgumentException {
+	public User addUser(User userCreated) throws NullPointerException, IllegalArgumentException {
 		User userRegistered = new User();
-		 boolean hasExistingUser=getAllUsers().removeIf(user-> user.getUsername().equals(userCreated.getUsername()));
-		
-			boolean isPasswordUserValid = validatorPassword.validPassword(userCreated.getPassword());	
-			 if (userCreated != null ) {
-				 if(hasExistingUser ) {
-						throw new IllegalArgumentException("Username  " + userCreated + " already exist");
-					}else if (isPasswordUserValid  ) {
-					throw new IllegalArgumentException("Password of User " + userCreated + " provided is incorrect");
-					}
-					else		;
-					userRegistered.setUsername(userCreated.getUsername());
-					userRegistered.setPassword(userCreated.getPassword());
-					userRegistered.setFullName(userCreated.getFullName());
-					userRegistered.setRole(userCreated.getRole());
-			 }			
+		boolean hasExistingUser = getAllUsers().removeIf(user -> user.getUsername().equals(userCreated.getUsername()));
+
+		boolean isPasswordUserValid = validatorPassword.validPassword(userCreated.getPassword());
+		if (userCreated != null) {
+			if (hasExistingUser) {
+				throw new IllegalArgumentException("Username  " + userCreated + " already exist");
+			} else if (isPasswordUserValid) {
+				throw new IllegalArgumentException("Password of User " + userCreated + " provided is incorrect");
+			} else
+				;
+			userRegistered.setUsername(userCreated.getUsername());
+			userRegistered.setPassword(userCreated.getPassword());
+			userRegistered.setFullName(userCreated.getFullName());
+			userRegistered.setRole(userCreated.getRole());
+		}
 		userRegistered = userRepository.save(userRegistered);
 		return userRegistered;
 	}
@@ -57,7 +55,7 @@ public class UserService {
 	public User getUserById(Integer id) throws NullPointerException {
 		User userFoundById = userRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("User" + id + " not found"));
-		return userFoundById ;
+		return userFoundById;
 	}
 
 	public UserLoginDTO getUserByUserName(String username) throws NullPointerException {
@@ -90,13 +88,13 @@ public class UserService {
 		User userToUpdate = new User();
 		userToUpdate = userRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("User" + id + " not found for updating"));
-		log.info("user to update {}",userToUpdate);
+
 		userToUpdate.setUsername(userUpdated.getUsername());
 		userToUpdate.setPassword(userUpdated.getPassword());
 		userToUpdate.setFullName(userUpdated.getFullName());
 		userToUpdate.setRole(userUpdated.getRole());
 		userToUpdate = userRepository.save(userToUpdate);
-		log.info("user updated {}",userToUpdate);
+
 		return userToUpdate;
 	}
 
@@ -105,12 +103,8 @@ public class UserService {
 				.orElseThrow(() -> new NullPointerException("User" + id + " not found for deleting"));
 		userRepository.deleteById(id);
 	}
-	
+
 	public void deleteAllUsers() throws Exception {
 		userRepository.deleteAll();
-	}
-
-	public UserService() {
-		// TODO Auto-generated constructor stub
 	}
 }

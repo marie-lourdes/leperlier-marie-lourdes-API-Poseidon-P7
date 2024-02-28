@@ -18,29 +18,28 @@ import lombok.Data;
 @Entity
 @Table(name = "rating")
 public class Rating {
-	// TODO: Map columns in data table RATING with corresponding java fields
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
-	
-	@Pattern(regexp=ConstantsValidation.REGEX_CHARACTER, message=ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
-	@NotBlank(message="Moodys rating "+ConstantsValidation.ERROR_BLANK_MSG )
+
+	@Pattern(regexp = ConstantsValidation.REGEX_CHARACTER, message = ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
+	@NotBlank(message = "Moodys rating " + ConstantsValidation.ERROR_BLANK_MSG)
 	@Column(name = " moodys_rating")
 	private String moodysRating;
-	
-	@Pattern(regexp=ConstantsValidation.REGEX_CHARACTER, message=ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
-	@NotBlank(message="Sand "+ConstantsValidation.ERROR_BLANK_MSG )
+
+	@Pattern(regexp = ConstantsValidation.REGEX_CHARACTER, message = ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
+	@NotBlank(message = "Sand " + ConstantsValidation.ERROR_BLANK_MSG)
 	@Column(name = "sand_rating")
 	private String sandRating;
-	
-	@Pattern(regexp=ConstantsValidation.REGEX_CHARACTER, message=ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
-	@NotBlank(message="Fitch rating "+ConstantsValidation.ERROR_BLANK_MSG )
-	@Column(name = "fitch_rating") 
+
+	@Pattern(regexp = ConstantsValidation.REGEX_CHARACTER, message = ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
+	@NotBlank(message = "Fitch rating " + ConstantsValidation.ERROR_BLANK_MSG)
+	@Column(name = "fitch_rating")
 	private String fitchRating;
-	
-	@NotNull(message=ConstantsValidation.ERROR_NULL_MSG)
-	@Positive(message="Order number must be > 0")
+
+	@NotNull(message = ConstantsValidation.ERROR_NULL_MSG)
+	@Positive(message = "Order number must be > 0")
 	@Column(name = "order_number")
 	private Integer orderNumber;
 

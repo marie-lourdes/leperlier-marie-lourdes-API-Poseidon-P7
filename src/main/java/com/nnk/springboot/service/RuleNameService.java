@@ -3,8 +3,6 @@ package com.nnk.springboot.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,27 +11,19 @@ import com.nnk.springboot.repositories.IRuleNameRepository;
 
 @Service
 public class RuleNameService {
-	private static final Logger log = LogManager.getLogger(RuleNameService.class);
-
 	@Autowired
 	private IRuleNameRepository ruleNameRepository;
 
 	public RuleName addRuleName(RuleName ruleNameCreated) throws NullPointerException {
 		RuleName ruleNameRegistered = new RuleName();
-
-		try {
-			if (ruleNameCreated != null) {
-				ruleNameRegistered.setName(ruleNameCreated.getName());
-				ruleNameRegistered.setDescription(ruleNameCreated.getDescription());
-				ruleNameRegistered.setJson(ruleNameCreated.getJson());
-				ruleNameRegistered.setTemplate(ruleNameCreated.getTemplate());
-				ruleNameRegistered.setSqlStr(ruleNameCreated.getSqlStr());
-				ruleNameRegistered.setSqlPart(ruleNameCreated.getSqlPart());
-			}
-		} catch (IllegalArgumentException e) {
-			log.error(e.getMessage());
+		if (ruleNameCreated != null) {
+			ruleNameRegistered.setName(ruleNameCreated.getName());
+			ruleNameRegistered.setDescription(ruleNameCreated.getDescription());
+			ruleNameRegistered.setJson(ruleNameCreated.getJson());
+			ruleNameRegistered.setTemplate(ruleNameCreated.getTemplate());
+			ruleNameRegistered.setSqlStr(ruleNameCreated.getSqlStr());
+			ruleNameRegistered.setSqlPart(ruleNameCreated.getSqlPart());
 		}
-
 		ruleNameRegistered = ruleNameRepository.save(ruleNameRegistered);
 		return ruleNameRegistered;
 	}
@@ -72,7 +62,7 @@ public class RuleNameService {
 				.orElseThrow(() -> new NullPointerException("RuleName" + id + " not found for deleting"));
 		ruleNameRepository.deleteById(id);
 	}
-	
+
 	public void deleteAllRuleNames() throws Exception {
 		ruleNameRepository.deleteAll();
 	}

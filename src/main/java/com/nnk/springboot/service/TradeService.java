@@ -25,13 +25,13 @@ public class TradeService {
 	@Autowired
 	private TradeMapperImpl mapper;
 
-	public Trade addTrade(Trade tradeCreated /* String username */) throws NullPointerException {
+	public Trade addTrade(Trade tradeCreated) throws NullPointerException {
 		Trade tradeRegistered = new Trade();
 		Date date = new Date();
 		Timestamp timestamp = new Timestamp(date.getTime());
 		try {
 			if (tradeCreated != null) {
-				if (tradeCreated.getAccount() == null ||tradeCreated.getType() == null) {
+				if (tradeCreated.getAccount() == null || tradeCreated.getType() == null) {
 					throw new IllegalArgumentException("Empty data of Trade" + tradeCreated + " provided and created");
 				}
 				tradeRegistered.setAccount(tradeCreated.getAccount());
@@ -52,7 +52,7 @@ public class TradeService {
 	public Trade getTradeById(Integer id) throws NullPointerException {
 		Trade tradeFoundById = tradeRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("Trade " + id + " not found"));
-		return tradeFoundById ;
+		return tradeFoundById;
 	}
 
 	public List<TradeDTO> getAllTrades() throws NullPointerException {
@@ -71,7 +71,7 @@ public class TradeService {
 		Trade tradeToUpdate = new Trade();
 		tradeToUpdate = tradeRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("Trade" + id + " not found for updating"));
-		if ( tradeUpdated.getAccount() == null ||tradeUpdated.getType() == null) {
+		if (tradeUpdated.getAccount() == null || tradeUpdated.getType() == null) {
 			throw new IllegalArgumentException("Empty data of Trade" + tradeUpdated + " provided and updated");
 		}
 		tradeToUpdate.setAccount(tradeUpdated.getAccount());
@@ -86,7 +86,7 @@ public class TradeService {
 				.orElseThrow(() -> new NullPointerException("Trade" + id + " not found for deleting"));
 		tradeRepository.deleteById(id);
 	}
-	
+
 	public void deleteAllTrades() throws Exception {
 		tradeRepository.deleteAll();
 	}

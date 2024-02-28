@@ -29,21 +29,21 @@ public class User {
 	@NotBlank(message = "Password " + ConstantsValidation.ERROR_BLANK_MSG)
 	@Column(name = " password")
 	private String password;
-	
-	@Pattern(regexp=ConstantsValidation.REGEX_CHARACTER, message=ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
+
+	@Pattern(regexp = ConstantsValidation.REGEX_CHARACTER, message = ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
 	@NotBlank(message = "FullName " + ConstantsValidation.ERROR_BLANK_MSG)
 	@Column(name = " fullname")
 	private String fullName;
-	
-	@Pattern(regexp=ConstantsValidation.REGEX_CHARACTER, message=ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
+
+	@Pattern(regexp = ConstantsValidation.REGEX_CHARACTER, message = ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
 	@NotBlank(message = "Role " + ConstantsValidation.ERROR_BLANK_MSG)
 	@Column(name = " role")
 	private String role;
 
 	@Override
 	public String toString() {
-		return "User{" + "id:" + id + ", username :" + username + ", password:" + password + ", fullName:"
-				+ fullName + ", role" + role + "}";
+		return "User{" + "id:" + id + ", username :" + username + ", password:" + password + ", fullName:" + fullName
+				+ ", role" + role + "}";
 	}
 
 }

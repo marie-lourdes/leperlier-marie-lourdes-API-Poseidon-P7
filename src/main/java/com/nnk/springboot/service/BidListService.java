@@ -25,17 +25,17 @@ public class BidListService {
 	@Autowired
 	private BidListMapperImpl mapper;
 
-	public BidList addBid(BidList bidListCreated)
-			throws NullPointerException {
+	public BidList addBid(BidList bidListCreated) throws NullPointerException{
 		BidList bidListRegistered = new BidList();
 		Date date = new Date();
 		Timestamp timestamp = new Timestamp(date.getTime());
 		try {
 			if (bidListCreated != null) {
 				if (bidListCreated.getAccount() == null || bidListCreated.getType() == null) {
-					throw new IllegalArgumentException("Empty data required of Bid " + bidListCreated + " provided and created");
+					throw new IllegalArgumentException(
+							"Empty data required of Bid " + bidListCreated + " provided and created");
 				}
-	
+
 				bidListRegistered.setAccount(bidListCreated.getAccount());
 				bidListRegistered.setType(bidListCreated.getType());
 				bidListRegistered.setBidQuantity(bidListCreated.getBidQuantity());
@@ -45,7 +45,7 @@ public class BidListService {
 		} catch (IllegalArgumentException e) {
 			log.error(e.getMessage());
 		}
-		
+
 		bidListRegistered = bidListRepository.save(bidListRegistered);
 		return bidListRegistered;
 	}
@@ -53,8 +53,8 @@ public class BidListService {
 	public BidList getBidById(Integer id) throws NullPointerException {
 		BidList bidlistFoundById = bidListRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("Bid " + id + " not found"));
-		//BidListDTO bidListDTO = mapper.bidListToBidListDTO(bidlistFoundById);
-		return bidlistFoundById ;
+		// BidListDTO bidListDTO = mapper.bidListToBidListDTO(bidlistFoundById);
+		return bidlistFoundById;
 	}
 
 	public List<BidListDTO> getAllBids() throws NullPointerException {
@@ -74,11 +74,12 @@ public class BidListService {
 		BidList bidListToUpdate = new BidList();
 		bidListToUpdate = bidListRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("Bid " + id + " not found for updating"));
-		
+
 		if (bidListUpdated.getAccount() == null || bidListUpdated.getType() == null) {
-			throw new IllegalArgumentException("Empty data required of Bid " + bidListUpdated+ " provided and updated");
+			throw new IllegalArgumentException(
+					"Empty data required of Bid " + bidListUpdated + " provided and updated");
 		}
-		
+
 		bidListToUpdate.setAccount(bidListUpdated.getAccount());
 		bidListToUpdate.setType(bidListUpdated.getType());
 		bidListToUpdate.setBidQuantity(bidListUpdated.getBidQuantity());
@@ -91,7 +92,7 @@ public class BidListService {
 				.orElseThrow(() -> new NullPointerException("Bid " + id + " not found for deleting"));
 		bidListRepository.deleteById(id);
 	}
-	
+
 	public void deleteAllBids() throws Exception {
 		bidListRepository.deleteAll();
 	}

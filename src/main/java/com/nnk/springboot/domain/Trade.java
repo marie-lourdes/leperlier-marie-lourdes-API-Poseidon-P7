@@ -20,37 +20,28 @@ import lombok.Data;
 @Entity
 @Table(name = "trade")
 public class Trade {
-	// TODO: Map columns in data table TRADE with corresponding java fields
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "trade_id")
 	private Integer tradeId;
-	
-	@Pattern(regexp=ConstantsValidation.REGEX_CHARACTER, message=ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
-	@Size(
-			min = ConstantsValidation.MIN_SIZE_ACCOUNTANDTYPE_DATA,
-			max = ConstantsValidation.MAX_SIZE_ACCOUNTANDTYPE_DATA,
-			message=ConstantsValidation.ERROR_SIZE_CHARACTER_ACCOUNTANDTYPE_MSG
-			)
-	@NotBlank(message = "Account "+ConstantsValidation.ERROR_BLANK_MSG )
+
+	@Pattern(regexp = ConstantsValidation.REGEX_CHARACTER, message = ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
+	@Size(min = ConstantsValidation.MIN_SIZE_ACCOUNTANDTYPE_DATA, max = ConstantsValidation.MAX_SIZE_ACCOUNTANDTYPE_DATA, message = ConstantsValidation.ERROR_SIZE_CHARACTER_ACCOUNTANDTYPE_MSG)
+	@NotBlank(message = "Account " + ConstantsValidation.ERROR_BLANK_MSG)
 	@Column(name = "account")
 	private String account;
-	
-	@Pattern(regexp=ConstantsValidation.REGEX_CHARACTER, message=ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
-	@Size(
-			min = ConstantsValidation.MIN_SIZE_ACCOUNTANDTYPE_DATA,
-			max = ConstantsValidation.MAX_SIZE_ACCOUNTANDTYPE_DATA,
-			message=ConstantsValidation.ERROR_SIZE_CHARACTER_ACCOUNTANDTYPE_MSG
-			)
-	@NotBlank(message = "Type "+ConstantsValidation.ERROR_BLANK_MSG )
+
+	@Pattern(regexp = ConstantsValidation.REGEX_CHARACTER, message = ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
+	@Size(min = ConstantsValidation.MIN_SIZE_ACCOUNTANDTYPE_DATA, max = ConstantsValidation.MAX_SIZE_ACCOUNTANDTYPE_DATA, message = ConstantsValidation.ERROR_SIZE_CHARACTER_ACCOUNTANDTYPE_MSG)
+	@NotBlank(message = "Type " + ConstantsValidation.ERROR_BLANK_MSG)
 	@Column(name = "type")
 	private String type;
 
-	@Positive(message="Trade "+ConstantsValidation.ERROR_NOT_POSITIVE_MSG)
+	@Positive(message = "Trade " + ConstantsValidation.ERROR_NOT_POSITIVE_MSG)
 	@Column(name = "buy_quantity")
 	private Double buyQuantity;
-	
-	@Positive(message="Trade "+ConstantsValidation.ERROR_NOT_POSITIVE_MSG)
+
+	@Positive(message = "Trade " + ConstantsValidation.ERROR_NOT_POSITIVE_MSG)
 	@Column(name = "sell_quantity")
 	private Double sellQuantity;
 
@@ -66,10 +57,7 @@ public class Trade {
 	@Column(name = "security ")
 	private String security;
 
-	@Size(
-			min = ConstantsValidation.MIN_SIZE_TRADE_DATA,
-			max = ConstantsValidation.MAX_SIZE_TRADE_DATA,
-			message=ConstantsValidation.ERROR_SIZE_CHARACTER_MSG)
+	@Size(min = ConstantsValidation.MIN_SIZE_TRADE_DATA, max = ConstantsValidation.MAX_SIZE_TRADE_DATA, message = ConstantsValidation.ERROR_SIZE_CHARACTER_MSG)
 	@Column(name = "status ")
 	private String status;
 
@@ -106,7 +94,8 @@ public class Trade {
 	@Column(name = "side ")
 	private String side;
 
-	public Trade() {}
+	public Trade() {
+	}
 
 	public Trade(String account, String type) {
 		this.account = account;

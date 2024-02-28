@@ -11,27 +11,21 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurity {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.authorizeHttpRequests((requests) -> {	
+		http.authorizeHttpRequests((requests) -> {
 			requests.requestMatchers("/css/**").permitAll();
-			requests.requestMatchers("/").permitAll();	
+			requests.requestMatchers("/").permitAll();
 			requests.requestMatchers("/user/add").permitAll();
 			requests.requestMatchers("/user/validate").permitAll();
+			requests.requestMatchers("/user/list").hasRole("ADMIN");
 			requests.requestMatchers("/admin/home").hasRole("ADMIN");
 			requests.requestMatchers("/app/secure/article-details").hasRole("ADMIN");
 			requests.requestMatchers("/ruleName/**").hasRole("ADMIN");
 			requests.requestMatchers("/*/add").hasRole("ADMIN");
 			requests.requestMatchers("/*/validate").hasRole("ADMIN");
 			requests.requestMatchers("/*/update/**").hasRole("ADMIN");
-			requests.requestMatchers("/*/delete/**").hasRole("ADMIN");	
-			
+			requests.requestMatchers("/*/delete/**").hasRole("ADMIN");
 			requests.anyRequest().authenticated();
-
-		})	/*.rememberMe((remember) -> {
-			remember.rememberMeServices(rememberMeServices(authenticationService));
-			remember.useSecureCookie(true);
-		})*/
-		.formLogin(form -> form.loginPage("/app/login").permitAll())
-		.logout((logout) -> {
+		}).formLogin(form -> form.loginPage("/app/login").permitAll()).logout((logout) -> {
 			logout.deleteCookies("JSESSIONID");
 			logout.permitAll();
 		});
