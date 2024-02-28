@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.nnk.springboot.domain.Trade;
 import com.nnk.springboot.domain.dto.TradeDTO;
 import com.nnk.springboot.service.TradeService;
+import com.nnk.springboot.utils.Constants;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
@@ -37,25 +37,19 @@ public class TradeController {
 
 	@PostMapping("/validate")
 	public String validate(@Valid @ModelAttribute Trade tradeCreated, BindingResult result, Principal principal) {
-		// TODO: check data valid and save to db, after saving return bid list
 
-		/*
-		 * if(result.hasErrors()) { return new ModelAndView("redirect:/trade/add"); }
-		 */
 		try {
-			// tradeService.addTrade(tradeCreated, principal.getName());
 			tradeService.addTrade(tradeCreated);
-			return "redirect:/trade/list";
+			return Constants.REDIRECTION + Constants.TRADELIST_PAGE;
 		} catch (ConstraintViolationException e) {
 			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
 			for (ConstraintViolation<?> constraint : violationsException) {
 				log.error("Errors fields of Trade created " + constraint.getMessageTemplate());
 			}
-
-			return "trade/add";
+			return Constants.TRADE_ADD_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return "trade/add";
+			return Constants.TRADE_ADD_PAGE;
 		}
 	}
 
@@ -64,14 +58,12 @@ public class TradeController {
 		Trade tradeToCreate = new Trade();
 		try {
 			model.addAttribute("trade", tradeToCreate);
-
 		} catch (Exception e) {
 			log.error("Failed to retrieve bid form creation  page" + e.getMessage());
-			// return Constants.ERROR_PAGE;
 		}
 
 		log.info(" Trade  form creation page successfully retrieved");
-		return "trade/add";
+		return Constants.TRADE_ADD_PAGE;
 	}
 
 	@GetMapping("/list")
@@ -89,56 +81,57 @@ public class TradeController {
 
 		model.addAttribute("trades", trades);
 		model.addAttribute("remoteUser", httpServletRequest.getRemoteUser());
-		return "trade/list";
+		return Constants.TRADELIST_PAGE;
 	}
 
 	@PostMapping("/update/{id}")
-	public ModelAndView updateTrade(@PathVariable("id") Integer id, @Valid @ModelAttribute Trade tradeUpdated,BindingResult result) {
-		// TODO: check required fields, if valid call service to update Trade and return
-		// list Trade
+	public String updateTrade(@PathVariable("id") Integer id, @Valid @ModelAttribute Trade tradeUpdated,
+			BindingResult result) {
+
 		try {
+			if (result.hasErrors()) {
+				return Constants.TRADE_UPDATE_PAGE;
+			}
 			tradeService.updateTradeById(id, tradeUpdated);
-			return new ModelAndView("redirect:/trade/list");
-		}catch (ConstraintViolationException e) {
+			return Constants.REDIRECTION + Constants.TRADELIST_PAGE;
+		} catch (ConstraintViolationException e) {
 			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
 			for (ConstraintViolation<?> constraint : violationsException) {
 				log.error("Errors fields of Trade updated " + constraint.getMessageTemplate());
 			}
-			return new ModelAndView("redirect:/trade/update");
+			return Constants.TRADE_UPDATE_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return new ModelAndView("redirect:/error-404");
-			
-		}	
+			return Constants.TRADE_UPDATE_PAGE;
+		}
 	}
 
 	@GetMapping("/update/{id}")
-	public ModelAndView getUpdateFormTradeListPage(@PathVariable("id") Integer id, Model model) {
-		// TODO: get Trade by Id and to model then show to the form
+	public String getUpdateFormTradeListPage(@PathVariable("id") Integer id, Model model) {
+
 		Trade tradeToUpdate = new Trade();
 		try {
 			tradeToUpdate = tradeService.getTradeById(id);
 			if (tradeToUpdate != null) {
 				model.addAttribute("trade", tradeToUpdate);
 			}
-
 			log.info(" Trade  form update page successfully retrieved");
-			return new ModelAndView("/trade/update");
+			return Constants.TRADE_UPDATE_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return new ModelAndView("redirect:/error-404");
+			return Constants.ERROR_404_PAGE;
 		}
 	}
 
 	@GetMapping("/delete/{id}")
-	public ModelAndView deleteTrade(@PathVariable("id") Integer id, Model model) {
-		// TODO: Find Trade by Id and delete the bid, return to Trade list
+	public String deleteTrade(@PathVariable("id") Integer id, Model model) {
+
 		try {
 			tradeService.deleteTradeById(id);
-			return new ModelAndView("redirect:/trade/list");
+			return Constants.REDIRECTION + Constants.TRADELIST_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return new ModelAndView("redirect:/error-404");
+			return Constants.ERROR_404_PAGE;
 		}
 
 	}

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.nnk.springboot.domain.RuleName;
 import com.nnk.springboot.service.RuleNameService;
@@ -104,8 +103,8 @@ public class RuleNameController {
 	}
 
 	@GetMapping("/update/{id}")
-	public ModelAndView getUpdateFormRuleNameListPage(@PathVariable("id") Integer id, Model model) {
-		// TODO: get RuleName by Id and to model then show to the form
+	public String getUpdateFormRuleNameListPage(@PathVariable("id") Integer id, Model model) {
+
 		RuleName ruleNameToUpdate = new RuleName();
 		try {
 			ruleNameToUpdate = ruleNameService.getRuleNameById(id);
@@ -114,21 +113,21 @@ public class RuleNameController {
 			}
 
 			log.info(" RuleName  form update page successfully retrieved");
-			return new ModelAndView("/ruleName/update");
+			return Constants.RULENAME_UPDATE_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return new ModelAndView("redirect:/error-404");
+			return Constants.ERROR_404_PAGE;
 		}
 	}
 
 	@GetMapping("/delete/{id}")
-	public ModelAndView deleteBid(@PathVariable("id") Integer id, Model model) {
+	public String deleteBid(@PathVariable("id") Integer id, Model model) {
 		try {
 			ruleNameService.deleteRuleNameById(id);
-			return new ModelAndView("redirect:/ruleName/list");
+			return Constants.REDIRECTION + Constants.RULENAMELIST_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return new ModelAndView("redirect:/error-404");
+			return Constants.ERROR_404_PAGE;
 		}
 	}
 }
