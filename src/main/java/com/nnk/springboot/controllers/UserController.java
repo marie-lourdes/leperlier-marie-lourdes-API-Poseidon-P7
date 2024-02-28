@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.nnk.springboot.domain.User;
 import com.nnk.springboot.domain.dto.UserDTO;
 import com.nnk.springboot.service.UserService;
+import com.nnk.springboot.utils.Constants;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
@@ -41,24 +42,23 @@ public class UserController {
 			if (!result.hasErrors()) {
 				BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 				userCreated.setPassword(encoder.encode(userCreated.getPassword()));
-				// model.addAttribute("userUpdateds", userService.findAll());
 			}
 
 			userService.addUser(userCreated);
-			return "redirect:/user/list";
+			return Constants.REDIRECTION + Constants.USERLIST_PAGE;
 		} catch (ConstraintViolationException e) {
 			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
 			for (ConstraintViolation<?> constraint : violationsException) {
 				log.error("Errors fields of User created " + constraint.getMessageTemplate());
 			}
 
-			return "user/add";
+			return Constants.USER_ADD_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return "user/add";
-		}catch (IllegalArgumentException e) {
+			return Constants.USER_ADD_PAGE;
+		} catch (IllegalArgumentException e) {
 			log.error(e.getMessage());
-			return "user/add";
+			return Constants.USER_ADD_PAGE;
 		}
 	}
 
@@ -70,11 +70,10 @@ public class UserController {
 
 		} catch (Exception e) {
 			log.error("Failed to retrieve user form creation  page" + e.getMessage());
-			// return Constants.ERROR_PAGE;
 		}
 
 		log.info(" User  form creation page successfully retrieved");
-		return "user/add";
+		return Constants.USER_ADD_PAGE;
 	}
 
 	@GetMapping("/list")
@@ -91,7 +90,7 @@ public class UserController {
 
 		model.addAttribute("users", users);
 		model.addAttribute("remoteUser", httpServletRequest.getRemoteUser());
-		return "user/list";
+		return Constants.USERLIST_PAGE;
 	}
 
 	@PostMapping("/update/{id}")
@@ -102,27 +101,28 @@ public class UserController {
 			if (!result.hasErrors()) {
 				BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 				userUpdated.setPassword(encoder.encode(userUpdated.getPassword()));
-				// model.addAttribute("userUpdateds", userService.findAll());
+
+			} else {
+				return Constants.USER_UPDATE_PAGE;
 			}
-			
-				userService.updateUserById(id, userUpdated);
-				return "redirect:/user/list";
-		}  catch (ConstraintViolationException e) {
+			userService.updateUserById(id, userUpdated);
+			return Constants.REDIRECTION + Constants.USERLIST_PAGE;
+		} catch (ConstraintViolationException e) {
 			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
 			for (ConstraintViolation<?> constraint : violationsException) {
 				log.error("Errors fields of User updated " + constraint.getMessageTemplate());
 			}
 
-			return "redirect:/user/update";
-		}catch (NullPointerException e) {
+			return Constants.USER_UPDATE_PAGE;
+		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return "redirect:/user/update";
+			return Constants.USER_UPDATE_PAGE;
 		}
-	
+
 	}
 
 	@GetMapping("/update/{id}")
-	public ModelAndView getUpdateFormBidListPage(@PathVariable("id") Integer id, Model model) {
+	public String getUpdateFormBidListPage(@PathVariable("id") Integer id, Model model) {
 		User userToUpdate = new User();
 		try {
 			userToUpdate = userService.getUserEntityById(id);
@@ -131,27 +131,21 @@ public class UserController {
 			}
 
 			log.info(" User  form update page successfully retrieved");
-			return new ModelAndView("/user/update");
+			return Constants.USER_UPDATE_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return new ModelAndView("redirect:/error-404");
+			return Constants.ERROR_404_PAGE;
 		}
 	}
 
 	@GetMapping("/delete/{id}")
-	public ModelAndView deleteUser(@PathVariable("id") Integer id, Model model) {
+	public String deleteUser(@PathVariable("id") Integer id, Model model) {
 		try {
 			userService.deleteUserById(id);
-			return new ModelAndView("redirect:/user/list");
+			return Constants.REDIRECTION + Constants.USERLIST_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return new ModelAndView("redirect:/error-404");
+			return Constants.ERROR_404_PAGE;
 		}
-		/*
-		 * User user= userService.findById(id).orElseThrow(() -> new
-		 * IllegalArgumentException("Invalid userUpdated Id:" + id));
-		 * userService.delete(user); model.addAttribute("users", userService.findAll());
-		 */
-		// return "redirect:/user/list";
 	}
 }
