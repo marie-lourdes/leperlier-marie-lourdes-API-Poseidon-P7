@@ -38,8 +38,10 @@ public class BidListController {
 
 	@PostMapping("/validate")
 	public String validate(@Valid @ModelAttribute BidList bidCreated, BindingResult result, Principal principal) {
-		try {
+		log.debug("adding Bid");
+		try {	
 			bidListService.addBid(bidCreated);
+			log.info("Bid added successfully {}", bidCreated);
 			return Constants.REDIRECTION + Constants.BIDLIST_PAGE;
 		} catch (ConstraintViolationException e) {
 			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
@@ -56,6 +58,7 @@ public class BidListController {
 
 	@GetMapping("/add")
 	public String getBidFormPage(Model model) {
+		log.debug("getting bid form page");
 		BidList bidListToCreate = new BidList();
 		try {
 			model.addAttribute("bidList", bidListToCreate);
@@ -69,7 +72,7 @@ public class BidListController {
 
 	@GetMapping("/list")
 	public String getBidListPage(HttpServletRequest httpServletRequest, Model model, Authentication authentication) {
-
+		log.debug("getting bid list page");
 		List<BidListDTO> bidLists = new ArrayList<BidListDTO>();
 		try {
 			bidLists = bidListService.getAllBids();
@@ -82,19 +85,20 @@ public class BidListController {
 
 		model.addAttribute("bidLists", bidLists);
 		model.addAttribute("remoteUser", httpServletRequest.getRemoteUser());
+		log.info(" Bid list page successfully retrieved");
 		return Constants.BIDLIST_PAGE;
 	}
 
 	@PostMapping("/update/{id}")
 	public String updateBid(@PathVariable("id") Integer id, @Valid @ModelAttribute BidList bidListUpdated,
 			BindingResult result) {
-		// TODO: check required fields, if valid call service to update Bid and return
-		// list Bid
+		log.debug("updating bid {}, id: {}",bidListUpdated,id);
 		try {
 			if (result.hasErrors()) {
 				return   Constants.REDIRECTION +Constants.BID_UPDATE_PAGE;
 			}
 			bidListService.updateBidById(id, bidListUpdated);
+			log.info(" Bid updated sucessfully{}, id: {}",bidListUpdated,id);
 			return Constants.BIDLIST_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
@@ -107,7 +111,7 @@ public class BidListController {
 
 	@GetMapping("/update/{id}")
 	public String getUpdateFormBidListPage(@PathVariable("id") Integer id, Model model) {
-		
+		log.debug("getting Bid update form page");
 		BidList bidListToUpdate = new BidList();
 		try {
 			bidListToUpdate = bidListService.getBidById(id);
@@ -125,14 +129,14 @@ public class BidListController {
 
 	@GetMapping("/delete/{id}")
 	public String deleteBid(@PathVariable("id") Integer id, Model model) {
-
+		log.debug("deleting bid {}, id: {}",id);
 		try {
 			bidListService.deleteBidById(id);
+			log.info(" Bid  successfully deleted");
 			return Constants.REDIRECTION + Constants.BIDLIST_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
 			return Constants.ERROR_404_PAGE;
 		}
-
 	}
 }

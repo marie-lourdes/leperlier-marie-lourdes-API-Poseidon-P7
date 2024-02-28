@@ -20,6 +20,13 @@ public class AuthenticationUserService implements UserDetailsService {
 	@Autowired
 	private UserService userService;
 
+	/**
+	 * use to get info of user in BDD and allow authentication
+	 *
+	 * @param String- username needed for authentication
+	 *
+	 * @return UserDetails
+	 */
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserLoginDTO userDTO = userService.getUserByUserName(username);
@@ -28,6 +35,9 @@ public class AuthenticationUserService implements UserDetailsService {
 		return userdetails;
 	}
 
+	/**
+	 * use to build list of role of user
+	 */
 	protected List<GrantedAuthority> getGrantedAuthorities(String role) {
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		authorities.add(new SimpleGrantedAuthority("ROLE_" + role));

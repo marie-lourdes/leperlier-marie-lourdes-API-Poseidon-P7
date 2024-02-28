@@ -17,13 +17,24 @@ public class Authentication {
 	@Autowired
 	private AuthenticationUserService authentificationUserService;
 
+	/**
+	 * Used to encode password of user
+	 * 
+	 */
 	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
+	BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
+	/**
+	 * Used to authentication by Spring Security
+	 *
+	 * @return AuthenticationManager-Authentication object info of user
+	 *         authenticated with authentificationUserService .
+	 */
+
 	@Bean
-	public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder)
+	AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder)
 			throws Exception {
 		AuthenticationManagerBuilder authenticationManagerBuilder = http
 				.getSharedObject(AuthenticationManagerBuilder.class);

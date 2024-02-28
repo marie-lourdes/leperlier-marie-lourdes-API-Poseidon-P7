@@ -9,8 +9,15 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class WebSecurity {
+
+	/**
+	 * filter chain used to secure acces control of request method according to role
+	 * of user and configure form login page
+	 *
+	 * @return SecurityFilterChain
+	 */
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	 SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((requests) -> {
 			requests.requestMatchers("/css/**").permitAll();
 			requests.requestMatchers("/").permitAll();
