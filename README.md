@@ -15,31 +15,22 @@ What things you need to install the software and how to install them
 - Spring Security
 -Thymeleaf
 - Bootstrap v.4.3.1
-
-### Installing
-
-## Setup with Intellij IDE
-1. Create project from Initializr: File > New > project > Spring Initializr
-2. Add lib repository into pom.xml
-3. Add folders
-    - Source root: src/main/java
-    - View: src/main/resources
-    - Static: src/main/resource/static
-4. Create database with name "demo" as configuration in application.properties
-5. Run sql script to create table doc/data.sql
-
-## Implement a Feature
-1. Create mapping domain class and place in package com.nnk.springboot.domain
-2. Create repository class and place in package com.nnk.springboot.repositories
-3. Create controller class and place in package com.nnk.springboot.controllers
-
-## Security
-1. Create user service to load user from  database and place in package com.nnk.springboot.services
-2. Add configuration class and place in package com.nnk.springboot.config
+- Create database with name "demo" as configuration in application.properties
 
 ### Running App
+
 Post installation of Java, Maven and Spring Tools 4, and BDD you will have to run app
  with your CLI or with dashboard of Spring Tools or  run in you CLI: mvn spring-boot:run ..
+
+For build  PROD  or DEV you can run:
+->BUILD DEV : mvn clean package -Denvironnement=dev
+->BUILD PROD : mvn clean package -Dmaven.test.skip=true
+
+Post installation and building project, and create  BDD from src/main/resources/Data.sql, you will have to run app
+ with your CLI: 'mvn spring-boot:run' or with dashboard of Spring Tools.
+ Then move the JAR  generated at root of project , Spring will  run with properties in folder /config for ENV "prod" and finally  run in you CLI: 
+ for app PROD 
+
 
 Finally, you will be ready to  use webapp and request 
 The link homepage  is :http://localhost:8080/

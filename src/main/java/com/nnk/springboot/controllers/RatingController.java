@@ -26,7 +26,7 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("rating")
+@RequestMapping("/rating")
 public class RatingController {
 	private static final Logger log = LogManager.getLogger(RatingController.class);
 	// TODO: Inject Rating service

@@ -28,7 +28,7 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("trade")
+@RequestMapping("/trade")
 public class TradeController {
 	private static final Logger log = LogManager.getLogger(TradeController.class);
 

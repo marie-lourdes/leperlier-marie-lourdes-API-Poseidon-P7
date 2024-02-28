@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.nnk</groupId>
 	<artifactId>springboot</artifactId>
-	<version>0.0.1</version>
+	<version>1.0.0</version>
 	<name>springboot</name>
 	<description>REST API of Poseidon Conseils Enterprise</description>
 	<properties>

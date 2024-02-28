@@ -10,7 +10,7 @@ import com.nnk.springboot.service.UserService;
 import com.nnk.springboot.utils.Constants;
 
 @Controller
-@RequestMapping("app")
+@RequestMapping("/app")
 public class LoginController {
 
 	@Autowired

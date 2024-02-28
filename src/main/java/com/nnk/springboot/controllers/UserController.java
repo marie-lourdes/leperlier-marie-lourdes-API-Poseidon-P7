@@ -29,7 +29,7 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("user")
+@RequestMapping("/user")
 public class UserController {
 	private String authority;
 	private static final Logger log = LogManager.getLogger(UserController.class);
