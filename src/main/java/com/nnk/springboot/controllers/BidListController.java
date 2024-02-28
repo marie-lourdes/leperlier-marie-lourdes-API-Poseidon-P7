@@ -92,7 +92,7 @@ public class BidListController {
 		// list Bid
 		try {
 			if (result.hasErrors()) {
-				return   Constants.BID_UPDATE_PAGE;
+				return   Constants.REDIRECTION +Constants.BID_UPDATE_PAGE;
 			}
 			bidListService.updateBidById(id, bidListUpdated);
 			return Constants.BIDLIST_PAGE;

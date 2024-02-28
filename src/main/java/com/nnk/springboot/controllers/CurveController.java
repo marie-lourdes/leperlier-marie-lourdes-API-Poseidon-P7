@@ -40,17 +40,17 @@ public class CurveController {
 
 		try {
 			curvePointService.addCurvePoint(curvePointCreated);
-			return Constants.REDIRECTION+Constants.CURVEPOINTLIST_PAGE;
+			return Constants.REDIRECTION + Constants.CURVEPOINTLIST_PAGE;
 		} catch (ConstraintViolationException e) {
 			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
 			for (ConstraintViolation<?> constraint : violationsException) {
 				log.error("Errors fields of Curve Point created" + constraint.getMessageTemplate());
 			}
 
-			return Constants.REDIRECTION+Constants.CURVEPOINT_ADD_PAGE;
+			return Constants.CURVEPOINT_ADD_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return "curvePoint/add";
+			return Constants.CURVEPOINT_ADD_PAGE;
 		}
 	}
 
@@ -69,7 +69,7 @@ public class CurveController {
 
 	@GetMapping("/list")
 	public String getCurvePointPage(HttpServletRequest httpServletRequest, Model model) {
-		// TODO: find all Curve Point, add to model
+	
 		List<CurvePointDTO> curvePoints = new ArrayList<>();
 		try {
 			curvePoints = curvePointService.getAllCurvePoints();
@@ -85,22 +85,27 @@ public class CurveController {
 	}
 
 	@PostMapping("/update/{id}")
-	public String updateCurvePoint(@PathVariable("id") Integer id,
-			@Valid @ModelAttribute CurvePoint curvePointUpdated, BindingResult result) {
-		// TODO: check required fields, if valid call service to update Curve and return
-		// Curve list
+	public String updateCurvePoint(@PathVariable("id") Integer id, @Valid @ModelAttribute CurvePoint curvePointUpdated,
+			BindingResult result) {
+		
 		try {
+			if (result.hasErrors()) {
+				return Constants.CURVEPOINT_UPDATE_PAGE;
+			}
 			curvePointService.updateCurvePointById(id, curvePointUpdated);
-			return Constants.REDIRECTION+Constants.CURVEPOINTLIST_PAGE;
+			return Constants.REDIRECTION + Constants.CURVEPOINTLIST_PAGE;
 		} catch (ConstraintViolationException e) {
 			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
 			for (ConstraintViolation<?> constraint : violationsException) {
 				log.error("Errors fields of Curve point updated " + constraint.getMessageTemplate());
 			}
-			return Constants.REDIRECTION+Constants.CURVEPOINT_UPDATE_PAGE;
+			return Constants.CURVEPOINT_UPDATE_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return  Constants.REDIRECTION+Constants.ERROR_404_PAGE;
+			return Constants.ERROR_404_PAGE;
+		} catch (IllegalArgumentException e) {
+			log.error(e.getMessage());
+			return Constants.CURVEPOINT_UPDATE_PAGE;
 		}
 	}
 
@@ -115,7 +120,7 @@ public class CurveController {
 			}
 
 			log.info(" Curve Point  form update page successfully retrieved");
-			return  Constants.CURVEPOINT_UPDATE_PAGE;
+			return Constants.CURVEPOINT_UPDATE_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
 			return Constants.ERROR_404_PAGE;
@@ -124,10 +129,10 @@ public class CurveController {
 
 	@GetMapping("/delete/{id}")
 	public String deleteBid(@PathVariable("id") Integer id, Model model) {
-		// TODO: Find Curve by Id and delete the Curve, return to Curve list
+
 		try {
 			curvePointService.deleteCurvePointById(id);
-			return Constants.CURVEPOINTLIST_PAGE;
+			return Constants.REDIRECTION +Constants.CURVEPOINTLIST_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
 			return Constants.ERROR_404_PAGE;
