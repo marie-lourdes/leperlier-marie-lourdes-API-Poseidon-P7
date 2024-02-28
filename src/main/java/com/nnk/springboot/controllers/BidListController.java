@@ -29,7 +29,7 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/bidList")
+@RequestMapping("bidList")
 public class BidListController {
 	private static final Logger log = LogManager.getLogger(BidListController.class);
 

@@ -8,11 +8,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.nnk.springboot.service.UserService;
 
-/**
- * Created by Khang Nguyen. Email: khang.nguyen@banvien.com Date: 09/03/2019
- * Time: 11:26 AM
- */
-
 @SpringBootTest
 public class PasswordEncodeTest {
 	private static final Logger log = LogManager.getLogger(UserService.class);

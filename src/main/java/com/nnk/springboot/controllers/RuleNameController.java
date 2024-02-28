@@ -26,10 +26,10 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/ruleName")
+@RequestMapping("ruleName")
 public class RuleNameController {
 	private static final Logger log = LogManager.getLogger(RuleNameController.class);
-	// TODO: Inject RuleName service
+
 	@Autowired
 	RuleNameService ruleNameService;
 

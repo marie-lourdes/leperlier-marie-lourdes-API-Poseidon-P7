@@ -27,7 +27,7 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/curvePoint")
+@RequestMapping("curvePoint")
 public class CurveController {
 	private static final Logger log = LogManager.getLogger(CurveController.class);
 
