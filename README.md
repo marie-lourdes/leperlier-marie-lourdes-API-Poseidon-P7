@@ -38,7 +38,7 @@ The link homepage  is :http://localhost:8080/
 See folder /doc  in root project
 
 ### Debugging and Testing with ENV dev
-Use  Maven CLI 'mvn clean package -Denvironnement=dev' and run again 
- For debbuging
-Use  Maven CLI 'mvn test or mvn verify  
+- For debbuging, use  Maven CLI 'mvn clean package -Denvironnement=dev' and run again 
+
+- For testing, use  Maven CLI 'mvn test or mvn verify  
 
