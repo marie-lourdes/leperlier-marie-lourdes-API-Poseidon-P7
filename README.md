@@ -39,9 +39,7 @@ What things you need to install the software and how to install them
 
 ### Running App
 Post installation of Java, Maven and Spring Tools 4, and BDD you will have to run app
- with your CLI or with dashboard of Spring Tools.
- Then move the JAR  generated at root of project , Spring will  run with properties in folder /config for ENV "prod" and finally  run in you CLI: mvn spring-boot:run .
- for app PROD 
+ with your CLI or with dashboard of Spring Tools or  run in you CLI: mvn spring-boot:run ..
 
 Finally, you will be ready to  use webapp and request 
 The link homepage  is :http://localhost:8080/
