@@ -29,7 +29,8 @@ public class Trade {
 	@Pattern(regexp=ConstantsValidation.REGEX_CHARACTER, message=ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
 	@Size(
 			min = ConstantsValidation.MIN_SIZE_ACCOUNTANDTYPE_DATA,
-			max = ConstantsValidation.MAX_SIZE_ACCOUNTANDTYPE_DATA
+			max = ConstantsValidation.MAX_SIZE_ACCOUNTANDTYPE_DATA,
+			message=ConstantsValidation.ERROR_SIZE_CHARACTER_ACCOUNTANDTYPE_MSG
 			)
 	@NotBlank(message = "Account "+ConstantsValidation.ERROR_BLANK_MSG )
 	@Column(name = "account")
@@ -38,7 +39,8 @@ public class Trade {
 	@Pattern(regexp=ConstantsValidation.REGEX_CHARACTER, message=ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
 	@Size(
 			min = ConstantsValidation.MIN_SIZE_ACCOUNTANDTYPE_DATA,
-			max = ConstantsValidation.MAX_SIZE_ACCOUNTANDTYPE_DATA
+			max = ConstantsValidation.MAX_SIZE_ACCOUNTANDTYPE_DATA,
+			message=ConstantsValidation.ERROR_SIZE_CHARACTER_ACCOUNTANDTYPE_MSG
 			)
 	@NotBlank(message = "Type "+ConstantsValidation.ERROR_BLANK_MSG )
 	@Column(name = "type")
@@ -64,7 +66,10 @@ public class Trade {
 	@Column(name = "security ")
 	private String security;
 
-	@Size(min = ConstantsValidation.MIN_SIZE_TRADE_DATA, max = ConstantsValidation.MAX_SIZE_TRADE_DATA)
+	@Size(
+			min = ConstantsValidation.MIN_SIZE_TRADE_DATA,
+			max = ConstantsValidation.MAX_SIZE_TRADE_DATA,
+			message=ConstantsValidation.ERROR_SIZE_CHARACTER_MSG)
 	@Column(name = "status ")
 	private String status;
 
