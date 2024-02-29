@@ -23,22 +23,20 @@ For building  PROD :
 
 - BUILD PROD : mvn clean package -Dmaven.test.skip=true
 
-Post installation and building project, and create  BDD from src/main/resources/Data.sql, you will have to run app
+Post installation, building project, and creating  BDD from src/main/resources/data.sql, you will have to run app
  with your CLI: 'mvn spring-boot:run' or with dashboard of Spring Tools.
  
 Finally, you will be ready to  use webapp and request 
 The link homepage  is :http://localhost:8080/
 
-### MORE INFORMATIONS
+### Testing with ENV dev
 
-- For testing application use:
-`run as` , then, 'Maven test' for unit test and maven verify for integration test
+- For testing, use Maven CLI  and run: 'mvn clean package -Denvironnement=dev'
+
+### MORE INFORMATIONS
+-  For infomation global of project (dependencies, version ...) :
+See folder /target/site
 
 -  For infomation about classes or methods used in application Spring Boot and Spring Security:
-See folder /doc  in root project
-
-### Debugging and Testing with ENV dev
-Use  Maven CLI 'mvn clean package -Denvironnement=dev' and run again 
- For debbuging
-Use  Maven CLI 'mvn test or mvn verify  
+See folder /doc/Javadoc  in root project
 
