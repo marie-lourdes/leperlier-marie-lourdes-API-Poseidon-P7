@@ -35,7 +35,7 @@ The link homepage  is :http://localhost:8080/
 
 ### MORE INFORMATIONS
 -  For infomation global of project (dependencies, version ...) :
-See folder /target/site
+See folder /doc/site
 
 -  For infomation about classes or methods used in application Spring Boot and Spring Security:
 See folder /doc/Javadoc  in root project
