@@ -36,9 +36,10 @@ public class CurveController {
 
 	@PostMapping("/validate")
 	public String validateCurvePoint(@Valid @ModelAttribute CurvePoint curvePointCreated, BindingResult result) {
-
+		log.debug("adding CurvePoint");
 		try {
 			curvePointService.addCurvePoint(curvePointCreated);
+			log.info("CurvePoint added successfully {}", curvePointCreated);
 			return Constants.REDIRECTION + Constants.CURVEPOINTLIST_PAGE;
 		} catch (ConstraintViolationException e) {
 			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
@@ -55,6 +56,7 @@ public class CurveController {
 
 	@GetMapping("/add")
 	public String addCurvePointForm(Model model) {
+		log.debug("getting curve point form page");
 		CurvePoint curvePointToCreate = new CurvePoint();
 		try {
 			model.addAttribute("curvePoint", curvePointToCreate);
@@ -68,7 +70,7 @@ public class CurveController {
 
 	@GetMapping("/list")
 	public String getCurvePointPage(HttpServletRequest httpServletRequest, Model model) {
-	
+		log.debug("getting curve point list page");
 		List<CurvePointDTO> curvePoints = new ArrayList<>();
 		try {
 			curvePoints = curvePointService.getAllCurvePoints();
@@ -80,18 +82,20 @@ public class CurveController {
 		}
 		model.addAttribute("curvePoints", curvePoints);
 		model.addAttribute("remoteUser", httpServletRequest.getRemoteUser());
+		log.info(" Curve point list page successfully retrieved");
 		return Constants.CURVEPOINTLIST_PAGE;
 	}
 
 	@PostMapping("/update/{id}")
 	public String updateCurvePoint(@PathVariable("id") Integer id, @Valid @ModelAttribute CurvePoint curvePointUpdated,
 			BindingResult result) {
-		
+		log.debug("updating CurvePoint {}, id: {}", curvePointUpdated, id);
 		try {
 			if (result.hasErrors()) {
 				return Constants.CURVEPOINT_UPDATE_PAGE;
 			}
 			curvePointService.updateCurvePointById(id, curvePointUpdated);
+			log.info(" Curve point updated sucessfully{}, id: {}", curvePointUpdated, id);
 			return Constants.REDIRECTION + Constants.CURVEPOINTLIST_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
@@ -104,7 +108,7 @@ public class CurveController {
 
 	@GetMapping("/update/{id}")
 	public String getUpdateFormCurvePointListPage(@PathVariable("id") Integer id, Model model) {
-		// TODO: get CurvePoint by Id and to model then show to the form
+		log.debug("getting curve point update form page");
 		CurvePoint curvePointToUpdate = new CurvePoint();
 		try {
 			curvePointToUpdate = curvePointService.getCurvePointById(id);
@@ -122,10 +126,11 @@ public class CurveController {
 
 	@GetMapping("/delete/{id}")
 	public String deleteBid(@PathVariable("id") Integer id, Model model) {
-
+		log.debug("deleting CurvePoint {}, id: {}", id);
 		try {
 			curvePointService.deleteCurvePointById(id);
-			return Constants.REDIRECTION +Constants.CURVEPOINTLIST_PAGE;
+			log.info(" Curve point successfully deleted");
+			return Constants.REDIRECTION + Constants.CURVEPOINTLIST_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
 			return Constants.ERROR_404_PAGE;

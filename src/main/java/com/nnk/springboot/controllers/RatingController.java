@@ -29,15 +29,16 @@ import jakarta.validation.Valid;
 @RequestMapping("rating")
 public class RatingController {
 	private static final Logger log = LogManager.getLogger(RatingController.class);
-	
+
 	@Autowired
 	RatingService ratingService;
 
 	@PostMapping("/validate")
 	public String validateRating(@Valid @ModelAttribute Rating ratingCreated, BindingResult result) {
-
+		log.debug("adding Rating");
 		try {
 			ratingService.addRating(ratingCreated);
+			log.info("Rating added successfully {}", ratingCreated);
 			return Constants.REDIRECTION + Constants.RATINGLIST_PAGE;
 
 		} catch (ConstraintViolationException e) {
@@ -55,6 +56,7 @@ public class RatingController {
 
 	@GetMapping("/add")
 	public String addRatingForm(Model model) {
+		log.debug("getting rating form page");
 		Rating ratingToCreate = new Rating();
 		try {
 			model.addAttribute("rating", ratingToCreate);
@@ -68,7 +70,7 @@ public class RatingController {
 
 	@GetMapping("/list")
 	public String getRatingPage(HttpServletRequest httpServletRequest, Model model) {
-	
+		log.debug("getting rating list page");
 		List<Rating> ratings = new ArrayList<>();
 		try {
 			ratings = ratingService.getAllRatings();
@@ -80,18 +82,20 @@ public class RatingController {
 		}
 		model.addAttribute("ratings", ratings);
 		model.addAttribute("remoteUser", httpServletRequest.getRemoteUser());
+		log.info("Rating list page successfully retrieved");
 		return Constants.RATINGLIST_PAGE;
 	}
 
 	@PostMapping("/update/{id}")
 	public String updateRating(@PathVariable("id") Integer id, @Valid @ModelAttribute Rating ratingUpdated,
 			BindingResult result) {
-
+		log.debug("updating Rating {}, id: {}", ratingUpdated, id);
 		try {
 			if (result.hasErrors()) {
 				return Constants.RATING_UPDATE_PAGE;
 			}
 			ratingService.updateRatingById(id, ratingUpdated);
+			log.info("Rating updated sucessfully{}, id: {}", ratingUpdated, id);
 			return Constants.REDIRECTION + Constants.RATINGLIST_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
@@ -104,7 +108,7 @@ public class RatingController {
 
 	@GetMapping("/update/{id}")
 	public String getUpdateFormRatingListPage(@PathVariable("id") Integer id, Model model) {
-		
+		log.debug("getting rating update form page");
 		Rating ratingToUpdate = new Rating();
 		try {
 			ratingToUpdate = ratingService.getRatingById(id);
@@ -122,7 +126,7 @@ public class RatingController {
 
 	@GetMapping("/delete/{id}")
 	public String deleteRating(@PathVariable("id") Integer id, Model model) {
-	
+		log.debug("deleting Rating{}, id: {}", id);
 		try {
 			ratingService.deleteRatingById(id);
 			return Constants.REDIRECTION + Constants.RATINGLIST_PAGE;

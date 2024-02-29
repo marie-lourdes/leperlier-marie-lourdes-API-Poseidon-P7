@@ -35,8 +35,10 @@ public class RuleNameController {
 
 	@PostMapping("/validate")
 	public String validateRuleName(@Valid @ModelAttribute RuleName ruleNameCreated, BindingResult result) {
+		log.debug("adding RuleName");
 		try {
 			ruleNameService.addRuleName(ruleNameCreated);
+			log.info("RuleName added successfully {}", ruleNameCreated);
 			return Constants.REDIRECTION + Constants.RULENAMELIST_PAGE;
 		} catch (ConstraintViolationException e) {
 			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
@@ -53,6 +55,7 @@ public class RuleNameController {
 
 	@GetMapping("/add")
 	public String addRuleNameForm(Model model) {
+		log.debug("getting rule name form page");
 		RuleName ruleNameToCreate = new RuleName();
 		try {
 			model.addAttribute("ruleName", ruleNameToCreate);
@@ -66,6 +69,7 @@ public class RuleNameController {
 
 	@GetMapping("/list")
 	public String getRuleNamePage(HttpServletRequest httpServletRequest, Model model) {
+		log.debug("getting rule name list page");
 		List<RuleName> ruleNames = new ArrayList<>();
 		try {
 			ruleNames = ruleNameService.getAllRuleNames();
@@ -78,17 +82,20 @@ public class RuleNameController {
 
 		model.addAttribute("ruleNames", ruleNames);
 		model.addAttribute("remoteUser", httpServletRequest.getRemoteUser());
+		log.info(" Rule name list page successfully retrieved");
 		return Constants.RULENAMELIST_PAGE;
 	}
 
 	@PostMapping("/update/{id}")
 	public String updateRuleName(@PathVariable("id") Integer id, @Valid @ModelAttribute RuleName ruleNameUpdated,
 			BindingResult result) {
+		log.debug("updating RuleName{}, id: {}", ruleNameUpdated, id);
 		try {
 			if (result.hasErrors()) {
 				return Constants.RULENAME_UPDATE_PAGE;
 			}
 			ruleNameService.updateRuleNameById(id, ruleNameUpdated);
+			log.info(" RuleName updated sucessfully{}, id: {}", ruleNameUpdated, id);
 			return Constants.REDIRECTION + Constants.RULENAMELIST_PAGE;
 		} catch (ConstraintViolationException e) {
 			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
@@ -104,7 +111,7 @@ public class RuleNameController {
 
 	@GetMapping("/update/{id}")
 	public String getUpdateFormRuleNameListPage(@PathVariable("id") Integer id, Model model) {
-
+		log.debug("getting rule name update form page");
 		RuleName ruleNameToUpdate = new RuleName();
 		try {
 			ruleNameToUpdate = ruleNameService.getRuleNameById(id);
@@ -122,8 +129,10 @@ public class RuleNameController {
 
 	@GetMapping("/delete/{id}")
 	public String deleteBid(@PathVariable("id") Integer id, Model model) {
+		log.debug("deleting RuleName {}, id: {}", id);
 		try {
 			ruleNameService.deleteRuleNameById(id);
+			log.info("RuleName successfully deleted");
 			return Constants.REDIRECTION + Constants.RULENAMELIST_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());

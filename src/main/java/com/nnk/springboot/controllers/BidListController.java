@@ -39,7 +39,7 @@ public class BidListController {
 	@PostMapping("/validate")
 	public String validate(@Valid @ModelAttribute BidList bidCreated, BindingResult result, Principal principal) {
 		log.debug("adding Bid");
-		try {	
+		try {
 			bidListService.addBid(bidCreated);
 			log.info("Bid added successfully {}", bidCreated);
 			return Constants.REDIRECTION + Constants.BIDLIST_PAGE;
@@ -92,13 +92,13 @@ public class BidListController {
 	@PostMapping("/update/{id}")
 	public String updateBid(@PathVariable("id") Integer id, @Valid @ModelAttribute BidList bidListUpdated,
 			BindingResult result) {
-		log.debug("updating bid {}, id: {}",bidListUpdated,id);
+		log.debug("updating Bid {}, id: {}", bidListUpdated, id);
 		try {
 			if (result.hasErrors()) {
-				return   Constants.REDIRECTION +Constants.BID_UPDATE_PAGE;
+				return Constants.REDIRECTION + Constants.BID_UPDATE_PAGE;
 			}
 			bidListService.updateBidById(id, bidListUpdated);
-			log.info(" Bid updated sucessfully{}, id: {}",bidListUpdated,id);
+			log.info(" Bid updated sucessfully{}, id: {}", bidListUpdated, id);
 			return Constants.BIDLIST_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
@@ -123,13 +123,13 @@ public class BidListController {
 			return Constants.BID_UPDATE_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());
-			return  Constants.ERROR_404_PAGE;
+			return Constants.ERROR_404_PAGE;
 		}
 	}
 
 	@GetMapping("/delete/{id}")
 	public String deleteBid(@PathVariable("id") Integer id, Model model) {
-		log.debug("deleting bid {}, id: {}",id);
+		log.debug("deleting Bid {}, id: {}", id);
 		try {
 			bidListService.deleteBidById(id);
 			log.info(" Bid  successfully deleted");

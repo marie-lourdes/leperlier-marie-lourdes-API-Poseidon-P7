@@ -37,9 +37,10 @@ public class TradeController {
 
 	@PostMapping("/validate")
 	public String validate(@Valid @ModelAttribute Trade tradeCreated, BindingResult result, Principal principal) {
-
+		log.debug("adding Trade");
 		try {
 			tradeService.addTrade(tradeCreated);
+			log.info("Trade added successfully {}", tradeCreated);
 			return Constants.REDIRECTION + Constants.TRADELIST_PAGE;
 		} catch (ConstraintViolationException e) {
 			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
@@ -55,6 +56,7 @@ public class TradeController {
 
 	@GetMapping("/add")
 	public String getTradeFormPage(Model model) {
+		log.debug("getting trade form page");
 		Trade tradeToCreate = new Trade();
 		try {
 			model.addAttribute("trade", tradeToCreate);
@@ -68,7 +70,7 @@ public class TradeController {
 
 	@GetMapping("/list")
 	public String getTradeListPage(HttpServletRequest httpServletRequest, Model model) {
-		// TODO: call service find all bids to show to the view
+		log.debug("getting trade list page");
 		List<TradeDTO> trades = new ArrayList<TradeDTO>();
 		try {
 			trades = tradeService.getAllTrades();
@@ -81,18 +83,20 @@ public class TradeController {
 
 		model.addAttribute("trades", trades);
 		model.addAttribute("remoteUser", httpServletRequest.getRemoteUser());
+		log.info("Trade list page successfully retrieved");
 		return Constants.TRADELIST_PAGE;
 	}
 
 	@PostMapping("/update/{id}")
 	public String updateTrade(@PathVariable("id") Integer id, @Valid @ModelAttribute Trade tradeUpdated,
 			BindingResult result) {
-
+		log.debug("updating Trade {}, id: {}", tradeUpdated, id);
 		try {
 			if (result.hasErrors()) {
 				return Constants.TRADE_UPDATE_PAGE;
 			}
 			tradeService.updateTradeById(id, tradeUpdated);
+			log.info(" Trade updated sucessfully{}, id: {}", tradeUpdated, id);
 			return Constants.REDIRECTION + Constants.TRADELIST_PAGE;
 		} catch (ConstraintViolationException e) {
 			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
@@ -108,7 +112,7 @@ public class TradeController {
 
 	@GetMapping("/update/{id}")
 	public String getUpdateFormTradeListPage(@PathVariable("id") Integer id, Model model) {
-
+		log.debug("getting trade update form page");
 		Trade tradeToUpdate = new Trade();
 		try {
 			tradeToUpdate = tradeService.getTradeById(id);
@@ -125,9 +129,10 @@ public class TradeController {
 
 	@GetMapping("/delete/{id}")
 	public String deleteTrade(@PathVariable("id") Integer id, Model model) {
-
+		log.debug("deleting Trade {}, id: {}", id);
 		try {
 			tradeService.deleteTradeById(id);
+			log.info("Trade successfully deleted");
 			return Constants.REDIRECTION + Constants.TRADELIST_PAGE;
 		} catch (NullPointerException e) {
 			log.error(e.getMessage());

@@ -40,13 +40,14 @@ public class UserController {
 	@PostMapping("/validate")
 	public String validate(@Valid @ModelAttribute User userCreated, BindingResult result,
 			Authentication Authentication) {
+		log.debug("adding user");
 		authority = "";
 		try {
 			if (!result.hasErrors()) {
 				BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 				userCreated.setPassword(encoder.encode(userCreated.getPassword()));
 			}
-
+			log.info("User added successfully {}", userCreated);
 			userService.addUser(userCreated);
 			Authentication.getAuthorities().forEach(authoritie -> authority = authoritie.getAuthority());
 			if (authority.equals("ROLE_ADMIN")) {
@@ -71,6 +72,7 @@ public class UserController {
 
 	@GetMapping("/add")
 	public String getUserFormPage(Model model) {
+		log.debug("getting user form page");
 		User userToCreate = new User();
 		try {
 			model.addAttribute("user", userToCreate);
@@ -85,6 +87,7 @@ public class UserController {
 
 	@GetMapping("/list")
 	public String getUserListPage(HttpServletRequest httpServletRequest, Model model) {
+		log.debug("getting user list page");
 		List<UserDTO> users = new ArrayList<UserDTO>();
 		try {
 			users = userService.getAllUsers();
@@ -97,13 +100,14 @@ public class UserController {
 
 		model.addAttribute("users", users);
 		model.addAttribute("remoteUser", httpServletRequest.getRemoteUser());
+		log.info("User list page successfully retrieved");
 		return Constants.USERLIST_PAGE;
 	}
 
 	@PostMapping("/update/{id}")
 	public String updateUser(@PathVariable("id") Integer id, @Valid @ModelAttribute User userUpdated,
 			BindingResult result) {
-
+		log.debug("updating User {}, id: {}", userUpdated, id);
 		try {
 			if (!result.hasErrors()) {
 				BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -113,6 +117,7 @@ public class UserController {
 				return Constants.USER_UPDATE_PAGE;
 			}
 			userService.updateUserById(id, userUpdated);
+			log.info("User updated sucessfully{}, id: {}", userUpdated, id);
 			return Constants.REDIRECTION + Constants.USERLIST_PAGE;
 		} catch (ConstraintViolationException e) {
 			Set<ConstraintViolation<?>> violationsException = e.getConstraintViolations();
@@ -130,6 +135,7 @@ public class UserController {
 
 	@GetMapping("/update/{id}")
 	public String getUpdateFormBidListPage(@PathVariable("id") Integer id, Model model) {
+		log.debug("getting user update form page");
 		User userToUpdate = new User();
 		try {
 			userToUpdate = userService.getUserEntityById(id);
@@ -147,6 +153,7 @@ public class UserController {
 
 	@GetMapping("/delete/{id}")
 	public String deleteUser(@PathVariable("id") Integer id, Model model) {
+		log.debug("deleting User {}, id: {}", id);
 		try {
 			userService.deleteUserById(id);
 			return Constants.REDIRECTION + Constants.USERLIST_PAGE;
