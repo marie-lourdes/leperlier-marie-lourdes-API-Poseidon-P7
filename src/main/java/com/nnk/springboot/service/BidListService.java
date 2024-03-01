@@ -53,7 +53,6 @@ public class BidListService {
 	public BidList getBidById(Integer id) throws NullPointerException {
 		BidList bidlistFoundById = bidListRepository.findById(id)
 				.orElseThrow(() -> new NullPointerException("Bid " + id + " not found"));
-		// BidListDTO bidListDTO = mapper.bidListToBidListDTO(bidlistFoundById);
 		return bidlistFoundById;
 	}
 

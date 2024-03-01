@@ -22,7 +22,6 @@ import com.nnk.springboot.domain.dto.TradeDTO;
 import com.nnk.springboot.service.TradeService;
 import com.nnk.springboot.utils.Constants;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
@@ -69,7 +68,7 @@ public class TradeController {
 	}
 
 	@GetMapping("/list")
-	public String getTradeListPage(HttpServletRequest httpServletRequest, Model model) {
+	public String getTradeListPage(Model model) {
 		log.debug("getting trade list page");
 		List<TradeDTO> trades = new ArrayList<TradeDTO>();
 		try {
@@ -82,7 +81,6 @@ public class TradeController {
 		}
 
 		model.addAttribute("trades", trades);
-		model.addAttribute("remoteUser", httpServletRequest.getRemoteUser());
 		log.info("Trade list page successfully retrieved");
 		return Constants.TRADELIST_PAGE;
 	}

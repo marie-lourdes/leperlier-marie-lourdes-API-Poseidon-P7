@@ -20,7 +20,6 @@ import com.nnk.springboot.domain.RuleName;
 import com.nnk.springboot.service.RuleNameService;
 import com.nnk.springboot.utils.Constants;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
@@ -68,7 +67,7 @@ public class RuleNameController {
 	}
 
 	@GetMapping("/list")
-	public String getRuleNamePage(HttpServletRequest httpServletRequest, Model model) {
+	public String getRuleNamePage(Model model) {
 		log.debug("getting rule name list page");
 		List<RuleName> ruleNames = new ArrayList<>();
 		try {
@@ -81,7 +80,6 @@ public class RuleNameController {
 		}
 
 		model.addAttribute("ruleNames", ruleNames);
-		model.addAttribute("remoteUser", httpServletRequest.getRemoteUser());
 		log.info(" Rule name list page successfully retrieved");
 		return Constants.RULENAMELIST_PAGE;
 	}

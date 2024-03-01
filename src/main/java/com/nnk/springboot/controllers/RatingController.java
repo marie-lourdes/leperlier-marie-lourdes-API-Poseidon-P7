@@ -20,7 +20,6 @@ import com.nnk.springboot.domain.Rating;
 import com.nnk.springboot.service.RatingService;
 import com.nnk.springboot.utils.Constants;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
@@ -69,7 +68,7 @@ public class RatingController {
 	}
 
 	@GetMapping("/list")
-	public String getRatingPage(HttpServletRequest httpServletRequest, Model model) {
+	public String getRatingPage(Model model) {
 		log.debug("getting rating list page");
 		List<Rating> ratings = new ArrayList<>();
 		try {
@@ -81,7 +80,6 @@ public class RatingController {
 			log.error(e.getMessage());
 		}
 		model.addAttribute("ratings", ratings);
-		model.addAttribute("remoteUser", httpServletRequest.getRemoteUser());
 		log.info("Rating list page successfully retrieved");
 		return Constants.RATINGLIST_PAGE;
 	}

@@ -23,7 +23,6 @@ import com.nnk.springboot.domain.dto.UserDTO;
 import com.nnk.springboot.service.UserService;
 import com.nnk.springboot.utils.Constants;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
@@ -86,7 +85,7 @@ public class UserController {
 	}
 
 	@GetMapping("/list")
-	public String getUserListPage(HttpServletRequest httpServletRequest, Model model) {
+	public String getUserListPage(Model model) {
 		log.debug("getting user list page");
 		List<UserDTO> users = new ArrayList<UserDTO>();
 		try {
@@ -99,7 +98,6 @@ public class UserController {
 		}
 
 		model.addAttribute("users", users);
-		model.addAttribute("remoteUser", httpServletRequest.getRemoteUser());
 		log.info("User list page successfully retrieved");
 		return Constants.USERLIST_PAGE;
 	}

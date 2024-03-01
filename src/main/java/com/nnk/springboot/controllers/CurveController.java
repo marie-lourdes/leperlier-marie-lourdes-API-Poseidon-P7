@@ -21,7 +21,6 @@ import com.nnk.springboot.domain.dto.CurvePointDTO;
 import com.nnk.springboot.service.CurvePointService;
 import com.nnk.springboot.utils.Constants;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
@@ -69,7 +68,7 @@ public class CurveController {
 	}
 
 	@GetMapping("/list")
-	public String getCurvePointPage(HttpServletRequest httpServletRequest, Model model) {
+	public String getCurvePointPage(Model model) {
 		log.debug("getting curve point list page");
 		List<CurvePointDTO> curvePoints = new ArrayList<>();
 		try {
@@ -81,7 +80,6 @@ public class CurveController {
 			log.error(e.getMessage());
 		}
 		model.addAttribute("curvePoints", curvePoints);
-		model.addAttribute("remoteUser", httpServletRequest.getRemoteUser());
 		log.info(" Curve point list page successfully retrieved");
 		return Constants.CURVEPOINTLIST_PAGE;
 	}

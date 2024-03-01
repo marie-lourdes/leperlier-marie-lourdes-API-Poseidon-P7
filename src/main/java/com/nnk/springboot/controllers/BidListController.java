@@ -23,7 +23,6 @@ import com.nnk.springboot.domain.dto.BidListDTO;
 import com.nnk.springboot.service.BidListService;
 import com.nnk.springboot.utils.Constants;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
@@ -71,7 +70,7 @@ public class BidListController {
 	}
 
 	@GetMapping("/list")
-	public String getBidListPage(HttpServletRequest httpServletRequest, Model model, Authentication authentication) {
+	public String getBidListPage(Model model, Authentication authentication) {
 		log.debug("getting bid list page");
 		List<BidListDTO> bidLists = new ArrayList<BidListDTO>();
 		try {
@@ -84,7 +83,6 @@ public class BidListController {
 		}
 
 		model.addAttribute("bidLists", bidLists);
-		model.addAttribute("remoteUser", httpServletRequest.getRemoteUser());
 		log.info(" Bid list page successfully retrieved");
 		return Constants.BIDLIST_PAGE;
 	}
