@@ -65,7 +65,7 @@ public class UserController {
 			return Constants.USER_ADD_PAGE;
 		} catch (IllegalArgumentException e) {
 			log.error(e.getMessage());
-			return Constants.USER_ADD_PAGE;
+			return "error";
 		}
 	}
 
