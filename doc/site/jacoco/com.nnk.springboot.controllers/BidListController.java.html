@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BidListController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">springboot</a> &gt; <a href="index.source.html" class="el_package">com.nnk.springboot.controllers</a> &gt; <span class="el_source">BidListController.java</span></div><h1>BidListController.java</h1><pre class="source lang-java linenums">package com.nnk.springboot.controllers;
+
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.nnk.springboot.domain.BidList;
+import com.nnk.springboot.domain.dto.BidListDTO;
+import com.nnk.springboot.service.BidListService;
+import com.nnk.springboot.utils.Constants;
+
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
+
+@Controller
+@RequestMapping(&quot;bidList&quot;)
+<span class="fc" id="L32">public class BidListController {</span>
+<span class="fc" id="L33">	private static final Logger log = LogManager.getLogger(BidListController.class);</span>
+
+	@Autowired
+	BidListService bidListService;
+
+	@PostMapping(&quot;/validate&quot;)
+	public String validate(@Valid @ModelAttribute BidList bidCreated, BindingResult result, Principal principal) {
+<span class="nc" id="L40">		log.debug(&quot;adding Bid&quot;);</span>
+		try {
+<span class="nc" id="L42">			bidListService.addBid(bidCreated);</span>
+<span class="nc" id="L43">			log.info(&quot;Bid added successfully {}&quot;, bidCreated);</span>
+<span class="nc" id="L44">			return Constants.REDIRECTION + Constants.BIDLIST_PAGE;</span>
+<span class="nc" id="L45">		} catch (ConstraintViolationException e) {</span>
+<span class="nc" id="L46">			Set&lt;ConstraintViolation&lt;?&gt;&gt; violationsException = e.getConstraintViolations();</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">			for (ConstraintViolation&lt;?&gt; constraint : violationsException) {</span>
+<span class="nc" id="L48">				log.error(&quot;Errors fields of Bid created &quot; + constraint.getMessageTemplate());</span>
+<span class="nc" id="L49">			}</span>
+
+<span class="nc" id="L51">			return Constants.BID_ADD_PAGE;</span>
+<span class="nc" id="L52">		} catch (NullPointerException e) {</span>
+<span class="nc" id="L53">			log.error(e.getMessage());</span>
+<span class="nc" id="L54">			return Constants.BID_ADD_PAGE;</span>
+		}
+	}
+
+	@GetMapping(&quot;/add&quot;)
+	public String getBidFormPage(Model model) {
+<span class="nc" id="L60">		log.debug(&quot;getting bid form page&quot;);</span>
+<span class="nc" id="L61">		BidList bidListToCreate = new BidList();</span>
+		try {
+<span class="nc" id="L63">			model.addAttribute(&quot;bidList&quot;, bidListToCreate);</span>
+<span class="nc" id="L64">		} catch (Exception e) {</span>
+<span class="nc" id="L65">			log.error(&quot;Failed to retrieve bid form creation  page&quot; + e.getMessage());</span>
+<span class="nc" id="L66">		}</span>
+
+<span class="nc" id="L68">		log.info(&quot; Bid  form creation page successfully retrieved&quot;);</span>
+<span class="nc" id="L69">		return Constants.BID_ADD_PAGE;</span>
+	}
+
+	@GetMapping(&quot;/list&quot;)
+	public String getBidListPage(Model model, Authentication authentication) {
+<span class="nc" id="L74">		log.debug(&quot;getting bid list page&quot;);</span>
+<span class="nc" id="L75">		List&lt;BidListDTO&gt; bidLists = new ArrayList&lt;BidListDTO&gt;();</span>
+		try {
+<span class="nc" id="L77">			bidLists = bidListService.getAllBids();</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">			if (bidLists.isEmpty()) {</span>
+<span class="nc" id="L79">				throw new NullPointerException(&quot;List of bids not found&quot;);</span>
+			}
+<span class="nc" id="L81">		} catch (NullPointerException e) {</span>
+<span class="nc" id="L82">			log.error(e.getMessage());</span>
+<span class="nc" id="L83">		}</span>
+
+<span class="nc" id="L85">		model.addAttribute(&quot;bidLists&quot;, bidLists);</span>
+<span class="nc" id="L86">		log.info(&quot; Bid list page successfully retrieved&quot;);</span>
+<span class="nc" id="L87">		return Constants.BIDLIST_PAGE;</span>
+	}
+
+	@PostMapping(&quot;/update/{id}&quot;)
+	public String updateBid(@PathVariable(&quot;id&quot;) Integer id, @Valid @ModelAttribute BidList bidListUpdated,
+			BindingResult result) {
+<span class="nc" id="L93">		log.debug(&quot;updating Bid {}, id: {}&quot;, bidListUpdated, id);</span>
+		try {
+<span class="nc bnc" id="L95" title="All 2 branches missed.">			if (result.hasErrors()) {</span>
+<span class="nc" id="L96">				return Constants.REDIRECTION + Constants.BID_UPDATE_PAGE;</span>
+			}
+<span class="nc" id="L98">			bidListService.updateBidById(id, bidListUpdated);</span>
+<span class="nc" id="L99">			log.info(&quot; Bid updated sucessfully{}, id: {}&quot;, bidListUpdated, id);</span>
+<span class="nc" id="L100">			return Constants.BIDLIST_PAGE;</span>
+<span class="nc" id="L101">		} catch (NullPointerException e) {</span>
+<span class="nc" id="L102">			log.error(e.getMessage());</span>
+<span class="nc" id="L103">			return Constants.BID_UPDATE_PAGE;</span>
+<span class="nc" id="L104">		} catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L105">			log.error(e.getMessage());</span>
+<span class="nc" id="L106">			return Constants.BID_UPDATE_PAGE;</span>
+		}
+	}
+
+	@GetMapping(&quot;/update/{id}&quot;)
+	public String getUpdateFormBidListPage(@PathVariable(&quot;id&quot;) Integer id, Model model) {
+<span class="nc" id="L112">		log.debug(&quot;getting Bid update form page&quot;);</span>
+<span class="nc" id="L113">		BidList bidListToUpdate = new BidList();</span>
+		try {
+<span class="nc" id="L115">			bidListToUpdate = bidListService.getBidById(id);</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">			if (bidListToUpdate != null) {</span>
+<span class="nc" id="L117">				model.addAttribute(&quot;bidList&quot;, bidListToUpdate);</span>
+			}
+
+<span class="nc" id="L120">			log.info(&quot; Bid  form update page successfully retrieved&quot;);</span>
+<span class="nc" id="L121">			return Constants.BID_UPDATE_PAGE;</span>
+<span class="nc" id="L122">		} catch (NullPointerException e) {</span>
+<span class="nc" id="L123">			log.error(e.getMessage());</span>
+<span class="nc" id="L124">			return Constants.ERROR_404_PAGE;</span>
+		}
+	}
+
+	@GetMapping(&quot;/delete/{id}&quot;)
+	public String deleteBid(@PathVariable(&quot;id&quot;) Integer id, Model model) {
+<span class="nc" id="L130">		log.debug(&quot;deleting Bid {}, id: {}&quot;, id);</span>
+		try {
+<span class="nc" id="L132">			bidListService.deleteBidById(id);</span>
+<span class="nc" id="L133">			log.info(&quot; Bid  successfully deleted&quot;);</span>
+<span class="nc" id="L134">			return Constants.REDIRECTION + Constants.BIDLIST_PAGE;</span>
+<span class="nc" id="L135">		} catch (NullPointerException e) {</span>
+<span class="nc" id="L136">			log.error(e.getMessage());</span>
+<span class="nc" id="L137">			return Constants.ERROR_404_PAGE;</span>
+		}
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

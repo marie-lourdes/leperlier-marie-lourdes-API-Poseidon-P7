@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BidListService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">springboot</a> &gt; <a href="index.source.html" class="el_package">com.nnk.springboot.service</a> &gt; <span class="el_source">BidListService.java</span></div><h1>BidListService.java</h1><pre class="source lang-java linenums">package com.nnk.springboot.service;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.nnk.springboot.domain.BidList;
+import com.nnk.springboot.domain.dto.BidListDTO;
+import com.nnk.springboot.domain.dto.BidListMapperImpl;
+import com.nnk.springboot.repositories.IBidListRepository;
+
+@Service
+<span class="fc" id="L19">public class BidListService {</span>
+<span class="fc" id="L20">	private static final Logger log = LogManager.getLogger(BidListService.class);</span>
+
+	@Autowired
+	private IBidListRepository bidListRepository;
+
+	@Autowired
+	private BidListMapperImpl mapper;
+
+	public BidList addBid(BidList bidListCreated) throws NullPointerException{
+<span class="fc" id="L29">		BidList bidListRegistered = new BidList();</span>
+<span class="fc" id="L30">		Date date = new Date();</span>
+<span class="fc" id="L31">		Timestamp timestamp = new Timestamp(date.getTime());</span>
+		try {
+<span class="fc bfc" id="L33" title="All 2 branches covered.">			if (bidListCreated != null) {</span>
+<span class="pc bpc" id="L34" title="2 of 4 branches missed.">				if (bidListCreated.getAccount() == null || bidListCreated.getType() == null) {</span>
+<span class="nc" id="L35">					throw new IllegalArgumentException(</span>
+							&quot;Empty data required of Bid &quot; + bidListCreated + &quot; provided and created&quot;);
+				}
+
+<span class="fc" id="L39">				bidListRegistered.setAccount(bidListCreated.getAccount());</span>
+<span class="fc" id="L40">				bidListRegistered.setType(bidListCreated.getType());</span>
+<span class="fc" id="L41">				bidListRegistered.setBidQuantity(bidListCreated.getBidQuantity());</span>
+<span class="fc" id="L42">				bidListRegistered.setCreationName(&quot;bid&quot;);</span>
+<span class="fc" id="L43">				bidListRegistered.setCreationDate(timestamp);</span>
+			}
+<span class="nc" id="L45">		} catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L46">			log.error(e.getMessage());</span>
+<span class="fc" id="L47">		}</span>
+
+<span class="fc" id="L49">		bidListRegistered = bidListRepository.save(bidListRegistered);</span>
+<span class="fc" id="L50">		return bidListRegistered;</span>
+	}
+
+	public BidList getBidById(Integer id) throws NullPointerException {
+<span class="fc" id="L54">		BidList bidlistFoundById = bidListRepository.findById(id)</span>
+<span class="fc" id="L55">				.orElseThrow(() -&gt; new NullPointerException(&quot;Bid &quot; + id + &quot; not found&quot;));</span>
+<span class="fc" id="L56">		return bidlistFoundById;</span>
+	}
+
+	public List&lt;BidListDTO&gt; getAllBids() throws NullPointerException {
+<span class="fc" id="L60">		List&lt;BidList&gt; allBidLists = bidListRepository.findAll();</span>
+<span class="fc" id="L61">		List&lt;BidListDTO&gt; allBidListDto = new ArrayList&lt;BidListDTO&gt;();</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">		if (allBidLists.isEmpty()) {</span>
+<span class="fc" id="L63">			return new ArrayList&lt;&gt;();</span>
+		}
+<span class="nc" id="L65">		allBidLists.forEach(bid -&gt; {</span>
+<span class="nc" id="L66">			allBidListDto.add(mapper.bidListToBidListDTO(bid));</span>
+<span class="nc" id="L67">		});</span>
+<span class="nc" id="L68">		return allBidListDto;</span>
+	}
+
+	public BidList updateBidById(Integer id, BidList bidListUpdated)
+			throws NullPointerException, IllegalArgumentException {
+<span class="fc" id="L73">		BidList bidListToUpdate = new BidList();</span>
+<span class="fc" id="L74">		bidListToUpdate = bidListRepository.findById(id)</span>
+<span class="pc" id="L75">				.orElseThrow(() -&gt; new NullPointerException(&quot;Bid &quot; + id + &quot; not found for updating&quot;));</span>
+
+<span class="nc bnc" id="L77" title="All 4 branches missed.">		if (bidListUpdated.getAccount() == null || bidListUpdated.getType() == null) {</span>
+<span class="nc" id="L78">			throw new IllegalArgumentException(</span>
+					&quot;Empty data required of Bid &quot; + bidListUpdated + &quot; provided and updated&quot;);
+		}
+
+<span class="nc" id="L82">		bidListToUpdate.setAccount(bidListUpdated.getAccount());</span>
+<span class="nc" id="L83">		bidListToUpdate.setType(bidListUpdated.getType());</span>
+<span class="nc" id="L84">		bidListToUpdate.setBidQuantity(bidListUpdated.getBidQuantity());</span>
+<span class="nc" id="L85">		bidListToUpdate = bidListRepository.save(bidListToUpdate);</span>
+<span class="nc" id="L86">		return bidListToUpdate;</span>
+	}
+
+	public void deleteBidById(Integer id) throws NullPointerException {
+<span class="fc" id="L90">		bidListRepository.findById(id)</span>
+<span class="pc" id="L91">				.orElseThrow(() -&gt; new NullPointerException(&quot;Bid &quot; + id + &quot; not found for deleting&quot;));</span>
+<span class="nc" id="L92">		bidListRepository.deleteById(id);</span>
+<span class="nc" id="L93">	}</span>
+
+	public void deleteAllBids() throws Exception {
+<span class="fc" id="L96">		bidListRepository.deleteAll();</span>
+<span class="fc" id="L97">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

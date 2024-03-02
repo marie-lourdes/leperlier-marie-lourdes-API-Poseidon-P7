@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TradeController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">springboot</a> &gt; <a href="index.source.html" class="el_package">com.nnk.springboot.controllers</a> &gt; <span class="el_source">TradeController.java</span></div><h1>TradeController.java</h1><pre class="source lang-java linenums">package com.nnk.springboot.controllers;
+
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.nnk.springboot.domain.Trade;
+import com.nnk.springboot.domain.dto.TradeDTO;
+import com.nnk.springboot.service.TradeService;
+import com.nnk.springboot.utils.Constants;
+
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
+
+@Controller
+@RequestMapping(&quot;trade&quot;)
+<span class="fc" id="L31">public class TradeController {</span>
+<span class="fc" id="L32">	private static final Logger log = LogManager.getLogger(TradeController.class);</span>
+
+	@Autowired
+	TradeService tradeService;
+
+	@PostMapping(&quot;/validate&quot;)
+	public String validate(@Valid @ModelAttribute Trade tradeCreated, BindingResult result, Principal principal) {
+<span class="nc" id="L39">		log.debug(&quot;adding Trade&quot;);</span>
+		try {
+<span class="nc" id="L41">			tradeService.addTrade(tradeCreated);</span>
+<span class="nc" id="L42">			log.info(&quot;Trade added successfully {}&quot;, tradeCreated);</span>
+<span class="nc" id="L43">			return Constants.REDIRECTION + Constants.TRADELIST_PAGE;</span>
+<span class="nc" id="L44">		} catch (ConstraintViolationException e) {</span>
+<span class="nc" id="L45">			Set&lt;ConstraintViolation&lt;?&gt;&gt; violationsException = e.getConstraintViolations();</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">			for (ConstraintViolation&lt;?&gt; constraint : violationsException) {</span>
+<span class="nc" id="L47">				log.error(&quot;Errors fields of Trade created &quot; + constraint.getMessageTemplate());</span>
+<span class="nc" id="L48">			}</span>
+<span class="nc" id="L49">			return Constants.TRADE_ADD_PAGE;</span>
+<span class="nc" id="L50">		} catch (NullPointerException e) {</span>
+<span class="nc" id="L51">			log.error(e.getMessage());</span>
+<span class="nc" id="L52">			return Constants.TRADE_ADD_PAGE;</span>
+		}
+	}
+
+	@GetMapping(&quot;/add&quot;)
+	public String getTradeFormPage(Model model) {
+<span class="nc" id="L58">		log.debug(&quot;getting trade form page&quot;);</span>
+<span class="nc" id="L59">		Trade tradeToCreate = new Trade();</span>
+		try {
+<span class="nc" id="L61">			model.addAttribute(&quot;trade&quot;, tradeToCreate);</span>
+<span class="nc" id="L62">		} catch (Exception e) {</span>
+<span class="nc" id="L63">			log.error(&quot;Failed to retrieve bid form creation  page&quot; + e.getMessage());</span>
+<span class="nc" id="L64">		}</span>
+
+<span class="nc" id="L66">		log.info(&quot; Trade  form creation page successfully retrieved&quot;);</span>
+<span class="nc" id="L67">		return Constants.TRADE_ADD_PAGE;</span>
+	}
+
+	@GetMapping(&quot;/list&quot;)
+	public String getTradeListPage(Model model) {
+<span class="nc" id="L72">		log.debug(&quot;getting trade list page&quot;);</span>
+<span class="nc" id="L73">		List&lt;TradeDTO&gt; trades = new ArrayList&lt;TradeDTO&gt;();</span>
+		try {
+<span class="nc" id="L75">			trades = tradeService.getAllTrades();</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">			if (trades.isEmpty()) {</span>
+<span class="nc" id="L77">				throw new NullPointerException(&quot;List of bids not found&quot;);</span>
+			}
+<span class="nc" id="L79">		} catch (NullPointerException e) {</span>
+<span class="nc" id="L80">			log.error(e.getMessage());</span>
+<span class="nc" id="L81">		}</span>
+
+<span class="nc" id="L83">		model.addAttribute(&quot;trades&quot;, trades);</span>
+<span class="nc" id="L84">		log.info(&quot;Trade list page successfully retrieved&quot;);</span>
+<span class="nc" id="L85">		return Constants.TRADELIST_PAGE;</span>
+	}
+
+	@PostMapping(&quot;/update/{id}&quot;)
+	public String updateTrade(@PathVariable(&quot;id&quot;) Integer id, @Valid @ModelAttribute Trade tradeUpdated,
+			BindingResult result) {
+<span class="nc" id="L91">		log.debug(&quot;updating Trade {}, id: {}&quot;, tradeUpdated, id);</span>
+		try {
+<span class="nc bnc" id="L93" title="All 2 branches missed.">			if (result.hasErrors()) {</span>
+<span class="nc" id="L94">				return Constants.TRADE_UPDATE_PAGE;</span>
+			}
+<span class="nc" id="L96">			tradeService.updateTradeById(id, tradeUpdated);</span>
+<span class="nc" id="L97">			log.info(&quot; Trade updated sucessfully{}, id: {}&quot;, tradeUpdated, id);</span>
+<span class="nc" id="L98">			return Constants.REDIRECTION + Constants.TRADELIST_PAGE;</span>
+<span class="nc" id="L99">		} catch (ConstraintViolationException e) {</span>
+<span class="nc" id="L100">			Set&lt;ConstraintViolation&lt;?&gt;&gt; violationsException = e.getConstraintViolations();</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">			for (ConstraintViolation&lt;?&gt; constraint : violationsException) {</span>
+<span class="nc" id="L102">				log.error(&quot;Errors fields of Trade updated &quot; + constraint.getMessageTemplate());</span>
+<span class="nc" id="L103">			}</span>
+<span class="nc" id="L104">			return Constants.TRADE_UPDATE_PAGE;</span>
+<span class="nc" id="L105">		} catch (NullPointerException e) {</span>
+<span class="nc" id="L106">			log.error(e.getMessage());</span>
+<span class="nc" id="L107">			return Constants.TRADE_UPDATE_PAGE;</span>
+		}
+	}
+
+	@GetMapping(&quot;/update/{id}&quot;)
+	public String getUpdateFormTradeListPage(@PathVariable(&quot;id&quot;) Integer id, Model model) {
+<span class="nc" id="L113">		log.debug(&quot;getting trade update form page&quot;);</span>
+<span class="nc" id="L114">		Trade tradeToUpdate = new Trade();</span>
+		try {
+<span class="nc" id="L116">			tradeToUpdate = tradeService.getTradeById(id);</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">			if (tradeToUpdate != null) {</span>
+<span class="nc" id="L118">				model.addAttribute(&quot;trade&quot;, tradeToUpdate);</span>
+			}
+<span class="nc" id="L120">			log.info(&quot; Trade  form update page successfully retrieved&quot;);</span>
+<span class="nc" id="L121">			return Constants.TRADE_UPDATE_PAGE;</span>
+<span class="nc" id="L122">		} catch (NullPointerException e) {</span>
+<span class="nc" id="L123">			log.error(e.getMessage());</span>
+<span class="nc" id="L124">			return Constants.ERROR_404_PAGE;</span>
+		}
+	}
+
+	@GetMapping(&quot;/delete/{id}&quot;)
+	public String deleteTrade(@PathVariable(&quot;id&quot;) Integer id, Model model) {
+<span class="nc" id="L130">		log.debug(&quot;deleting Trade {}, id: {}&quot;, id);</span>
+		try {
+<span class="nc" id="L132">			tradeService.deleteTradeById(id);</span>
+<span class="nc" id="L133">			log.info(&quot;Trade successfully deleted&quot;);</span>
+<span class="nc" id="L134">			return Constants.REDIRECTION + Constants.TRADELIST_PAGE;</span>
+<span class="nc" id="L135">		} catch (NullPointerException e) {</span>
+<span class="nc" id="L136">			log.error(e.getMessage());</span>
+<span class="nc" id="L137">			return Constants.ERROR_404_PAGE;</span>
+		}
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

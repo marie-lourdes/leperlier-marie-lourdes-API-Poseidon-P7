@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>User.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">springboot</a> &gt; <a href="index.source.html" class="el_package">com.nnk.springboot.domain</a> &gt; <span class="el_source">User.java</span></div><h1>User.java</h1><pre class="source lang-java linenums">package com.nnk.springboot.domain;
+
+import com.nnk.springboot.utils.ConstantsValidation;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import lombok.Data;
+
+<span class="pc bnc" id="L15" title="All 46 branches missed.">@Data</span>
+@Entity
+@Table(name = &quot;users&quot;)
+public class User {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = &quot;id&quot;)
+<span class="fc" id="L22">	private Integer id;</span>
+
+	@NotBlank(message = &quot;Username &quot; + ConstantsValidation.ERROR_BLANK_MSG)
+	@Column(name = &quot; username&quot;)
+<span class="fc" id="L26">	private String username;</span>
+
+	@Pattern(regexp = ConstantsValidation.REGEX_PWD, message = &quot;must contain at least 8 characters, an uppercase letter, a symbol, a number&quot;)
+	@NotBlank(message = &quot;Password &quot; + ConstantsValidation.ERROR_BLANK_MSG)
+	@Column(name = &quot; password&quot;)
+<span class="fc" id="L31">	private String password;</span>
+
+	@Pattern(regexp = ConstantsValidation.REGEX_CHARACTER, message = ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
+	@NotBlank(message = &quot;FullName &quot; + ConstantsValidation.ERROR_BLANK_MSG)
+	@Column(name = &quot; fullname&quot;)
+<span class="fc" id="L36">	private String fullName;</span>
+
+	@Pattern(regexp = ConstantsValidation.REGEX_CHARACTER, message = ConstantsValidation.ERROR_NOT_CHARACTER_MSG)
+	@NotBlank(message = &quot;Role &quot; + ConstantsValidation.ERROR_BLANK_MSG)
+	@Column(name = &quot; role&quot;)
+<span class="fc" id="L41">	private String role;</span>
+
+	@Override
+	public String toString() {
+<span class="nc" id="L45">		return &quot;User{&quot; + &quot;id:&quot; + id + &quot;, username :&quot; + username + &quot;, password:&quot; + password + &quot;, fullName:&quot; + fullName</span>
+				+ &quot;, role&quot; + role + &quot;}&quot;;
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

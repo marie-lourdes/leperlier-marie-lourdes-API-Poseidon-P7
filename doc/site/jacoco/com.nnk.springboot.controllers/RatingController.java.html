@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RatingController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">springboot</a> &gt; <a href="index.source.html" class="el_package">com.nnk.springboot.controllers</a> &gt; <span class="el_source">RatingController.java</span></div><h1>RatingController.java</h1><pre class="source lang-java linenums">package com.nnk.springboot.controllers;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.nnk.springboot.domain.Rating;
+import com.nnk.springboot.service.RatingService;
+import com.nnk.springboot.utils.Constants;
+
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
+
+@Controller
+@RequestMapping(&quot;rating&quot;)
+<span class="fc" id="L29">public class RatingController {</span>
+<span class="fc" id="L30">	private static final Logger log = LogManager.getLogger(RatingController.class);</span>
+
+	@Autowired
+	RatingService ratingService;
+
+	@PostMapping(&quot;/validate&quot;)
+	public String validateRating(@Valid @ModelAttribute Rating ratingCreated, BindingResult result) {
+<span class="nc" id="L37">		log.debug(&quot;adding Rating&quot;);</span>
+		try {
+<span class="nc" id="L39">			ratingService.addRating(ratingCreated);</span>
+<span class="nc" id="L40">			log.info(&quot;Rating added successfully {}&quot;, ratingCreated);</span>
+<span class="nc" id="L41">			return Constants.REDIRECTION + Constants.RATINGLIST_PAGE;</span>
+
+<span class="nc" id="L43">		} catch (ConstraintViolationException e) {</span>
+<span class="nc" id="L44">			Set&lt;ConstraintViolation&lt;?&gt;&gt; violationsException = e.getConstraintViolations();</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">			for (ConstraintViolation&lt;?&gt; constraint : violationsException) {</span>
+<span class="nc" id="L46">				log.error(&quot;Errors fields of rating created &quot; + constraint.getMessageTemplate());</span>
+<span class="nc" id="L47">			}</span>
+
+<span class="nc" id="L49">			return Constants.RATING_ADD_PAGE;</span>
+<span class="nc" id="L50">		} catch (NullPointerException e) {</span>
+<span class="nc" id="L51">			log.error(e.getMessage());</span>
+<span class="nc" id="L52">			return Constants.RATING_ADD_PAGE;</span>
+		}
+	}
+
+	@GetMapping(&quot;/add&quot;)
+	public String addRatingForm(Model model) {
+<span class="nc" id="L58">		log.debug(&quot;getting rating form page&quot;);</span>
+<span class="nc" id="L59">		Rating ratingToCreate = new Rating();</span>
+		try {
+<span class="nc" id="L61">			model.addAttribute(&quot;rating&quot;, ratingToCreate);</span>
+<span class="nc" id="L62">		} catch (Exception e) {</span>
+<span class="nc" id="L63">			log.error(&quot;Failed to retrieve rating form creation  page &quot; + e.getMessage());</span>
+<span class="nc" id="L64">		}</span>
+
+<span class="nc" id="L66">		log.info(&quot; Rating form creation  page successfully retrieved&quot;);</span>
+<span class="nc" id="L67">		return Constants.RATING_ADD_PAGE;</span>
+	}
+
+	@GetMapping(&quot;/list&quot;)
+	public String getRatingPage(Model model) {
+<span class="nc" id="L72">		log.debug(&quot;getting rating list page&quot;);</span>
+<span class="nc" id="L73">		List&lt;Rating&gt; ratings = new ArrayList&lt;&gt;();</span>
+		try {
+<span class="nc" id="L75">			ratings = ratingService.getAllRatings();</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">			if (ratings.isEmpty()) {</span>
+<span class="nc" id="L77">				throw new NullPointerException(&quot;List of ratings not found&quot;);</span>
+			}
+<span class="nc" id="L79">		} catch (NullPointerException e) {</span>
+<span class="nc" id="L80">			log.error(e.getMessage());</span>
+<span class="nc" id="L81">		}</span>
+<span class="nc" id="L82">		model.addAttribute(&quot;ratings&quot;, ratings);</span>
+<span class="nc" id="L83">		log.info(&quot;Rating list page successfully retrieved&quot;);</span>
+<span class="nc" id="L84">		return Constants.RATINGLIST_PAGE;</span>
+	}
+
+	@PostMapping(&quot;/update/{id}&quot;)
+	public String updateRating(@PathVariable(&quot;id&quot;) Integer id, @Valid @ModelAttribute Rating ratingUpdated,
+			BindingResult result) {
+<span class="nc" id="L90">		log.debug(&quot;updating Rating {}, id: {}&quot;, ratingUpdated, id);</span>
+		try {
+<span class="nc bnc" id="L92" title="All 2 branches missed.">			if (result.hasErrors()) {</span>
+<span class="nc" id="L93">				return Constants.RATING_UPDATE_PAGE;</span>
+			}
+<span class="nc" id="L95">			ratingService.updateRatingById(id, ratingUpdated);</span>
+<span class="nc" id="L96">			log.info(&quot;Rating updated sucessfully{}, id: {}&quot;, ratingUpdated, id);</span>
+<span class="nc" id="L97">			return Constants.REDIRECTION + Constants.RATINGLIST_PAGE;</span>
+<span class="nc" id="L98">		} catch (NullPointerException e) {</span>
+<span class="nc" id="L99">			log.error(e.getMessage());</span>
+<span class="nc" id="L100">			return Constants.ERROR_404_PAGE;</span>
+<span class="nc" id="L101">		} catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L102">			log.error(e.getMessage());</span>
+<span class="nc" id="L103">			return Constants.RATING_UPDATE_PAGE;</span>
+		}
+	}
+
+	@GetMapping(&quot;/update/{id}&quot;)
+	public String getUpdateFormRatingListPage(@PathVariable(&quot;id&quot;) Integer id, Model model) {
+<span class="nc" id="L109">		log.debug(&quot;getting rating update form page&quot;);</span>
+<span class="nc" id="L110">		Rating ratingToUpdate = new Rating();</span>
+		try {
+<span class="nc" id="L112">			ratingToUpdate = ratingService.getRatingById(id);</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">			if (ratingToUpdate != null) {</span>
+<span class="nc" id="L114">				model.addAttribute(&quot;rating&quot;, ratingToUpdate);</span>
+			}
+
+<span class="nc" id="L117">			log.info(&quot; Rating  form update page successfully retrieved&quot;);</span>
+<span class="nc" id="L118">			return Constants.RATING_UPDATE_PAGE;</span>
+<span class="nc" id="L119">		} catch (NullPointerException e) {</span>
+<span class="nc" id="L120">			log.error(e.getMessage());</span>
+<span class="nc" id="L121">			return Constants.ERROR_404_PAGE;</span>
+		}
+	}
+
+	@GetMapping(&quot;/delete/{id}&quot;)
+	public String deleteRating(@PathVariable(&quot;id&quot;) Integer id, Model model) {
+<span class="nc" id="L127">		log.debug(&quot;deleting Rating{}, id: {}&quot;, id);</span>
+		try {
+<span class="nc" id="L129">			ratingService.deleteRatingById(id);</span>
+<span class="nc" id="L130">			return Constants.REDIRECTION + Constants.RATINGLIST_PAGE;</span>
+<span class="nc" id="L131">		} catch (NullPointerException e) {</span>
+<span class="nc" id="L132">			log.error(e.getMessage());</span>
+<span class="nc" id="L133">			return Constants.ERROR_404_PAGE;</span>
+		}
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

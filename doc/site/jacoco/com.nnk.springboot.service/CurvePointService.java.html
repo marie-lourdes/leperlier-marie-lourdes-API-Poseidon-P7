@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CurvePointService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">springboot</a> &gt; <a href="index.source.html" class="el_package">com.nnk.springboot.service</a> &gt; <span class="el_source">CurvePointService.java</span></div><h1>CurvePointService.java</h1><pre class="source lang-java linenums">package com.nnk.springboot.service;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.nnk.springboot.domain.CurvePoint;
+import com.nnk.springboot.domain.dto.CurvePointDTO;
+import com.nnk.springboot.domain.dto.CurvePointMapperImpl;
+import com.nnk.springboot.repositories.ICurvePointRepository;
+
+@Service
+<span class="fc" id="L19">public class CurvePointService {</span>
+<span class="fc" id="L20">	private static final Logger log = LogManager.getLogger(CurvePointService.class);</span>
+
+	@Autowired
+	private ICurvePointRepository curvePointRepository;
+
+	@Autowired
+	private CurvePointMapperImpl mapper;
+
+	public CurvePoint addCurvePoint(CurvePoint curvePointCreated) throws NullPointerException {
+<span class="fc" id="L29">		CurvePoint curvePointRegistered = new CurvePoint();</span>
+<span class="fc" id="L30">		Date date = new Date();</span>
+<span class="fc" id="L31">		Timestamp timestamp = new Timestamp(date.getTime());</span>
+		try {
+<span class="fc bfc" id="L33" title="All 2 branches covered.">			if (curvePointCreated != null) {</span>
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">				if (curvePointCreated.getCurveId() == null</span>
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">						|| curvePointCreated.getCurveId().getClass() != Integer.class) {</span>
+<span class="nc" id="L36">					throw new IllegalArgumentException(</span>
+							&quot;Invalid CurveId of CurvePoint &quot; + curvePointCreated + &quot; provided and created&quot;);
+				}
+<span class="fc" id="L39">				curvePointRegistered.setCurveId(curvePointCreated.getCurveId());</span>
+<span class="fc" id="L40">				curvePointRegistered.setTerm(curvePointCreated.getTerm());</span>
+<span class="fc" id="L41">				curvePointRegistered.setValue(curvePointCreated.getValue());</span>
+<span class="fc" id="L42">				curvePointRegistered.setCreationDate(timestamp);</span>
+			}
+<span class="nc" id="L44">		} catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L45">			log.error(e.getMessage());</span>
+<span class="fc" id="L46">		}</span>
+
+<span class="fc" id="L48">		curvePointRegistered = curvePointRepository.save(curvePointRegistered);</span>
+<span class="fc" id="L49">		return curvePointRegistered;</span>
+	}
+
+	public CurvePoint getCurvePointById(Integer id) throws NullPointerException {
+<span class="fc" id="L53">		CurvePoint curvePointFoundById = curvePointRepository.findById(id)</span>
+<span class="fc" id="L54">				.orElseThrow(() -&gt; new NullPointerException(&quot;CurvePoint&quot; + id + &quot; not found&quot;));</span>
+<span class="fc" id="L55">		return curvePointFoundById;</span>
+	}
+
+	public List&lt;CurvePointDTO&gt; getAllCurvePoints() throws NullPointerException {
+<span class="fc" id="L59">		List&lt;CurvePoint&gt; allCurvePoints = curvePointRepository.findAll();</span>
+<span class="fc" id="L60">		List&lt;CurvePointDTO&gt; allCurvePointsDTO = new ArrayList&lt;CurvePointDTO&gt;();</span>
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">		if (allCurvePoints.isEmpty()) {</span>
+<span class="fc" id="L62">			return new ArrayList&lt;&gt;();</span>
+		}
+<span class="nc" id="L64">		allCurvePoints.forEach(curvePoint -&gt; {</span>
+<span class="nc" id="L65">			allCurvePointsDTO.add(mapper.curvePointToCurvePointDTO(curvePoint));</span>
+<span class="nc" id="L66">		});</span>
+<span class="nc" id="L67">		return allCurvePointsDTO;</span>
+	}
+
+	public CurvePoint updateCurvePointById(Integer id, CurvePoint curvePointUpdated)
+			throws NullPointerException, IllegalArgumentException {
+<span class="fc" id="L72">		CurvePoint curvePointToUpdate = new CurvePoint();</span>
+<span class="fc" id="L73">		curvePointToUpdate = curvePointRepository.findById(id)</span>
+<span class="pc" id="L74">				.orElseThrow(() -&gt; new NullPointerException(&quot;CurvePoint&quot; + id + &quot; not found for updating&quot;));</span>
+
+<span class="nc bnc" id="L76" title="All 2 branches missed.">		if (curvePointUpdated.getCurveId().getClass() != Integer.class) {</span>
+<span class="nc" id="L77">			throw new IllegalArgumentException(</span>
+					&quot;Invalid CurveId of CurvePoint &quot; + curvePointUpdated + &quot; provided and updated&quot;);
+		}
+<span class="nc" id="L80">		curvePointToUpdate.setCurveId(curvePointUpdated.getCurveId());</span>
+<span class="nc" id="L81">		curvePointToUpdate.setTerm(curvePointUpdated.getTerm());</span>
+<span class="nc" id="L82">		curvePointToUpdate.setValue(curvePointUpdated.getValue());</span>
+<span class="nc" id="L83">		curvePointToUpdate = curvePointRepository.save(curvePointToUpdate);</span>
+<span class="nc" id="L84">		return curvePointToUpdate;</span>
+	}
+
+	public void deleteCurvePointById(Integer id) throws NullPointerException {
+<span class="fc" id="L88">		curvePointRepository.findById(id)</span>
+<span class="pc" id="L89">				.orElseThrow(() -&gt; new NullPointerException(&quot;CurvePoint&quot; + id + &quot; not found for deleting&quot;));</span>
+<span class="nc" id="L90">		curvePointRepository.deleteById(id);</span>
+<span class="nc" id="L91">	}</span>
+
+	public void deleteAllCurvePoints() throws Exception {
+<span class="fc" id="L94">		curvePointRepository.deleteAll();</span>
+<span class="fc" id="L95">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
