@@ -1,6 +1,7 @@
 package com.nnk.springboot.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,6 +12,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.nnk.springboot.service.AuthenticationUserService;
 
+/**
+ * Class configuration for authentication Spring Security with AuthenticationUserService an BCryptPasswordEncoder
+ *
+ */
 @Configuration
 @EnableWebSecurity
 public class Authentication {
@@ -32,7 +37,6 @@ public class Authentication {
 	 * @return AuthenticationManager-Authentication object info of user
 	 *         authenticated with authentificationUserService .
 	 */
-
 	@Bean
 	AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder)
 			throws Exception {

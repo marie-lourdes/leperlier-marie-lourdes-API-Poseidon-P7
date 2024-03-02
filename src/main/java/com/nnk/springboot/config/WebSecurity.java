@@ -5,7 +5,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-
+/**
+ * Class configuration for add filter  chain with acces control and add form login
+ *
+ */
 @Configuration
 @EnableWebSecurity
 public class WebSecurity {
