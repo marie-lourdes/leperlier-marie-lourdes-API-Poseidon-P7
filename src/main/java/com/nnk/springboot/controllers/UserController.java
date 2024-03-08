@@ -40,12 +40,14 @@ public class UserController {
 	public String validate(@Valid @ModelAttribute User userCreated, BindingResult result,
 			Authentication Authentication) {
 		log.debug("adding user");
+		
 		authority = "";
 		try {
 			if (!result.hasErrors()) {
 				BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 				userCreated.setPassword(encoder.encode(userCreated.getPassword()));
 			}
+			
 			log.info("User added successfully {}", userCreated);
 			userService.addUser(userCreated);
 			Authentication.getAuthorities().forEach(authoritie -> authority = authoritie.getAuthority());
